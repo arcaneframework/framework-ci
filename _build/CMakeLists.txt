@@ -167,7 +167,7 @@ tools_add_target(arccore)
 # ----------------------------------------------------------------------------
 # dependencies
 
-set(DEPENDENCIES_SOURCE_DIR "${FRAMEWORK_DIR}/dependencies")
+set(DEPENDENCIES_SOURCE_DIR "${FRAMEWORK_DIR}/../dependencies")
 tools_set_default_dir(dependencies)
 
 tools_add_configure(dependencies
@@ -190,7 +190,7 @@ tools_add_target(axlstar)
 # ----------------------------------------------------------------------------
 # Arcane
 
-set(ARCANE_SOURCE_DIR "${FRAMEWORK_DIR}/arcane/arcane")
+set(ARCANE_SOURCE_DIR "${FRAMEWORK_DIR}/arcane")
 tools_set_default_dir(arcane)
 
 tools_add_configure(arcane PREFIX_PATH "${ARCCON_INSTALL_DIR}" "${AXLSTAR_INSTALL_DIR}" "${DEPENDENCIES_INSTALL_DIR}" "${ARCCORE_INSTALL_DIR}"
