@@ -73,12 +73,12 @@ jobs:
         run: find $RUNNER_WORKSPACE
         shell: bash
       - uses: ilammy/msvc-dev-cmd@v1
-      - name: Install dependencies and generate project files
-        shell: bash
-        run: |
-          mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
-          cmake -S "${{ github.workspace }}/vcpkg_manifest" -B "${{ env.CMAKE_BUILD_DIR }}/vcpkg" -GNinja -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake"
-
+#      - name: Install dependencies and generate project files
+#        shell: bash
+#        run: |
+#          mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
+#          cmake -S "${{ github.workspace }}/vcpkg_manifest" -B "${{ env.CMAKE_BUILD_DIR }}/vcpkg" -GNinja -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake"
+#
       - name: Configure
         run: |
           cmake -S "${{ env.BUILD_COMMANDS_ROOT }}" -B "${{ env.CMAKE_BUILD_DIR }}/framework" -DCMAKE_VERBOSE_MAKEFILE=TRUE -DFRAMEWORK_DIR=${{ github.workspace }}/framework-test -DBUILD_WITH_VCPKG=TRUE -DCONFIG_WANTED=Check
