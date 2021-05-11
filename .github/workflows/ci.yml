@@ -81,6 +81,7 @@ jobs:
 #
       - name: Configure
         run: |
+          mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
           cmake -S "${{ env.BUILD_COMMANDS_ROOT }}" -B "${{ env.CMAKE_BUILD_DIR }}/framework" -DCMAKE_VERBOSE_MAKEFILE=TRUE -DFRAMEWORK_DIR=${{ github.workspace }}/framework-test -DBUILD_WITH_VCPKG=TRUE -DCONFIG_WANTED=Check
 
       - name: Build arccore
