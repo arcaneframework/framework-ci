@@ -79,12 +79,15 @@ jobs:
 #          mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
 #          cmake -S "${{ github.workspace }}/vcpkg_manifest" -B "${{ env.CMAKE_BUILD_DIR }}/vcpkg" -GNinja -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake"
 #
-      - name: Configure
+      - name: Configure build script
         run: |
           mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
           cmake -S "${{ env.BUILD_COMMANDS_ROOT }}" -B "${{ env.CMAKE_BUILD_DIR }}/framework" -DCMAKE_VERBOSE_MAKEFILE=TRUE -DFRAMEWORK_DIR=${{ github.workspace }}/framework-test -DBUILD_WITH_VCPKG=TRUE -DCONFIG_WANTED=Check
 
-      - name: Build arccore
+      - name: Build and install arccore
         run: |
           cmake --build "${{ env.CMAKE_BUILD_DIR }}/framework" --target build_arccore
 
+      - name: Configure arcane
+        run: |
+          cmake --build "${{ env.CMAKE_BUILD_DIR }}/framework" --target configure_arcane
