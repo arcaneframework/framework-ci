@@ -1,0 +1,9 @@
+{
+  "name": "arccore",
+  "version-string": "0.0.1",
+  "dependencies": [
+      "glib",
+      "gtest",
+      "mpi"
+  ]
+}
