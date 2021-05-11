@@ -88,6 +88,14 @@ jobs:
         run: |
           cmake --build "${{ env.CMAKE_BUILD_DIR }}/framework" --target build_arccore
 
+      - name: Build and install axlstar
+        run: |
+          cmake --build "${{ env.CMAKE_BUILD_DIR }}/framework" --target build_axlstar
+
       - name: Configure arcane
         run: |
           cmake --build "${{ env.CMAKE_BUILD_DIR }}/framework" --target configure_arcane
+
+      - name: Build arcane
+        run: |
+          cmake --build "${{ env.CMAKE_BUILD_DIR }}/framework" --target build_arcane
