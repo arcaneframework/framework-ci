@@ -56,7 +56,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
-          key: ${{ matrix.triplet }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-vpckg-binaries-v2
+          key: ${{ matrix.triplet }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ hashFiles( '**/vcpkg.json' ) }}-vpckg-binaries-v2
 
       - name: Restore vcpkg and its artifacts.
         uses: actions/cache@v2
@@ -68,7 +68,7 @@ jobs:
             !${{ env.VCPKG_ROOT }}/packages
             !${{ env.VCPKG_ROOT }}/downloads
           key: |
-            ${{ hashFiles( 'vcpkg_manifest/vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}-invalidate
+            ${{ hashFiles( '**/vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}-invalidate
       - name: Show content of workspace after cache has been restored
         run: find $RUNNER_WORKSPACE
         shell: bash
