@@ -58,4 +58,4 @@ jobs:
       - name: 'vcpkg package restore'
         shell: 'bash'
         run: >
-          vcpkg/vcpkg install sqlite3 cpprestsdk --triplet ${{ matrix.triplet }}
+          vcpkg/vcpkg --debug install sqlite3 cpprestsdk --triplet ${{ matrix.triplet }}
