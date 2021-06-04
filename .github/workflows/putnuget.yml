@@ -42,6 +42,7 @@ jobs:
       - name: bootstrap vcpkg (ubuntu)
         if: matrix.os == 'ubuntu-20.04'
         run: |
+          mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
           ./vcpkg/bootstrap-vcpkg.sh
 
       - name: Install mono (ubuntu)
@@ -52,6 +53,7 @@ jobs:
       - name: bootstrap vcpkg (windows)
         if: matrix.os == 'windows-2019'
         run: |
+          mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
           ./vcpkg/bootstrap-vcpkg.bat
 
       # This step assumes `vcpkg` has been bootstrapped (run `./vcpkg/bootstrap-vcpkg`)
