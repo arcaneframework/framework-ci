@@ -12,6 +12,7 @@ jobs:
       VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
       BUILD_COMMANDS_ROOT: ${{ github.workspace }}/_build
       VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/builddir/vcpkg_archives
+      MY_VCPKG_INSTALLED_DIR: ${{ github.workspace }}/vcpkg/installed
 
     strategy:
       matrix:
@@ -73,7 +74,7 @@ jobs:
         continue-on-error: true
         with:
           name: vcpkg-packages-${{ matrix.os }}
-          path: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
+          path: ${{ env.MY_VCPKG_INSTALLED_DIR }}
 
       # Omit this step if you're using manifests
       - name: 'vcpkg package restore'
@@ -84,4 +85,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: vcpkg-packages-${{ matrix.os }}
-          path: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
+          path: ${{ env.MY_VCPKG_INSTALLED_DIR }}
