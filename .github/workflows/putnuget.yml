@@ -48,10 +48,10 @@ jobs:
         run: >
           ${{ matrix.mono }} `vcpkg/vcpkg fetch nuget | tail -n 1`
           sources add
-          -source "https://nuget.pkg.github.com/grospelliergilles/index.json"
+          -source "https://nuget.pkg.github.com/arcaneframework/index.json"
           -storepasswordincleartext
           -name "GitHub"
-          -username "grospelliergilles"
+          -username "arcaneframework"
           -password "${{ secrets.GITHUB_TOKEN }}"
 
       # Omit this step if you're using manifests
