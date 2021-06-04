@@ -10,6 +10,7 @@ jobs:
   
     env:
       VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
+      BUILD_COMMANDS_ROOT: ${{ github.workspace }}/_build
 
     strategy:
       matrix:
@@ -30,6 +31,12 @@ jobs:
           submodules: true
 
       - uses: lukka/get-cmake@latest
+
+      - name: download and install msmpi 10.0
+        if: matrix.os == 'windows-2019'
+        shell: cmd
+        run: |
+          ${{ env.BUILD_COMMANDS_ROOT }}\download_mswin_10.bat
 
       - name: bootstrap vcpkg (ubuntu)
         if: matrix.os == 'ubuntu-20.04'
@@ -58,4 +65,4 @@ jobs:
       - name: 'vcpkg package restore'
         shell: 'bash'
         run: >
-          vcpkg/vcpkg --debug install sqlite3 cpprestsdk --triplet ${{ matrix.triplet }}
+          vcpkg/vcpkg --debug install sqlite3 parmetis hypre --triplet ${{ matrix.triplet }}
