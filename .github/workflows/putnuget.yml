@@ -43,6 +43,11 @@ jobs:
         run: |
           ./vcpkg/bootstrap-vcpkg.sh
 
+      - name: Install mono (ubuntu)
+        if: matrix.os == 'ubuntu-20.04'
+        run: |
+          sudo apt install -y mono-complete
+
       - name: bootstrap vcpkg (windows)
         if: matrix.os == 'windows-2019'
         run: |
