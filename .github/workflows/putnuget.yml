@@ -11,6 +11,7 @@ jobs:
     env:
       VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
       BUILD_COMMANDS_ROOT: ${{ github.workspace }}/_build
+      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/builddir/vcpkg_archives
 
     strategy:
       matrix:
@@ -66,8 +67,18 @@ jobs:
           -username "arcaneframework"
           -password "${{ secrets.GITHUB_TOKEN }}"
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: vcpkg-packages-${{ matrix.os }}
+          path: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
+
       # Omit this step if you're using manifests
       - name: 'vcpkg package restore'
         shell: 'bash'
         run: >
           vcpkg/vcpkg --debug install sqlite3 glib libxml2 mpi parmetis hypre --triplet ${{ matrix.triplet }}
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: vcpkg-packages-${{ matrix.os }}
+          path: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
