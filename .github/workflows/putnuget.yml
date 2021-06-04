@@ -70,4 +70,4 @@ jobs:
       - name: 'vcpkg package restore'
         shell: 'bash'
         run: >
-          vcpkg/vcpkg --debug install sqlite3 parmetis hypre --triplet ${{ matrix.triplet }}
+          vcpkg/vcpkg --debug install sqlite3 glib libxml2 mpi parmetis hypre --triplet ${{ matrix.triplet }}
