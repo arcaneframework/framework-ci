@@ -15,7 +15,7 @@ jobs:
       MY_VCPKG_INSTALLED_DIR: ${{ github.workspace }}/vcpkg/installed
       VCPKG_DISABLE_METRICS: 1
       VCPKG_BUILD_DIR: '${{ github.workspace }}/vcpkg'
-      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.0.2-${{ matrix.os }}-${{ matrix.triplet }}'
+      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.0.3-${{ matrix.os }}-${{ matrix.triplet }}'
       VCPKG_INSTALL_HASH_PACKAGE_NAME: '1.0.2-${{ matrix.os }}-${{ matrix.triplet }}'
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
@@ -71,7 +71,7 @@ jobs:
         run: |
           cmake -DHASH_PACKAGE_NAME="${{ env.VCPKG_INSTALL_HASH_PACKAGE_NAME }}" -DVCPKG_BUILD_DIR='${{ env.VCPKG_BUILD_DIR }}' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoUntar.cmake'
           ls -lart '${{ env.VCPKG_BUILD_DIR }}'
-          ls -lart '${{ env.VCPKG_BUILD_DIR }}'/VcpkgCache/*
+          ls -lart '${{ env.VCPKG_BUILD_DIR }}'/VcpkgCache*
           ls -lart '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache'
 
       - name: bootstrap vcpkg (ubuntu)
@@ -101,7 +101,7 @@ jobs:
       - name: 'vcpkg package restore'
         shell: 'bash'
         run: >
-          vcpkg/vcpkg --debug install sqlite3 --triplet ${{ matrix.triplet }}
+          vcpkg/vcpkg --debug install sqlite3 glib --triplet ${{ matrix.triplet }}
 
       - name: 'Create nuget package for vcpkg installed packages'
         shell: 'bash'
