@@ -49,7 +49,7 @@ configure_file(${CMAKE_CURRENT_LIST_DIR}/VcpkgCache.nuspec.in ${CMAKE_CURRENT_LI
 file(READ ${CMAKE_CURRENT_LIST_DIR}/VcpkgCache.out.nuspec NUSPEC_VAR)
 message(STATUS "NUSPEC content =\n ${NUSPEC_VAR}")
 
-do_command(tar cf "${CMAKE_CURRENT_LIST_DIR}/vcpkg_cache.tar" --exclude "downloads" --exclude "packages" .
+do_command(tar cf "${CMAKE_CURRENT_LIST_DIR}/vcpkg_cache.tar" --exclude "downloads" --exclude "packages" --exclude "buildtrees" .
   WORKING_DIRECTORY "${VCPKG_BUILD_DIR}")
 
 do_command(${MONO_EXEC} "${NUGET_COMMAND}" pack -NonInteractive -Verbosity detailed  -OutputFileNamesWithoutVersion VcpkgCache.out.nuspec)
