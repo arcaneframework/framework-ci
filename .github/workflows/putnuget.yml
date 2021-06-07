@@ -76,7 +76,7 @@ jobs:
         shell: 'bash'
         continue-on-error: true
         run: |
-          cmake -DVCPKG_BUILD_DIR='${{ github.workspace }}/vcpkg' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoTar.cmake'
+          cmake -DHASH_PACKAGE_NAME="1.0.0-{{ matrix.os }}-{{ matrix.triplet }}" -DVCPKG_BUILD_DIR='${{ github.workspace }}/vcpkg' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoTar.cmake'
 
       - uses: actions/download-artifact@v2
         continue-on-error: true

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>VcpkgCache</id>
-    <version>1.0.0</version>
+    <version>1.0.0-@HASH_PACKAGE_NAME@</version>
     <authors>grospellierg</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>vcpkg package description</description>

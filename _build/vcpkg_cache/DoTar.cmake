@@ -3,6 +3,9 @@ message(STATUS "VCPKG_BUILD_DIR=${VCPKG_BUILD_DIR}")
 if (NOT VCPKG_BUILD_DIR)
   message(FATAL_ERROR "VCPKG_BUILD_DIR is not defined")
 endif()
+if (NOT HASH_PACKAGE_NAME)
+  message(FATAL_ERROR "HASH_PACKAGE_NAME not defined")
+endif()
 function(do_command command_name)
   set(options        )
   set(oneValueArgs   WORKING_DIRECTORY)
@@ -34,8 +37,10 @@ if (NOT NUGET_COMMAND)
   set(NUGET_COMMAND "/usr/local/bin/nuget.exe")
 endif()
 
+configure_file(${CMAKE_CURRENT_LIST_DIR}/VcpkgCache.nuspec.in ${CMAKE_CURRENT_LIST_DIR}/VcpkgCache.out.nuspec)
+
 do_command(tar cf "${CMAKE_CURRENT_LIST_DIR}/vcpkg_cache.tar" --exclude "downloads" --exclude "packages" .
   WORKING_DIRECTORY "${VCPKG_BUILD_DIR}")
 
-do_command(${MONO_EXEC} "${NUGET_COMMAND}" pack VcpkgCache.nuspec)
-do_command(${MONO_EXEC} "${NUGET_COMMAND}" push -Source GitHub -Verbosity detailed -ForceEnglishOutput -NonInteractive -NoSymbols VcpkgCache.1.0.0.nupkg)
+do_command(${MONO_EXEC} "${NUGET_COMMAND}" pack -OutputFileNamesWithoutVersion ${CMAKE_CURRENT_LIST_DIR}/VcpkgCache.out.nuspec)
+do_command(${MONO_EXEC} "${NUGET_COMMAND}" push -Source GitHub -Verbosity detailed -ForceEnglishOutput -NonInteractive -NoSymbols VcpkgCache.nupkg)

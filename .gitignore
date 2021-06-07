@@ -6,3 +6,4 @@
 /dependencies
 /_build/vcpkg_cache/vcpkg_cache.tar
 /_build/vcpkg_cache/*.nupkg
+/_build/vcpkg_cache/*.out.nuspec
