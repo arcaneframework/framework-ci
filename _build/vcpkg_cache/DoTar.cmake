@@ -44,5 +44,5 @@ message(STATUS "NUSPEC content =\n ${NUSPEC_VAR}")
 do_command(tar cf "${CMAKE_CURRENT_LIST_DIR}/vcpkg_cache.tar" --exclude "downloads" --exclude "packages" .
   WORKING_DIRECTORY "${VCPKG_BUILD_DIR}")
 
-do_command(${MONO_EXEC} "${NUGET_COMMAND}" pack -OutputFileNamesWithoutVersion ${CMAKE_CURRENT_LIST_DIR}/VcpkgCache.out.nuspec)
+do_command(${MONO_EXEC} "${NUGET_COMMAND}" pack -NonInteractive -Verbosity detailed  -OutputFileNamesWithoutVersion VcpkgCache.out.nuspec)
 do_command(${MONO_EXEC} "${NUGET_COMMAND}" push -Source GitHub -Verbosity detailed -ForceEnglishOutput -NonInteractive -NoSymbols VcpkgCache.nupkg)
