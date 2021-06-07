@@ -80,23 +80,10 @@ jobs:
           ls -lart '${{ env.VCPKG_BUILD_DIR }}'/VcpkgCache*
           ls -lart '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache'
 
-      - name: bootstrap vcpkg (ubuntu)
-        if: matrix.os == 'ubuntu-20.04'
+      - name: bootstrap vcpkg
         run: |
           mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
-          ./vcpkg/bootstrap-vcpkg.sh
-
-      - name: Install mono (ubuntu)
-        if: matrix.os == 'ubuntu-20.04'
-        run: |
-          sudo apt install -y mono-complete
-
-      - name: bootstrap vcpkg (windows)
-        if: matrix.os == 'windows-2019'
-        run: |
-          mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
-          ./vcpkg/bootstrap-vcpkg.bat
-
+          cmake -DVCPKG_BUILD_DIR='${{ env.VCPKG_BUILD_DIR }}' -P '${{ env.BUILD_COMMANDS_ROOT }}/BootstrapVcpkg.cmake'
 
 #      - uses: actions/download-artifact@v2
 #        continue-on-error: true
