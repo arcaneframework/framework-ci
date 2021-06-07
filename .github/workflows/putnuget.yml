@@ -13,6 +13,7 @@ jobs:
       BUILD_COMMANDS_ROOT: ${{ github.workspace }}/_build
       VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/builddir/vcpkg_archives
       MY_VCPKG_INSTALLED_DIR: ${{ github.workspace }}/vcpkg/installed
+      VCPKG_DISABLE_METRICS: 1
 
     strategy:
       matrix:
@@ -74,9 +75,9 @@ jobs:
         shell: 'bash'
         continue-on-error: true
         run: |
-          cd ${{ github.workspace }}/vcpkg && tar ${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/vcpkg_cache.tar --exclude "downloads" --exclude "packages" 
-          cd ${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache && ${{ matrix.mono }} nuget.exe pack VcpkgCache
-          cd ${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache && ${{ matrix.mono }} nuget.exe push -Source GitHub VcpkgCache.1.0.0.nupkg
+          cd '${{ github.workspace }}/vcpkg' && tar cvf '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/vcpkg_cache.tar' --exclude "downloads" --exclude "packages" .
+          cd '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache' && ${{ matrix.mono }} nuget.exe pack VcpkgCache
+          cd '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache' && ${{ matrix.mono }} nuget.exe push -Source GitHub VcpkgCache.1.0.0.nupkg
 
       - uses: actions/download-artifact@v2
         continue-on-error: true
