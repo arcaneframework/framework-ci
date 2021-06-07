@@ -47,6 +47,6 @@ endif()
 
 do_command(${MONO_EXEC} "${NUGET_COMMAND}" install -Source GitHub -Verbosity detailed -NonInteractive -Version "${HASH_PACKAGE_NAME}" -OutputDirectory "${VCPKG_BUILD_DIR}" VcpkgCache)
 
-do_command(tar xf "${CMAKE_CURRENT_LIST_DIR}/vcpkg_cache.tar" --exclude "downloads" --exclude "packages" .
+do_command(tar xf "vcpkg_cache.tar" --exclude "downloads" --exclude "packages" .
   WORKING_DIRECTORY "${VCPKG_BUILD_DIR}")
 
