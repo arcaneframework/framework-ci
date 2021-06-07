@@ -43,10 +43,10 @@ jobs:
 
       - uses: lukka/get-cmake@latest
 
-      - name: Install dotnet SDK ${{ env.DOTNET_VERSION }}
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+#      - name: Install dotnet SDK ${{ env.DOTNET_VERSION }}
+#        uses: actions/setup-dotnet@v1
+#        with:
+#          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: download and install msmpi 10.0
         if: matrix.os == 'windows-2019'
