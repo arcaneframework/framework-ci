@@ -75,9 +75,7 @@ jobs:
         shell: 'bash'
         continue-on-error: true
         run: |
-          cd '${{ github.workspace }}/vcpkg' && tar cvf '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/vcpkg_cache.tar' --exclude "downloads" --exclude "packages" .
-          cd '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache' && ${{ matrix.mono }} nuget.exe pack VcpkgCache
-          cd '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache' && ${{ matrix.mono }} nuget.exe push -Source GitHub VcpkgCache.1.0.0.nupkg
+          cmake -DVCPKG_BUILD_DIR='${{ github.workspace }}/vcpkg' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoTar.cmake'
 
       - uses: actions/download-artifact@v2
         continue-on-error: true
