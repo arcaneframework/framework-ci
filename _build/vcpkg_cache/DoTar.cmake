@@ -49,4 +49,4 @@ do_command(tar cf "${CMAKE_CURRENT_LIST_DIR}/vcpkg_cache.tar" --exclude "downloa
   WORKING_DIRECTORY "${VCPKG_BUILD_DIR}")
 
 do_command(${MONO_EXEC} "${NUGET_COMMAND}" pack -NonInteractive -Verbosity detailed  -OutputFileNamesWithoutVersion VcpkgCache.out.nuspec)
-do_command(${MONO_EXEC} "${NUGET_COMMAND}" push -Source GitHub -Verbosity detailed -ForceEnglishOutput -NonInteractive -NoSymbols VcpkgCache.nupkg)
+do_command(${MONO_EXEC} "${NUGET_COMMAND}" push -Source GitHub -Verbosity detailed -ForceEnglishOutput -NonInteractive -NoSymbols -SkipDuplicate VcpkgCache.nupkg)
