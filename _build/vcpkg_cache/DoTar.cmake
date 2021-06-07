@@ -31,7 +31,7 @@ if (NOT WIN32)
   set(MONO_EXEC "mono")
 endif()
 if (NOT NUGET_COMMAND)
-  set(NUGET_COMMAND nuget.exe)
+  set(NUGET_COMMAND "/usr/local/bin/nuget.exe")
 endif()
 
 do_command(tar cf "${CMAKE_CURRENT_LIST_DIR}/vcpkg_cache.tar" --exclude "downloads" --exclude "packages" .
