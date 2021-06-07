@@ -36,6 +36,12 @@ jobs:
             mono: 'mono'
 
     steps:
+      - name: Cleanup repo
+        shell: 'bash'
+        run: |
+          mkdir -p "${{ github.workspace }}"
+          rm -rf "${{ github.workspace }}"/*
+
       - name: Checkout actions
         uses: actions/checkout@v2
         with:
