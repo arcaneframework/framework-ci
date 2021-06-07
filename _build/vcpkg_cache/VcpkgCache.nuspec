@@ -7,7 +7,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>vcpkg package description</description>
     <projectUrl>https://github.com/arcaneframework</projectUrl>
-    <repository type="tar" url="https://nuget.pkg.github.com/arcaneframework" />
+    <repository type="git" url="https://github.com/arcaneframework/framework-ci.git" />
     <copyright>None</copyright>
   </metadata>
   <files>
