@@ -34,8 +34,8 @@ if (NOT NUGET_COMMAND)
   set(NUGET_COMMAND nuget.exe)
 endif()
 
-do_command(tar cvf "${CMAKE_CURRENT_LIST_DIR}/vcpkg_cache.tar" --exclude "downloads" --exclude "packages" .
+do_command(tar cf "${CMAKE_CURRENT_LIST_DIR}/vcpkg_cache.tar" --exclude "downloads" --exclude "packages" .
   WORKING_DIRECTORY "${VCPKG_BUILD_DIR}")
 
 do_command(${MONO_EXEC} "${NUGET_COMMAND}" pack VcpkgCache.nuspec)
-do_command(${MONO_EXEC} "${NUGET_COMMAND}" push -Source GitHub VcpkgCache.1.0.0.nupkg)
+do_command(${MONO_EXEC} "${NUGET_COMMAND}" push -Source GitHub -Verbosity detailed -ForceEnglishOutput -NonInteractive VcpkgCache.1.0.0.nupkg)
