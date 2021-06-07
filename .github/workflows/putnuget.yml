@@ -14,6 +14,9 @@ jobs:
       VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/builddir/vcpkg_archives
       MY_VCPKG_INSTALLED_DIR: ${{ github.workspace }}/vcpkg/installed
       VCPKG_DISABLE_METRICS: 1
+      VCPKG_BUILD_DIR: '${{ github.workspace }}/vcpkg'
+      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.0.1-${{ matrix.os }}-${{ matrix.triplet }}'
+      VCPKG_INSTALL_HASH_PACKAGE_NAME: '1.0.0-${{ matrix.os }}-${{ matrix.triplet }}'
 
     strategy:
       matrix:
@@ -63,7 +66,7 @@ jobs:
         shell: 'bash'
         continue-on-error: true
         run: |
-          cmake -DHASH_PACKAGE_NAME=1.0.0-${{ matrix.os }}-${{ matrix.triplet }} -DVCPKG_BUILD_DIR='${{ github.workspace }}/vcpkg' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoUntar.cmake'
+          cmake -DHASH_PACKAGE_NAME="${{ env.VCPKG_INSTALL_HASH_PACKAGE_NAME }}" -DVCPKG_BUILD_DIR='${{ env.VCPKG_BUILD_DIR }}' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoUntar.cmake'
 
       - name: bootstrap vcpkg (ubuntu)
         if: matrix.os == 'ubuntu-20.04'
@@ -82,27 +85,27 @@ jobs:
           mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
           ./vcpkg/bootstrap-vcpkg.bat
 
-      - name: 'Create package for vcpkg bootstrap'
-        shell: 'bash'
-        continue-on-error: true
-        run: |
-          cmake -DHASH_PACKAGE_NAME=1.0.0-${{ matrix.os }}-${{ matrix.triplet }} -DVCPKG_BUILD_DIR='${{ github.workspace }}/vcpkg' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoTar.cmake'
 
-      - uses: actions/download-artifact@v2
-        continue-on-error: true
-        with:
-          name: vcpkg-packages-${{ matrix.os }}
-          path: ${{ env.MY_VCPKG_INSTALLED_DIR }}
+#      - uses: actions/download-artifact@v2
+#        continue-on-error: true
+#        with:
+#          name: vcpkg-packages-${{ matrix.os }}
+#          path: ${{ env.MY_VCPKG_INSTALLED_DIR }}
 
-      # Omit this step if you're using manifests
       - name: 'vcpkg package restore'
         shell: 'bash'
         run: >
           vcpkg/vcpkg --debug install sqlite3 --triplet ${{ matrix.triplet }}
 
+      - name: 'Create nuget package for vcpkg installed packages'
+        shell: 'bash'
+        continue-on-error: true
+        run: |
+          cmake -DHASH_PACKAGE_NAME="${{ env.VCPKG_PUSH_HASH_PACKAGE_NAME }}" -DVCPKG_BUILD_DIR='${{ env.VCPKG_BUILD_DIR }}' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoTar.cmake'
+
 #          vcpkg/vcpkg --debug install sqlite3 glib libxml2 mpi parmetis hypre --triplet ${{ matrix.triplet }}
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: vcpkg-packages-${{ matrix.os }}
-          path: ${{ env.MY_VCPKG_INSTALLED_DIR }}
+#      - uses: actions/upload-artifact@v2
+#        with:
+#          name: vcpkg-packages-${{ matrix.os }}
+#          path: ${{ env.MY_VCPKG_INSTALLED_DIR }}

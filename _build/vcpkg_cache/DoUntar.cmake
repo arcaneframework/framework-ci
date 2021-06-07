@@ -41,10 +41,6 @@ if (NOT NUGET_COMMAND)
   endif()
 endif()
 
-#configure_file(${CMAKE_CURRENT_LIST_DIR}/VcpkgCache.nuspec.in ${CMAKE_CURRENT_LIST_DIR}/VcpkgCache.out.nuspec)
-#file(READ ${CMAKE_CURRENT_LIST_DIR}/VcpkgCache.out.nuspec NUSPEC_VAR)
-#message(STATUS "NUSPEC content =\n ${NUSPEC_VAR}")
-
 do_command(${MONO_EXEC} "${NUGET_COMMAND}" install -Source GitHub -Verbosity detailed -NonInteractive -Version "${HASH_PACKAGE_NAME}" -OutputDirectory "${VCPKG_BUILD_DIR}" VcpkgCache)
 
 message(STATUS "Get list fo files in vcpkg directory")
