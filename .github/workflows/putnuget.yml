@@ -45,6 +45,7 @@ jobs:
         if: matrix.os == 'ubuntu-20.04'
         run: |
           mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
+          sudo curl -o /usr/local/bin/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
           ./vcpkg/bootstrap-vcpkg.sh
 
       - name: Install mono (ubuntu)
