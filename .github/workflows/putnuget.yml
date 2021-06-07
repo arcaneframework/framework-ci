@@ -70,6 +70,14 @@ jobs:
           -username "arcaneframework"
           -password "${{ secrets.GITHUB_TOKEN }}"
 
+      - name: 'Create package for vcpkg bootstrap'
+        shell: 'bash'
+        continue-on-error: true
+        run: |
+          cd ${{ github.workspace }}/vcpkg && tar ${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/vcpkg_cache.tar --exclude "downloads" --exclude "packages" 
+          cd ${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache && ${{ matrix.mono }} nuget.exe pack VcpkgCache
+          cd ${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache && ${{ matrix.mono }} nuget.exe push -Source GitHub VcpkgCache.1.0.0.nupkg
+
       - uses: actions/download-artifact@v2
         continue-on-error: true
         with:
@@ -80,7 +88,9 @@ jobs:
       - name: 'vcpkg package restore'
         shell: 'bash'
         run: >
-          vcpkg/vcpkg --debug install sqlite3 glib libxml2 mpi parmetis hypre --triplet ${{ matrix.triplet }}
+          vcpkg/vcpkg --debug install sqlite3 --triplet ${{ matrix.triplet }}
+
+#          vcpkg/vcpkg --debug install sqlite3 glib libxml2 mpi parmetis hypre --triplet ${{ matrix.triplet }}
 
       - uses: actions/upload-artifact@v2
         with:

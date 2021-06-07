@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>VcpkgCache</id>
+    <version>1.0.0</version>
+    <authors>grospellierg</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>vcpkg package description</description>
+    <copyright>None</copyright>
+  </metadata>
+  <files>
+    <file src="vcpkg_cache.tar" target="" />
+  </files>
+</package>
