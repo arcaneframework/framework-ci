@@ -41,7 +41,7 @@ if (NOT NUGET_COMMAND)
   endif()
 endif()
 
-do_command(${MONO_EXEC} "${NUGET_COMMAND}" install -Source GitHub -Verbosity detailed -NonInteractive -Version "${HASH_PACKAGE_NAME}" -OutputDirectory "${VCPKG_BUILD_DIR}" VcpkgCache)
+do_command(${MONO_EXEC} "${NUGET_COMMAND}" install -Source github -Verbosity detailed -NonInteractive -Version "${HASH_PACKAGE_NAME}" -OutputDirectory "${VCPKG_BUILD_DIR}" VcpkgCache)
 
 message(STATUS "Get list fo files in vcpkg directory")
 file(GLOB FILE_LIST LIST_DIRECTORIES true "${VCPKG_BUILD_DIR}/*")

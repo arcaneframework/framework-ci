@@ -54,4 +54,4 @@ do_command(tar cf "${CMAKE_CURRENT_LIST_DIR}/vcpkg_cache.tar" --exclude "downloa
 
 do_command(${MONO_EXEC} "${NUGET_COMMAND}" pack -NonInteractive -Verbosity detailed  -OutputFileNamesWithoutVersion VcpkgCache.out.nuspec)
 #do_command(${MONO_EXEC} "${NUGET_COMMAND}" push -Source GitHub -Verbosity detailed -ForceEnglishOutput -NonInteractive -NoSymbols -SkipDuplicate VcpkgCache.nupkg)
-do_command(dotnet nuget push VcpkgCache.nupkg -s GitHub --skip-duplicate --force-english-output --api-key ${NUGET_API_KEY})
+do_command(dotnet nuget push VcpkgCache.nupkg -s github --skip-duplicate --force-english-output --api-key ${NUGET_API_KEY})
