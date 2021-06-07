@@ -7,7 +7,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>vcpkg package description</description>
     <projectUrl>https://github.com/arcaneframework</projectUrl>
-    <repositoryUrl>https://nuget.pkg.github.com/arcaneframework</repositoryUrl>
+    <repository url="https://nuget.pkg.github.com/arcaneframework" />
     <copyright>None</copyright>
   </metadata>
   <files>
