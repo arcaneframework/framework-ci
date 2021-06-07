@@ -6,11 +6,14 @@ endif()
 message(STATUS "VCPKG_BUILD_DIR = ${VCPKG_BUILD_DIR}")
 message(STATUS "Env: VCPKG_BUILD_DIR = $ENV{VCPKG_BUILD_DIR}")
 
-set(BOOTSTRAP_COMMAND "/bin/sh" "bootstrap-vcpkg.sh")
-set(VCPKG_EXE "vcpkg")
 if (WIN32)
   set(BOOTSTRAP_COMMAND "bootstrap-vcpkg.bat")
   set(VCPKG_EXE "vcpkg.exe")
+  set(BOOTSTRAP_SHELL "")
+else()
+  set(BOOTSTRAP_SHELL "/bin/sh")
+  set(BOOTSTRAP_COMMAND "bootstrap-vcpkg.sh")
+  set(VCPKG_EXE "vcpkg")
 endif()
 
 # Si l'exécutable 'vcpkg' existe, pas la peine de faire le bootstrap.
@@ -21,4 +24,4 @@ if(EXISTS "${VCPKG_FULL_PATH}")
   return()
 endif()
 
-do_command(${BOOTSTRAP_COMMAND} WORKING_DIRECTORY "${VCPKG_BUILD_DIR}")
+do_command(${BOOTSTRAP_SHELL} ${BOOTSTRAP_COMMAND} WORKING_DIRECTORY "${VCPKG_BUILD_DIR}")
