@@ -22,6 +22,8 @@ jobs:
       VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/builddir/vcpkg_archives
       BUILD_COMMANDS_ROOT: ${{ github.workspace }}/_build
       VCPKG_BUILD_DIR: '${{ github.workspace }}/vcpkg'
+      # Pour ne pas utiliser le fichier 'vcpkg.json' dans les répertoires des sources
+      VCPKG_MANIFEST_FEATURES: -manifests
       VCPKG_INSTALL_HASH_PACKAGE_NAME: '1.0.7-${{ matrix.os }}-${{ matrix.triplet }}'
       CMAKE_COMMON_ARGS: -DCONFIG_BUILD_DIR="${{ github.workspace }}/builddir/" -DGIT_WORKSPACE=${{ github.workspace }} -P ${{ github.workspace }}/_build/Build.cmake
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -64,7 +66,7 @@ jobs:
       - name: Configure build script
         run: |
           mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
-          cmake -S "${{ env.BUILD_COMMANDS_ROOT }}" -B "${{ env.CMAKE_BUILD_DIR }}/framework" -DCMAKE_VERBOSE_MAKEFILE=TRUE -DFRAMEWORK_DIR=${{ github.workspace }}/framework -DBUILD_WITH_VCPKG=TRUE -DCONFIG_WANTED=Debug
+          cmake -S "${{ env.BUILD_COMMANDS_ROOT }}" -B "${{ env.CMAKE_BUILD_DIR }}/framework" -DCMAKE_VERBOSE_MAKEFILE=TRUE -DFRAMEWORK_DIR=${{ github.workspace }}/framework -DBUILD_WITH_VCPKG=TRUE -DCONFIG_WANTED=Debug -DVCPKG_INSTALLED_DIR="${{ env.VCPKG_BUILD_DIR }}/installed"
 
       - name: Build and install arccore
         run: |
