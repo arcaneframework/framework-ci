@@ -167,7 +167,7 @@ tools_add_target(arccore)
 # ----------------------------------------------------------------------------
 # dependencies
 
-set(DEPENDENCIES_SOURCE_DIR "${FRAMEWORK_DIR}/../dependencies")
+set(DEPENDENCIES_SOURCE_DIR "${FRAMEWORK_DIR}/dependencies")
 tools_set_default_dir(dependencies)
 
 tools_add_configure(dependencies
