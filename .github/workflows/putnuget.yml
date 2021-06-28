@@ -16,7 +16,7 @@ jobs:
       VCPKG_DISABLE_METRICS: 1
       VCPKG_BUILD_DIR: '${{ github.workspace }}/vcpkg'
       VCPKG_PUSH_HASH_PACKAGE_NAME: '1.0.7-${{ matrix.os }}-${{ matrix.triplet }}'
-      VCPKG_INSTALL_HASH_PACKAGE_NAME: '1.0.5-${{ matrix.os }}-${{ matrix.triplet }}'
+      VCPKG_INSTALL_HASH_PACKAGE_NAME: '1.0.7-${{ matrix.os }}-${{ matrix.triplet }}'
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
       DOTNET_VERSION: '3.1.x'
