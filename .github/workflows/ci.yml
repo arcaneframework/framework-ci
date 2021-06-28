@@ -51,7 +51,7 @@ jobs:
         with:
           path: "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
           key: ${{ matrix.triplet }}-vpckg-binaries-v2-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ hashFiles( '**/vcpkg.json' ) }}
-          restore-keys:
+          restore-keys: |
             ${{ matrix.triplet }}-vpckg-binaries-v2-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}
             ${{ matrix.triplet }}-vpckg-binaries-v2
             ${{ matrix.triplet }}
