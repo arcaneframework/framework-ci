@@ -29,20 +29,14 @@ jobs:
         with:
           submodules: true
 
-      - name: Checkout dependencies
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ github.repository_owner }}/dependencies
-          path: dependencies
-          ref: dev/cea
-
       - name: Checkout arcane
         uses: actions/checkout@v2
         with:
-          repository: ${{ github.repository_owner }}/framework-test
-          path: framework-test
+          repository: ${{ github.repository_owner }}/framework
+          path: framework
           token: ${{ secrets.ArcaneFrameworkCI }}
           ref: dev/cea
+          submodules: true
 
       - name: download and install msmpi 10.0
         if: matrix.os == 'windows-latest'
