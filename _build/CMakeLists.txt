@@ -29,6 +29,10 @@ endif()
 if (BUILD_WITH_VCPKG)
   set(VCPKG_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../vcpkg)
   set(VCPKG_CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_NO_DEFAULT_FEATURES=ON -D_VCPKG_INSTALLED_DIR="${VCPKG_INSTALLED_DIR}")
+  # Désactive temporairement Hypre car la version actuelle (juin 2021) a un fichier 'HYPREConfig.cmake'
+  # qui est invalide et qui fait planter le configure de Arcane
+  message(STATUS "TEMPORARY: Disable hypre because of invalid 'HYPREConfig.cmake'")
+  list(APPEND VCPKG_CMAKE_ARGS "-DCMAKE_DISABLE_FIND_PACKAGE_HYPRE=TRUE")
   if (NOT VCPKG_NO_MANIFEST)
     set(VCPKG_CMAKE_ARGS_ARCCORE -DVCPKG_MANIFEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../_build/arccore")
     set(VCPKG_CMAKE_ARGS_ARCANE -DVCPKG_MANIFEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../_build/arcane")
