@@ -27,8 +27,6 @@ if (BUILD_WITH_VCPKG)
   set(VCPKG_CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake -DVCPKG_MANIFEST_NO_DEFAULT_FEATURES=ON -D_VCPKG_INSTALLED_DIR=${WORKDIR}/myvcpkg)
   set(VCPKG_CMAKE_ARGS_ARCCORE -DVCPKG_MANIFEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../_build/arccore")
   set(VCPKG_CMAKE_ARGS_ARCANE -DVCPKG_MANIFEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../_build/arcane")
-#  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../_build/arccore/vcpkg.json ${FRAMEWORK_DIR}/arccore COPYONLY)
-#  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../_build/arcane/vcpkg.json ${FRAMEWORK_DIR}/arcane/arcane COPYONLY)
 endif()
 
 # ----------------------------------------------------------------------------
