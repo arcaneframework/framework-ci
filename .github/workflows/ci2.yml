@@ -4,7 +4,7 @@ on:
 
 jobs:
   job:
-    name: ${{ matrix.os }}-ci
+    name: ${{ matrix.os }}-ci2
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
