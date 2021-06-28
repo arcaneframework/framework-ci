@@ -54,16 +54,21 @@ jobs:
 #        with:
 #          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: download and install msmpi 10.0
-        if: matrix.os == 'windows-2019'
-        shell: cmd
+      - name: Setup environment
+        shell: 'bash'
         run: |
-          ${{ env.BUILD_COMMANDS_ROOT }}\download_mswin_10.bat
+          cmake -P '${{ env.BUILD_COMMANDS_ROOT }}/Setup.cmake'
 
-      - name: Get Nuget (ubuntu)
-        if: matrix.os == 'ubuntu-20.04'
-        run: |
-          sudo curl -o /usr/local/bin/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+#      - name: download and install msmpi 10.0
+#        if: matrix.os == 'windows-2019'
+#        shell: cmd
+#        run: |
+#          ${{ env.BUILD_COMMANDS_ROOT }}\download_mswin_10.bat
+
+#      - name: Get Nuget (ubuntu)
+#        if: matrix.os == 'ubuntu-20.04'
+#        run: |
+#          sudo curl -o /usr/local/bin/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
 
       - name: 'Setup NuGet Credentials'
         shell: 'bash'
