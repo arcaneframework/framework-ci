@@ -57,7 +57,7 @@ jobs:
       - name: Setup environment
         shell: 'bash'
         run: |
-          cmake -P '${{ env.BUILD_COMMANDS_ROOT }}/Setup.cmake'
+          cmake -DNUGET_PASSWORD="${{ secrets.GITHUB_TOKEN }}" -P '${{ env.BUILD_COMMANDS_ROOT }}/Setup.cmake'
 
 #      - name: download and install msmpi 10.0
 #        if: matrix.os == 'windows-2019'
@@ -70,11 +70,11 @@ jobs:
 #        run: |
 #          sudo curl -o /usr/local/bin/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
 
-      - name: 'Setup NuGet Credentials'
-        shell: 'bash'
-        run: |
-          ${{ matrix.mono }} ${{ matrix.nugetexe }} sources add -source "https://nuget.pkg.github.com/arcaneframework/index.json" -storepasswordincleartext -name "github" -username "arcaneframework" -password "${{ secrets.GITHUB_TOKEN }}"
-          dotnet nuget add source "https://nuget.pkg.github.com/arcaneframework/index.json" --name github --username "arcaneframework" --password "${{ secrets.GITHUB_TOKEN }}" --store-password-in-clear-text --configfile nuget.config
+#      - name: 'Setup NuGet Credentials'
+#        shell: 'bash'
+#        run: |
+#          ${{ matrix.mono }} ${{ matrix.nugetexe }} sources add -source "https://nuget.pkg.github.com/arcaneframework/index.json" -storepasswordincleartext -name "github" -username "arcaneframework" -password "${{ secrets.GITHUB_TOKEN }}"
+#          dotnet nuget add source "https://nuget.pkg.github.com/arcaneframework/index.json" --name github --username "arcaneframework" --password "${{ secrets.GITHUB_TOKEN }}" --store-password-in-clear-text --configfile nuget.config
 
       - name: 'Untar vcpkg bootstrap cache'
         shell: 'bash'
