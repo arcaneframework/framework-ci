@@ -1,6 +1,12 @@
 name: ci2
 on:
   workflow_dispatch:
+    inputs:
+      # Nom de la branche de 'framework' qu'on va utiliser pour le workflow
+      framework_branch:
+        description: 'Framework Branch'
+        required: true
+        default: 'dev/cea'
 
 jobs:
   job:
@@ -41,7 +47,7 @@ jobs:
           repository: ${{ github.repository_owner }}/framework
           path: framework
           token: ${{ secrets.ArcaneFrameworkCI }}
-          ref: dev/cea
+          ref: ${{ github.event.inputs.framework_branch }}
           submodules: true
 
       - name: Setup environment
