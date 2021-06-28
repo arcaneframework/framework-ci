@@ -50,7 +50,11 @@ jobs:
         uses: actions/cache@v2
         with:
           path: "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
-          key: ${{ matrix.triplet }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ hashFiles( '**/vcpkg.json' ) }}-vpckg-binaries-v2
+          key: ${{ matrix.triplet }}-vpckg-binaries-v2-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ hashFiles( '**/vcpkg.json' ) }}
+          restore-keys:
+            ${{ matrix.triplet }}-vpckg-binaries-v2-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}
+            ${{ matrix.triplet }}-vpckg-binaries-v2
+            ${{ matrix.triplet }}
 
       - name: Restore vcpkg and its artifacts.
         uses: actions/cache@v2
@@ -76,7 +80,7 @@ jobs:
       - name: Configure build script
         run: |
           mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
-          cmake -S "${{ env.BUILD_COMMANDS_ROOT }}" -B "${{ env.CMAKE_BUILD_DIR }}/framework" -DCMAKE_VERBOSE_MAKEFILE=TRUE -DFRAMEWORK_DIR=${{ github.workspace }}/framework-test -DBUILD_WITH_VCPKG=TRUE -DCONFIG_WANTED=Debug
+          cmake -S "${{ env.BUILD_COMMANDS_ROOT }}" -B "${{ env.CMAKE_BUILD_DIR }}/framework" -DCMAKE_VERBOSE_MAKEFILE=TRUE -DFRAMEWORK_DIR=${{ github.workspace }}/framework -DBUILD_WITH_VCPKG=TRUE -DCONFIG_WANTED=Debug
 
       - name: Build and install arccore
         run: |
