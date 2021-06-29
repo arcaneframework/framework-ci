@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12.0)
+cmake_minimum_required(VERSION 3.14.0)
 project(TEST LANGUAGES NONE VERSION 1.0.0)
 
 # CONFIG_WANTED peut valoir 'Debug', 'Check' ou 'Release'
@@ -201,16 +201,32 @@ tools_add_target(axlstar)
 set(ARCANE_SOURCE_DIR "${FRAMEWORK_DIR}/arcane")
 tools_set_default_dir(arcane)
 
-tools_add_configure(arcane PREFIX_PATH "${ARCCON_INSTALL_DIR}" "${AXLSTAR_INSTALL_DIR}" "${DEPENDENCIES_INSTALL_DIR}" "${ARCCORE_INSTALL_DIR}"
-  CMAKE_ARGS
-  ${VCPKG_CMAKE_ARGS}
-  ${VCPKG_CMAKE_ARGS_ARCANE}
-  "-DBUILD_SHARED_LIBS=TRUE"
-  "-DARCANE_DEFAULT_PARTITIONER=Metis"
-  "-DARCCON_REGISTER_PACKAGE_VERSION=2"
-#  -DARCANE_WANT_ARCCON_EXPORT_TARGET=OFF
-  PACKAGE_DEPENDS arccon axlstar dependencies arccore)
+# Regarde si on compile les composants séparément ou en une fois via Arcane
+if (DO_UNIFIED_INSTALL)
+  tools_add_configure(arcane
+    CMAKE_ARGS
+    ${VCPKG_CMAKE_ARGS}
+    ${VCPKG_CMAKE_ARGS_ARCANE}
+    "-DBUILD_SHARED_LIBS=TRUE"
+    "-DARCANE_DEFAULT_PARTITIONER=Metis"
+    "-DARCCON_REGISTER_PACKAGE_VERSION=2"
+    -S ${ARCANE_SOURCE_DIR}/../_common/build_all
+    )
+else()
+  tools_add_configure(arcane PREFIX_PATH "${ARCCON_INSTALL_DIR}" "${AXLSTAR_INSTALL_DIR}" "${DEPENDENCIES_INSTALL_DIR}" "${ARCCORE_INSTALL_DIR}"
+    CMAKE_ARGS
+    ${VCPKG_CMAKE_ARGS}
+    ${VCPKG_CMAKE_ARGS_ARCANE}
+    "-DBUILD_SHARED_LIBS=TRUE"
+    "-DARCANE_DEFAULT_PARTITIONER=Metis"
+    "-DARCCON_REGISTER_PACKAGE_VERSION=2"
+    #  -DARCANE_WANT_ARCCON_EXPORT_TARGET=OFF
+    PACKAGE_DEPENDS arccon axlstar dependencies arccore)
+endif()
 tools_add_target(arcane)
+
+# ----------------------------------------------------------------------------
+# Arcane Samples
 
 set(ARCANE_SAMPLES_BUILD_DIR ${WORKDIR}/samples)
 file(MAKE_DIRECTORY ${ARCANE_SAMPLES_BUILD_DIR})
