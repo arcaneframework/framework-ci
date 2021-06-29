@@ -1,3 +1,6 @@
+# Il faut CMake 3.18 minimum pour la commande file(ARCHIVE_EXTRACT)
+cmake_minimum_required(VERSION 3.18.0)
+
 # Mise en place de l'environnement d'intégration continue
 include(${CMAKE_CURRENT_LIST_DIR}/CommonFunctions.cmake)
 
@@ -22,6 +25,11 @@ if (UNIX)
   # Récupère la dernière version de Nuget car elle n'est pas installée par défaut
   # sur les conteneurs ubuntu
   do_command("sudo" "curl" "-o" "/usr/local/bin/nuget.exe" "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe")
+  # Récupère une version récente de ninja
+  file(DOWNLOAD "https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-linux.zip" "ninja-linux.zip" SHOW_PROGRESS)
+  # Extrait l'archive
+  file(ARCHIVE_EXTRACT INPUT "ninja-linux.zip" DESTINATION ${CMAKE_CURRENT_LIST_DIR})
+  do_command("sudo" "/bin/cp" "-f" "${CMAKE_CURRENT_LIST_DIR}/ninja" "/usr/local/bin/ninja")
 endif()
 
 set(FRAMEWORK_CI_ROOT "${CMAKE_CURRENT_LIST_DIR}/..")
