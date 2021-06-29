@@ -131,7 +131,7 @@ function(tools_add_configure name)
     list(APPEND CONFIG_COMPILER_ARGS -DCMAKE_C_COMPILER="${CONFIG_C_COMPILER}")
   endif()
   #if (UNIX)
-  list(APPEND ARGS_CMAKE_ARGS "-GNinja")
+  set(NINJA_ARGS "-GNinja")
   #endif()
   add_custom_command(
     OUTPUT ${configure_stamp}
@@ -142,6 +142,7 @@ function(tools_add_configure name)
     ${CONFIG_COMPILER_ARGS}
     ${CMAKE_COMMON_ARGS}
     ${ARGS_CMAKE_ARGS}
+    ${NINJA_ARGS}
     COMMAND ${CMAKE_COMMAND} -E touch ${configure_stamp}
     WORKING_DIRECTORY ${build_dir}
     DEPENDS ${ARGS_DEPENDS} ${_FILE_DEPENDS}
