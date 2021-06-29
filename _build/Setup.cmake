@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.18.0)
 # Mise en place de l'environnement d'intégration continue
 include(${CMAKE_CURRENT_LIST_DIR}/CommonFunctions.cmake)
 
-message(STATUS "Setup configuration. CMake version is '${CMAKE_VERSION}'")
+message(STATUS "Setup configuration. CMake version is '${CMAKE_VERSION}'. RUNNER_TEMP=$ENV{RUNNER_TEMP}")
 
 # Vérifie les arguments obligatoires
 if (NOT NUGET_PASSWORD)
@@ -16,7 +16,7 @@ if (WIN32)
   # Cela est nécessaire pour installer ensuite MPI via vcpkg
   do_command(${CMAKE_CURRENT_LIST_DIR}/download_mswin_10.bat)
   # Installe une version récente de cmake via chocolatey
-  do_command(choco install cmake)
+  #do_command(choco install cmake)
   # Installe une version récente de ninja via chocolatey
   do_command(choco install ninja)
 endif()
