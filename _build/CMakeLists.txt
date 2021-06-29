@@ -129,7 +129,7 @@ function(tools_add_configure name)
     list(APPEND CONFIG_COMPILER_ARGS -DCMAKE_C_COMPILER="${CONFIG_C_COMPILER}")
   endif()
   #if (UNIX)
-  list(APPEND ARGS_CMAKE_ARGS "-GNinja")
+  #  list(APPEND ARGS_CMAKE_ARGS "-GNinja")
   #endif()
   add_custom_command(
     OUTPUT ${configure_stamp}

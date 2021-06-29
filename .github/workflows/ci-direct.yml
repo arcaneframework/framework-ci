@@ -56,7 +56,7 @@ jobs:
         run: |
           cmake -DNUGET_PASSWORD="${{ secrets.GITHUB_TOKEN }}" -P '${{ env.BUILD_COMMANDS_ROOT }}/Setup.cmake'
       
-      - uses: lukka/get-cmake@latest
+#      - uses: lukka/get-cmake@latest
 
       - name: 'Untar vcpkg bootstrap cache'
         shell: 'bash'
