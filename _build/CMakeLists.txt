@@ -128,9 +128,9 @@ function(tools_add_configure name)
   if (CONFIG_CXX_COMPILER)
     list(APPEND CONFIG_COMPILER_ARGS -DCMAKE_C_COMPILER="${CONFIG_C_COMPILER}")
   endif()
-  if (UNIX)
-#    list(APPEND ARGS_CMAKE_ARGS "-GNinja")
-  endif()
+  #if (UNIX)
+  list(APPEND ARGS_CMAKE_ARGS "-GNinja")
+  #endif()
   add_custom_command(
     OUTPUT ${configure_stamp}
     MAIN_DEPENDENCY ${source_dir}/CMakeLists.txt
