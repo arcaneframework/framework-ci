@@ -1,3 +1,9 @@
+set(RUNNER_TEMP "$ENV{RUNNER_TEMP}")
+message(STATUS "Setup configuration. CMake version is '${CMAKE_VERSION}'. RUNNER_TEMP=${RUNNER_TEMP}")
+
+# Répertoire temporaire ajouté à $PATH pour mettre les binaires télécharger
+set(LOCAL_BIN_DIR_BIN "${RUNNER_TEMP}/local_bin_dir/bin")
+file(MAKE_DIRECTORY "${LOCAL_BIN_DIR_BIN}")
 
 function(do_command command_name)
   set(options        )
@@ -30,6 +36,6 @@ if (NOT NUGET_COMMAND)
   if (WIN32)
     set(NUGET_COMMAND "nuget.exe")
   else()
-    set(NUGET_COMMAND "/usr/local/bin/nuget.exe")
+    set(NUGET_COMMAND "${LOCAL_BIN_DIR_BIN}/nuget.exe")
   endif()
 endif()

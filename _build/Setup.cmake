@@ -11,13 +11,6 @@ cmake_minimum_required(VERSION 3.18.0)
 
 include(${CMAKE_CURRENT_LIST_DIR}/CommonFunctions.cmake)
 
-set(RUNNER_TEMP "$ENV{RUNNER_TEMP}")
-message(STATUS "Setup configuration. CMake version is '${CMAKE_VERSION}'. RUNNER_TEMP=${RUNNER_TEMP}")
-
-# Répertoire temporaire ajouté à $PATH pour mettre les binaires télécharger
-set(LOCAL_BIN_DIR_BIN "${RUNNER_TEMP}/local_bin_dir/bin")
-file(MAKE_DIRECTORY "${LOCAL_BIN_DIR_BIN}")
-
 # Vérifie les arguments obligatoires
 if (NOT NUGET_PASSWORD)
   message(FATAL_ERROR "NUGET_PASSWORD is not defined")
