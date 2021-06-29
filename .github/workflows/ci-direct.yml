@@ -11,7 +11,7 @@ on:
 
 jobs:
   job:
-    name: ${{ matrix.os }}-ci2
+    name: ${{ matrix.os }}-ci-direct
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.14.0)
 project(TEST LANGUAGES NONE VERSION 1.0.0)
 
+message(STATUS "Generating configuration. CMake version is '${CMAKE_VERSION}'")
+
 # CONFIG_WANTED peut valoir 'Debug', 'Check' ou 'Release'
 if (NOT CONFIG_WANTED)
   set(CONFIG_WANTED "Debug")
@@ -129,7 +131,7 @@ function(tools_add_configure name)
     list(APPEND CONFIG_COMPILER_ARGS -DCMAKE_C_COMPILER="${CONFIG_C_COMPILER}")
   endif()
   #if (UNIX)
-  #  list(APPEND ARGS_CMAKE_ARGS "-GNinja")
+  list(APPEND ARGS_CMAKE_ARGS "-GNinja")
   #endif()
   add_custom_command(
     OUTPUT ${configure_stamp}

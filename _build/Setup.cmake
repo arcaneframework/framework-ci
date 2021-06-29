@@ -1,14 +1,21 @@
 # Mise en place de l'environnement d'intégration continue
 include(${CMAKE_CURRENT_LIST_DIR}/CommonFunctions.cmake)
 
+message(STATUS "Setup configuration. CMake version is '${CMAKE_VERSION}'")
+
 # Vérifie les arguments obligatoires
 if (NOT NUGET_PASSWORD)
   message(FATAL_ERROR "NUGET_PASSWORD is not defined")
 endif()
 
 if (WIN32)
-  # Récupère et installe Microsoft MPI
+  # Récupère et installe Microsoft MPI.
+  # Cela est nécessaire pour installer ensuite MPI via vcpkg
   do_command(${CMAKE_CURRENT_LIST_DIR}/download_mswin_10.bat)
+  # Installe une version récente de cmake via chocolatey
+  do_command(choco install cmake)
+  # Installe une version récente de ninja via chocolatey
+  do_command(choco install ninja)
 endif()
 
 if (UNIX)
