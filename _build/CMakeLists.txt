@@ -3,6 +3,8 @@ project(TEST LANGUAGES NONE VERSION 1.0.0)
 
 message(STATUS "Generating configuration. CMake version is '${CMAKE_VERSION}'")
 
+set(USE_NINJA TRUE)
+
 # CONFIG_WANTED peut valoir 'Debug', 'Check' ou 'Release'
 if (NOT CONFIG_WANTED)
   set(CONFIG_WANTED "Debug")
@@ -81,22 +83,24 @@ macro(tools_set_default_dir name)
 endmacro()
 
 # ----------------------------------------------------------------------------
-
+if (USE_NINJA)
+  set(NINJA_CMAKE_ARGS "--" "-v")
+endif()
 function(tools_add_target name)
   tools_set_build_dir(${name})
   message(STATUS "Add target 'configure_${name}' depends on '${build_dir}/CMakeCache.txt'")
   add_custom_target(configure_${name} DEPENDS ${configure_stamp})
   add_custom_command(OUTPUT ${install_stamp}
     DEPENDS ${configure_stamp}
-    COMMAND ${CMAKE_COMMAND} --build .
-    COMMAND ${CMAKE_COMMAND} --build . --target install
-    COMMAND ${CMAKE_COMMAND} -E touch ${install_stamp}
+    COMMAND ${CMAKE_COMMAND} --build ${build_dir} ${NINJA_CMAKE_ARGS}
+    COMMAND ${CMAKE_COMMAND} --build ${build_dir} --target install
+    COMMAND ${CMAKE_COMMAND} -E touch ${install_stamp} ${NINJA_CMAKE_ARGS}
     WORKING_DIRECTORY ${build_dir}
   )
   add_custom_target(build_${name} DEPENDS ${install_stamp})
   add_custom_target(force_build_${name}
     COMMAND ${CMAKE_COMMAND} -E remove ${install_stamp}
-    COMMAND ${CMAKE_COMMAND} --build . --target build_${name}
+    COMMAND ${CMAKE_COMMAND} --build ${build_dir} --target build_${name}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 endfunction()
@@ -130,9 +134,9 @@ function(tools_add_configure name)
   if (CONFIG_CXX_COMPILER)
     list(APPEND CONFIG_COMPILER_ARGS -DCMAKE_C_COMPILER="${CONFIG_C_COMPILER}")
   endif()
-  #if (UNIX)
-  set(NINJA_ARGS "-GNinja")
-  #endif()
+  if (USE_NINJA)
+    set(NINJA_ARGS "-GNinja")
+  endif()
   add_custom_command(
     OUTPUT ${configure_stamp}
     MAIN_DEPENDENCY ${source_dir}/CMakeLists.txt
