@@ -36,11 +36,11 @@ jobs:
             mono: 'mono'
 
     steps:
-      - name: Cleanup repo
-        shell: 'bash'
-        run: |
-          mkdir -p "${{ github.workspace }}"
-          rm -rf "${{ github.workspace }}"/*
+#      - name: Cleanup repo
+#        shell: 'bash'
+#        run: |
+#          mkdir -p "${{ github.workspace }}"
+#          rm -rf "${{ github.workspace }}"/*
 
       - name: Checkout actions
         uses: actions/checkout@v2
@@ -49,32 +49,10 @@ jobs:
 
       - uses: lukka/get-cmake@latest
 
-#      - name: Install dotnet SDK ${{ env.DOTNET_VERSION }}
-#        uses: actions/setup-dotnet@v1
-#        with:
-#          dotnet-version: ${{ env.DOTNET_VERSION }}
-
       - name: Setup environment
         shell: 'bash'
         run: |
           cmake -DNUGET_PASSWORD="${{ secrets.GITHUB_TOKEN }}" -P '${{ env.BUILD_COMMANDS_ROOT }}/Setup.cmake'
-
-#      - name: download and install msmpi 10.0
-#        if: matrix.os == 'windows-2019'
-#        shell: cmd
-#        run: |
-#          ${{ env.BUILD_COMMANDS_ROOT }}\download_mswin_10.bat
-
-#      - name: Get Nuget (ubuntu)
-#        if: matrix.os == 'ubuntu-20.04'
-#        run: |
-#          sudo curl -o /usr/local/bin/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-
-#      - name: 'Setup NuGet Credentials'
-#        shell: 'bash'
-#        run: |
-#          ${{ matrix.mono }} ${{ matrix.nugetexe }} sources add -source "https://nuget.pkg.github.com/arcaneframework/index.json" -storepasswordincleartext -name "github" -username "arcaneframework" -password "${{ secrets.GITHUB_TOKEN }}"
-#          dotnet nuget add source "https://nuget.pkg.github.com/arcaneframework/index.json" --name github --username "arcaneframework" --password "${{ secrets.GITHUB_TOKEN }}" --store-password-in-clear-text --configfile nuget.config
 
       - name: 'Untar vcpkg bootstrap cache'
         shell: 'bash'
@@ -90,16 +68,10 @@ jobs:
           mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
           cmake -DVCPKG_BUILD_DIR='${{ env.VCPKG_BUILD_DIR }}' -P '${{ env.BUILD_COMMANDS_ROOT }}/BootstrapVcpkg.cmake'
 
-#      - uses: actions/download-artifact@v2
-#        continue-on-error: true
-#        with:
-#          name: vcpkg-packages-${{ matrix.os }}
-#          path: ${{ env.MY_VCPKG_INSTALLED_DIR }}
-
       - name: 'vcpkg package restore'
         shell: 'bash'
         run: >
-          vcpkg/vcpkg --debug install glib libxml2 mpi parmetis hypre hdf5 gtest --triplet ${{ matrix.triplet }}
+          vcpkg/vcpkg --debug install glib libxml2 mpi parmetis hypre hdf5 hwloc lz4 tbb gtest --triplet ${{ matrix.triplet }}
 
       - name: 'Create nuget package for vcpkg installed packages'
         shell: 'bash'
@@ -109,8 +81,3 @@ jobs:
           ls -lart '${{ env.VCPKG_BUILD_DIR }}'
           du -sh '${{ env.VCPKG_BUILD_DIR }}'
           ls -lart '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache'
-
-#      - uses: actions/upload-artifact@v2
-#        with:
-#          name: vcpkg-packages-${{ matrix.os }}
-#          path: ${{ env.MY_VCPKG_INSTALLED_DIR }}
