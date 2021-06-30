@@ -26,7 +26,7 @@ jobs:
       # Indicates the CMake build directory where project files and binaries are being produced.
       CMAKE_BUILD_DIR: ${{ github.workspace }}/builddir/
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
-      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+      VCPKG_ROOT: '${{ github.workspace }}/vcpkg'
       VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/builddir/vcpkg_archives
       BUILD_COMMANDS_ROOT: ${{ github.workspace }}/_build
       VCPKG_BUILD_DIR: '${{ github.workspace }}/vcpkg'

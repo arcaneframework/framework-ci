@@ -66,16 +66,19 @@ jobs:
           ls -lart '${{ env.VCPKG_BUILD_DIR }}'
 
       - name: Show content of workspace after cache has been restored
-        run: find $RUNNER_WORKSPACE
         shell: bash
+        run: find $RUNNER_WORKSPACE
 
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Configure build script
+        shell: bash
         run: |
           mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
-          cmake -S "${{ env.BUILD_COMMANDS_ROOT }}" -B "${{ env.CMAKE_BUILD_DIR }}/framework" -DCMAKE_VERBOSE_MAKEFILE=TRUE -DFRAMEWORK_DIR=${{ github.workspace }}/framework -DBUILD_WITH_VCPKG=TRUE -DCONFIG_WANTED=Debug -DVCPKG_INSTALLED_DIR="${{ env.VCPKG_BUILD_DIR }}/installed" -DVCPKG_NO_MANIFEST=TRUE -DDO_UNIFIED_INSTALL=TRUE
+          cmake -S "${{ github.workspace }}/framework/_common/build_all" -B "${{ env.CMAKE_BUILD_DIR }}/framework" -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_BUILD_TYPE=Debug -DVCPKG_INSTALLED_DIR="${{ env.VCPKG_BUILD_DIR }}/installed" -DBUILD_SHARED_LIBS=TRUE -DARCANE_DEFAULT_PARTITIONER=Metis -DARCCON_REGISTER_PACKAGE_VERSION=2 -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake"  -GNinja
+#          cmake -S "${{ env.BUILD_COMMANDS_ROOT }}" -B "${{ env.CMAKE_BUILD_DIR }}/framework" -DCMAKE_VERBOSE_MAKEFILE=TRUE -DFRAMEWORK_DIR=${{ github.workspace }}/framework -DBUILD_WITH_VCPKG=TRUE -DCONFIG_WANTED=Debug -DVCPKG_INSTALLED_DIR="${{ env.VCPKG_BUILD_DIR }}/installed" -DVCPKG_NO_MANIFEST=TRUE -DDO_UNIFIED_INSTALL=TRUE
 
       - name: Build arcane
+        shell: bash
         run: |
-          cmake --build "${{ env.CMAKE_BUILD_DIR }}/framework" --target build_arcane
+          cmake --build "${{ env.CMAKE_BUILD_DIR }}/framework"
