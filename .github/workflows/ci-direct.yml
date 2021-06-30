@@ -31,7 +31,7 @@ jobs:
       VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/builddir/vcpkg_archives
       BUILD_COMMANDS_ROOT: ${{ github.workspace }}/_build
       VCPKG_BUILD_DIR: '${{ github.workspace }}/vcpkg'
-      VCPKG_INSTALL_HASH_PACKAGE_NAME: '1.0.7-${{ matrix.os }}-${{ matrix.triplet }}'
+      VCPKG_INSTALL_HASH_PACKAGE_NAME: '1.0.8-${{ matrix.os }}-${{ matrix.triplet }}'
       CMAKE_COMMON_ARGS: -DCONFIG_BUILD_DIR="${{ github.workspace }}/builddir/" -DGIT_WORKSPACE=${{ github.workspace }} -P ${{ github.workspace }}/_build/Build.cmake
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
