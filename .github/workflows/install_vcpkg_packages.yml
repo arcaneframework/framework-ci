@@ -16,7 +16,7 @@ jobs:
       VCPKG_DISABLE_METRICS: 1
       VCPKG_BUILD_DIR: '${{ github.workspace }}/vcpkg'
       VCPKG_PUSH_HASH_PACKAGE_NAME: '1.0.8-${{ matrix.os }}-${{ matrix.triplet }}'
-      VCPKG_INSTALL_HASH_PACKAGE_NAME: '1.0.7-${{ matrix.os }}-${{ matrix.triplet }}'
+      VCPKG_PREINSTALL_HASH_PACKAGE_NAME: '1.0.7-${{ matrix.os }}-${{ matrix.triplet }}'
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
       DOTNET_VERSION: '3.1.x'
@@ -36,39 +36,33 @@ jobs:
             mono: 'mono'
 
     steps:
-#      - name: Cleanup repo
-#        shell: 'bash'
-#        run: |
-#          mkdir -p "${{ github.workspace }}"
-#          rm -rf "${{ github.workspace }}"/*
 
       - name: Checkout actions
         uses: actions/checkout@v2
         with:
           submodules: true
 
-      - uses: lukka/get-cmake@latest
-
       - name: Setup environment
         shell: 'bash'
         run: |
+          echo "${RUNNER_TEMP}/local_bin_dir/bin" >> $GITHUB_PATH
           cmake -DNUGET_PASSWORD="${{ secrets.GITHUB_TOKEN }}" -P '${{ env.BUILD_COMMANDS_ROOT }}/Setup.cmake'
 
       - name: 'Untar vcpkg bootstrap cache'
         shell: 'bash'
         continue-on-error: true
         run: |
-          cmake -DHASH_PACKAGE_NAME="${{ env.VCPKG_INSTALL_HASH_PACKAGE_NAME }}" -DVCPKG_BUILD_DIR='${{ env.VCPKG_BUILD_DIR }}' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoUntar.cmake'
+          cmake -DHASH_PACKAGE_NAME="${{ env.VCPKG_PREINSTALL_HASH_PACKAGE_NAME }}" -DVCPKG_BUILD_DIR='${{ env.VCPKG_BUILD_DIR }}' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoUntar.cmake'
           ls -lart '${{ env.VCPKG_BUILD_DIR }}'
           ls -lart '${{ env.VCPKG_BUILD_DIR }}'/VcpkgCache*
           ls -lart '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache'
 
-      - name: bootstrap vcpkg
+      - name: Bootstrap vcpkg
         run: |
           mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
           cmake -DVCPKG_BUILD_DIR='${{ env.VCPKG_BUILD_DIR }}' -P '${{ env.BUILD_COMMANDS_ROOT }}/BootstrapVcpkg.cmake'
 
-      - name: 'vcpkg package restore'
+      - name: 'Install vpckg packages'
         shell: 'bash'
         run: >
           vcpkg/vcpkg --debug install glib libxml2 mpi parmetis hypre hdf5 hwloc lz4 tbb gtest --triplet ${{ matrix.triplet }}
