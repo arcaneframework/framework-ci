@@ -1,0 +1,85 @@
+# CI qui compile Alien avec vpckg
+name: ci-alien
+on:
+  workflow_dispatch:
+    inputs:
+      # Nom de la branche de 'alien' qu'on va utiliser pour le workflow
+      alien_branch:
+        description: 'Alien Branch'
+        required: true
+        default: 'main'
+
+jobs:
+  job:
+    name: ${{ matrix.os }}-ci-alien
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['windows-2019', ubuntu-20.04]
+        include:
+          - os: ubuntu-20.04
+            triplet: x64-linux
+          - os: 'windows-2019'
+            triplet: x64-windows
+
+    env:
+      # Indicates the CMake build directory where project files and binaries are being produced.
+      CMAKE_BUILD_DIR: ${{ github.workspace }}/builddir/
+      # Indicates the location of the vcpkg as a Git submodule of the project repository.
+      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/builddir/vcpkg_archives
+      BUILD_COMMANDS_ROOT: ${{ github.workspace }}/_build
+      VCPKG_BUILD_DIR: '${{ github.workspace }}/vcpkg'
+      VCPKG_INSTALL_HASH_PACKAGE_NAME: '1.0.8-${{ matrix.os }}-${{ matrix.triplet }}'
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+    steps:
+      - name: Checkout actions
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Checkout alien
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ github.repository_owner }}/alien
+          path: alien
+          ref: ${{ github.event.inputs.alien_branch }}
+          submodules: true
+
+      - name: Setup environment
+        shell: 'bash'
+        run: |
+          echo "${RUNNER_TEMP}/local_bin_dir/bin" >> $GITHUB_PATH
+          cmake -DNUGET_PASSWORD="${{ secrets.GITHUB_TOKEN }}" -P '${{ env.BUILD_COMMANDS_ROOT }}/Setup.cmake'
+      
+      - name: 'Untar vcpkg bootstrap cache'
+        shell: 'bash'
+        run: |
+          cmake -DHASH_PACKAGE_NAME="${{ env.VCPKG_INSTALL_HASH_PACKAGE_NAME }}" -DVCPKG_BUILD_DIR='${{ env.VCPKG_BUILD_DIR }}' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoUntar.cmake'
+          ls -lart '${{ env.VCPKG_BUILD_DIR }}'
+
+      - name: Show content of workspace after cache has been restored
+        shell: bash
+        run: find $RUNNER_WORKSPACE
+
+      - uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Configure build script
+        shell: bash
+        run: |
+          mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
+          cmake -S "${{ github.workspace }}/alien" -B "${{ env.CMAKE_BUILD_DIR }}/alien" -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_BUILD_TYPE=Debug -DVCPKG_INSTALLED_DIR="${{ env.VCPKG_BUILD_DIR }}/installed" -DBUILD_SHARED_LIBS=TRUE -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake" -GNinja
+
+      - name: Build alien
+        shell: bash
+        run: |
+          cmake --build "${{ env.CMAKE_BUILD_DIR }}/alien"
+
+      - name: Test alien
+        continue-on-error: true
+        shell: bash
+        run: |
+          cd "${{ env.CMAKE_BUILD_DIR }}/alien" && ctest -I 1,20
