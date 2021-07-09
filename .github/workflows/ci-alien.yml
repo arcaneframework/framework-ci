@@ -71,7 +71,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
-          cmake -S "${{ github.workspace }}/alien" -B "${{ env.CMAKE_BUILD_DIR }}/alien" -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_BUILD_TYPE=Debug -DVCPKG_INSTALLED_DIR="${{ env.VCPKG_BUILD_DIR }}/installed" -DBUILD_SHARED_LIBS=TRUE -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake" -GNinja
+          cmake -S "${{ github.workspace }}/alien" -B "${{ env.CMAKE_BUILD_DIR }}/alien" -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_BUILD_TYPE=Debug -DVCPKG_INSTALLED_DIR="${{ env.VCPKG_BUILD_DIR }}/installed" -DBUILD_SHARED_LIBS=TRUE -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake" -DARCCON_REGISTER_PACKAGE_VERSION=2 -GNinja
 
       - name: Build alien
         shell: bash
