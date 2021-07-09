@@ -1,4 +1,4 @@
-name: putnuget
+name: install_vcpkg_packages
 on:
   workflow_dispatch:
 
