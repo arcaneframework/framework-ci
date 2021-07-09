@@ -15,8 +15,8 @@ jobs:
       MY_VCPKG_INSTALLED_DIR: ${{ github.workspace }}/vcpkg/installed
       VCPKG_DISABLE_METRICS: 1
       VCPKG_BUILD_DIR: '${{ github.workspace }}/vcpkg'
-      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.0.8-${{ matrix.os }}-${{ matrix.triplet }}'
-      VCPKG_PREINSTALL_HASH_PACKAGE_NAME: '1.0.7-${{ matrix.os }}-${{ matrix.triplet }}'
+      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.0.9-${{ matrix.os }}-${{ matrix.triplet }}'
+      VCPKG_PREINSTALL_HASH_PACKAGE_NAME: '1.0.8-${{ matrix.os }}-${{ matrix.triplet }}'
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
       DOTNET_VERSION: '3.1.x'
@@ -65,7 +65,7 @@ jobs:
       - name: 'Install vpckg packages'
         shell: 'bash'
         run: >
-          vcpkg/vcpkg --debug install glib libxml2 mpi parmetis hypre hdf5 hwloc lz4 tbb gtest --triplet ${{ matrix.triplet }}
+          vcpkg/vcpkg --debug install glib libxml2 mpi parmetis hypre hdf5 hwloc lz4 tbb boost-program-options gtest --triplet ${{ matrix.triplet }}
 
       - name: 'Create nuget package for vcpkg installed packages'
         shell: 'bash'
