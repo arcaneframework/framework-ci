@@ -2,7 +2,9 @@ set(RUNNER_TEMP "$ENV{RUNNER_TEMP}")
 message(STATUS "Setup configuration. CMake version is '${CMAKE_VERSION}'. RUNNER_TEMP=${RUNNER_TEMP}")
 
 # Répertoire temporaire ajouté à $PATH pour mettre les binaires télécharger
-set(LOCAL_BIN_DIR_BIN "${RUNNER_TEMP}/local_bin_dir/bin")
+set(LOCAL_BIN_DIR "${RUNNER_TEMP}/local_bin_dir")
+set(LOCAL_BIN_DIR_BIN "${LOCAL_BIN_DIR}/bin")
+file(MAKE_DIRECTORY "${LOCAL_BIN_DIR}")
 file(MAKE_DIRECTORY "${LOCAL_BIN_DIR_BIN}")
 
 function(do_command command_name)

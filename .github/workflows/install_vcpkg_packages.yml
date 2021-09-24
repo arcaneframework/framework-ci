@@ -16,7 +16,7 @@ jobs:
       MY_VCPKG_INSTALLED_DIR: /home/runner/arcaneframework/framework-ci/vcpkg/installed
       VCPKG_DISABLE_METRICS: 1
       VCPKG_BUILD_DIR: '/home/runner/arcaneframework/framework-ci/vcpkg'
-      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.0.12-${{ matrix.os }}-${{ matrix.triplet }}'
+      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.0.10-${{ matrix.os }}-${{ matrix.triplet }}'
       VCPKG_PREINSTALL_HASH_PACKAGE_NAME: '1.0.11-${{ matrix.os }}-${{ matrix.triplet }}'
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
@@ -54,13 +54,38 @@ jobs:
         shell: 'bash'
         run: |
           echo "${RUNNER_TEMP}/local_bin_dir/bin" >> $GITHUB_PATH
+          echo "${RUNNER_TEMP}/local_bin_dir/cmake/bin" >> $GITHUB_PATH
+          echo Path variable is: ${PATH}
+          echo CMake path is: `which cmake`
+          cmake --version
           cmake -DNUGET_PASSWORD="${{ secrets.GITHUB_TOKEN }}" -P '${{ env.BUILD_COMMANDS_ROOT }}/Setup.cmake'
+
+      - name: Remove installed version of cmake if needed
+        shell: 'bash'
+        if: ${{ matrix.os == 'windows-2019' }}
+        run: |
+          rm '/c/Program Files/CMake/bin/cmake'
+
+      - name: 'Display environment after setup'
+        shell: 'bash'
+        continue-on-error: true
+        run: |
+          echo 'Content of local_bin_dir'
+          ls -lart "${RUNNER_TEMP}/local_bin_dir"
+          echo 'Content of local_bin_dir/bin'
+          ls -lart "${RUNNER_TEMP}/local_bin_dir/bin"
+          echo 'Content of local_bin_dir/cmake'
+          ls -lart "${RUNNER_TEMP}/local_bin_dir/cmake"
+          echo Path variable is: ${PATH}
+          echo CMake path is: `which cmake`
+          echo Ninja path is: `which ninja`
+          cmake --version
 
       - name: 'Untar vcpkg bootstrap cache'
         shell: 'bash'
         continue-on-error: true
         run: |
-          cmake -DHASH_PACKAGE_NAME="${{ env.VCPKG_PREINSTALL_HASH_PACKAGE_NAME }}" -DVCPKG_BUILD_DIR='${{ env.VCPKG_BUILD_DIR }}' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoUntar.cmake'
+          echo cmake -DHASH_PACKAGE_NAME="${{ env.VCPKG_PREINSTALL_HASH_PACKAGE_NAME }}" -DVCPKG_BUILD_DIR='${{ env.VCPKG_BUILD_DIR }}' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoUntar.cmake'
           ls -lart '${{ env.VCPKG_BUILD_DIR }}'
           ls -lart '${{ env.VCPKG_BUILD_DIR }}'/VcpkgCache*
           ls -lart '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache'
@@ -75,7 +100,8 @@ jobs:
       - name: 'Install vpckg packages'
         shell: 'bash'
         run: >
-          ${VCPKG_BUILD_DIR}/vcpkg --debug install glib libxml2 mpi parmetis hdf5 hwloc lz4 tbb gtest --triplet ${{ matrix.triplet }}
+          ${VCPKG_BUILD_DIR}/vcpkg --debug install glib gtest --triplet ${{ matrix.triplet }}
+#          ${VCPKG_BUILD_DIR}/vcpkg --debug install glib libxml2 mpi parmetis hdf5 hwloc lz4 tbb gtest --triplet ${{ matrix.triplet }}
 #          ${VCPKG_BUILD_DIR}/vcpkg --debug install glib libxml2 mpi parmetis hypre hdf5 hwloc lz4 tbb boost-program-options boost-property-tree gtest --triplet ${{ matrix.triplet }}
 
       - name: 'Create nuget package for vcpkg installed packages'
