@@ -33,6 +33,8 @@ if (WIN32)
   file(DOWNLOAD "https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-win.zip" "ninja-win.zip")
   message(STATUS "Installating 'ninja' in '${LOCAL_BIN_DIR_BIN}'")
   file(ARCHIVE_EXTRACT INPUT "ninja-win.zip" DESTINATION ${LOCAL_BIN_DIR_BIN})
+
+  # Récupère et extrait cmake
   set(_URL "https://github.com/Kitware/CMake/releases/download/v${FRAMEWORKCI_CMAKE_WANTED_VERSION}/cmake-${FRAMEWORKCI_CMAKE_WANTED_VERSION}-windows-x86_64.zip")
   message(STATUS "Downloading 'cmake' at url '${_URL}'")
   file(DOWNLOAD "${_URL}" "cmake.zip")
@@ -41,6 +43,11 @@ if (WIN32)
   file(GLOB LIST_FILES "${LOCAL_BIN_DIR}/*")
   message(STATUS "Extracted files : '${LIST_FILES}'")
   file(RENAME "${LOCAL_BIN_DIR}/cmake-${FRAMEWORKCI_CMAKE_WANTED_VERSION}-windows-x86_64" "${LOCAL_BIN_DIR}/cmake")
+
+  # Récupère et extrait 'ccache'
+  message(STATUS "Get 'ccache'")
+  file(DOWNLOAD "https://github.com/cristianadam/ccache/releases/download/v4.4.1/Windows.tar.xz" "ccache.tar.xz")
+  file(ARCHIVE_EXTRACT INPUT "ccache.tar.xz" DESTINATION ${LOCAL_BIN_DIR_BIN})
 endif()
 
 if (UNIX)
@@ -60,6 +67,11 @@ if (UNIX)
   file(GLOB LIST_FILES "${LOCAL_BIN_DIR}/*")
   message(STATUS "Extracted files : '${LIST_FILES}'")
   file(RENAME "${LOCAL_BIN_DIR}/cmake-${FRAMEWORKCI_CMAKE_WANTED_VERSION}-linux-x86_64" "${LOCAL_BIN_DIR}/cmake")
+
+  # Récupère et extrait 'ccache'
+  message(STATUS "Get 'ccache'")
+  file(DOWNLOAD "https://github.com/cristianadam/ccache/releases/download/v4.4.1/Linux.tar.xz" "ccache.tar.xz")
+  file(ARCHIVE_EXTRACT INPUT "ccache.tar.xz" DESTINATION ${LOCAL_BIN_DIR_BIN})
 endif()
 
 set(FRAMEWORK_CI_ROOT "${CMAKE_CURRENT_LIST_DIR}/..")
