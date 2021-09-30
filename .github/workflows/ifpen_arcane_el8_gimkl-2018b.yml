@@ -14,25 +14,25 @@ on:
 
 env:
   # Arcane
-  ARCANE_BUILD_DIR: /__w/framework/framework/arcane_build
-  ARCANE_INSTALL_DIR: /__w/framework/framework/arcane_install
-  ARCANE_SOURCE_DIR: /__w/framework/framework/arcane
+  ARCANE_BUILD_DIR: /__w/framework-ci/framework-ci/arcane_build
+  ARCANE_INSTALL_DIR: /__w/framework-ci/framework-ci/arcane_install
+  ARCANE_SOURCE_DIR: /__w/framework-ci/framework-ci/arcane
   # Arccon
-  ARCCON_BUILD_DIR: /__w/framework/framework/arccon_build
-  ARCCON_INSTALL_DIR: /__w/framework/framework/arccon_install
-  ARCCON_SOURCE_DIR: /__w/framework/framework/arccon
+  ARCCON_BUILD_DIR: /__w/framework-ci/framework-ci/arccon_build
+  ARCCON_INSTALL_DIR: /__w/framework-ci/framework-ci/arccon_install
+  ARCCON_SOURCE_DIR: /__w/framework-ci/framework-ci/arccon
   # Arccore
-  ARCCORE_BUILD_DIR: /__w/framework/framework/arccore_build
-  ARCCORE_INSTALL_DIR: /__w/framework/framework/arccore_install
-  ARCCORE_SOURCE_DIR: /__w/framework/framework/arccore
+  ARCCORE_BUILD_DIR: /__w/framework-ci/framework-ci/arccore_build
+  ARCCORE_INSTALL_DIR: /__w/framework-ci/framework-ci/arccore_install
+  ARCCORE_SOURCE_DIR: /__w/framework-ci/framework-ci/arccore
   # Dependencies
-  DEPENDENCIES_BUILD_DIR: /__w/framework/framework/dependencies_build
-  DEPENDENCIES_INSTALL_DIR: /__w/framework/framework/dependencies_install
-  DEPENDENCIES_SOURCE_DIR: /__w/framework/framework/dependencies
+  DEPENDENCIES_BUILD_DIR: /__w/framework-ci/framework-ci/dependencies_build
+  DEPENDENCIES_INSTALL_DIR: /__w/framework-ci/framework-ci/dependencies_install
+  DEPENDENCIES_SOURCE_DIR: /__w/framework-ci/framework-ci/dependencies
   # Axlstar
-  AXLSTAR_BUILD_DIR: /__w/framework/framework/axlstar_build
-  AXLSTAR_INSTALL_DIR: /__w/framework/framework/axlstar_install
-  AXLSTAR_SOURCE_DIR: /__w/framework/framework/axlstar
+  AXLSTAR_BUILD_DIR: /__w/framework-ci/framework-ci/axlstar_build
+  AXLSTAR_INSTALL_DIR: /__w/framework-ci/framework-ci/axlstar_install
+  AXLSTAR_SOURCE_DIR: /__w/framework-ci/framework-ci/axlstar
   # CMake
   CM_BUILD_TYPE: Release
   # CTest
