@@ -67,7 +67,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          repository: arcaneframework/framework
+          repository: ${{ github.repository_owner }}/framework
           path: ${{ env.ARCCON_SOURCE_DIR }}
           ref: ${{ github.event.inputs.framework_branch }}
       - name: Configure
@@ -103,7 +103,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          repository: arcaneframework/framework
+          repository: ${{ github.repository_owner }}/framework
           path: ${{ env.ARCCORE_SOURCE_DIR }}
           ref: ${{ github.event.inputs.framework_branch }}
       - name: Download arccon install artifact
@@ -155,7 +155,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          repository: arcaneframework/dependencies
+          repository: ${{ github.repository_owner }}/dependencies
           path: ${{ env.DEPENDENCIES_SOURCE_DIR }}
           ref: ${{ github.event.inputs.dependencies_branch }}
       - name: Download arccon install artifact
@@ -199,7 +199,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          repository: arcaneframework/framework
+          repository: ${{ github.repository_owner }}/framework
           path: ${{ env.AXLSTAR_SOURCE_DIR }}
           ref: ${{ github.event.inputs.framework_branch }}
       - name: Download arccon install artifact
@@ -252,7 +252,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          repository: arcaneframework/framework
+          repository: ${{ github.repository_owner }}/framework
           path: ${{ env.ARCANE_SOURCE_DIR }}
           ref: ${{ github.event.inputs.framework_branch }}
       - name: Download arccon install artifact
@@ -317,7 +317,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          repository: arcaneframework/alien
+          repository: ${{ github.repository_owner }}/alien
           path: ${{ env.ALIEN_SOURCE_DIR }}
           ref: ${{ github.event.inputs.alien_branch }}
       - name: Download arccon install artifact
@@ -401,7 +401,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          repository: arcaneframework/framework
+          repository: ${{ github.repository_owner }}/framework
           path: ${{ env.ARCANE_SOURCE_DIR }}
           ref: ${{ github.event.inputs.framework_branch }}
       - name: Download arcane build artifact
