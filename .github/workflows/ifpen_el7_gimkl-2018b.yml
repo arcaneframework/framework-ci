@@ -22,7 +22,7 @@ on:
       ctest_options:
         description: 'CTest options'
         required: false
-        default: '--timeout 300'
+        default: '--timeout 300 --output-on-failure'
 
 env:
   # Alien
