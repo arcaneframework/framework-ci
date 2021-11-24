@@ -418,7 +418,7 @@ jobs:
           retention-days: 1
 
   alienlegacy-install:
-    name: alienlegacy-install
+    name: alienlegacy-install-${{ github.event.inputs.alien_legacy_plugins_branch }}
     needs:
       - alien-install
       - arcane-install
@@ -633,7 +633,7 @@ jobs:
           retention-days: 1
 
   alienlegacy-test:
-    name: alienlegacy-test
+    name: alienlegacy-test-${{ github.event.inputs.alien_legacy_plugins_branch }}
     needs:
       - arccore-install
       - arcane-install
