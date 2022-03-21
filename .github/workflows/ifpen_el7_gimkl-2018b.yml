@@ -80,6 +80,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Check permissions
+        shell: bash
+        run: id && ls -lnd /__w && ls -lnR /__w
+        continue-on-error: true
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -116,6 +120,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Check permissions
+        shell: bash
+        run: id && ls -lnd /__w && ls -lnR /__w
+        continue-on-error: true
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -178,6 +186,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Check permissions
+        shell: bash
+        run: id && ls -lnd /__w && ls -lnR /__w
+        continue-on-error: true
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -222,6 +234,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Check permissions
+        shell: bash
+        run: id && ls -lnd /__w && ls -lnR /__w
+        continue-on-error: true
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -275,6 +291,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Check permissions
+        shell: bash
+        run: id && ls -lnd /__w && ls -lnR /__w
+        continue-on-error: true
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -359,6 +379,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Check permissions
+        shell: bash
+        run: id && ls -lnd /__w && ls -lnR /__w
+        continue-on-error: true
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -432,6 +456,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Check permissions
+        shell: bash
+        run: id && ls -lnd /__w && ls -lnR /__w
+        continue-on-error: true
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -514,6 +542,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Check permissions
+        shell: bash
+        run: id && ls -lnd /__w && ls -lnR /__w
+        continue-on-error: true
       - name: Download arccore build artifact
         uses: actions/download-artifact@v2
         with:
@@ -546,6 +578,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Check permissions
+        shell: bash
+        run: id && ls -lnd /__w && ls -lnR /__w
+        continue-on-error: true
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -596,6 +632,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Check permissions
+        shell: bash
+        run: id && ls -lnd /__w && ls -lnR /__w
+        continue-on-error: true
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -639,6 +679,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Check permissions
+        shell: bash
+        run: id && ls -lnd /__w && ls -lnR /__w
+        continue-on-error: true
       - name: Checkout
         uses: actions/checkout@v2
         with:
