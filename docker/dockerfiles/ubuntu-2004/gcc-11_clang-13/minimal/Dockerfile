@@ -1,42 +1,49 @@
-# Ubuntu 20.04 dependencies for Arcane.
-# Version with clang 13.
+# Ubuntu 20.04 minimal dependencies for Arcane.
+# Version with GCC 11 / CLang 13 / CMake 3.21.3.
+
 # Based on https://github.com/arcaneframework/alien/blob/main/docker/base/ubuntu-20.04/Dockerfile
+
 FROM ubuntu:20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
 
-# On update.
+# On update puis installe add-apt-repository.
+# On ajoute le repo pour avoir gcc-11.
 # On installe les packages pour compiler Arcane.
+# On met la version par défaut du compiler gcc en version 11.
 RUN apt-get update -y \
+    && apt-get install -y software-properties-common \
+    && add-apt-repository ppa:ubuntu-toolchain-r/test -y \
+    && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-    software-properties-common \
-    libc6-dev \
-    make \
-    dpkg-dev \
-    cmake \
     apt-utils \
+    wget \
+    rsync \
+    build-essential \
+    gcc-11 \
+    g++-11 \
+    make \
+    cmake \
+    ccache \
+    ninja-build \
     iputils-ping \
     python3 \
     git \
     gfortran \
+    libc6-dev \
     libglib2.0-dev \
     libxml2-dev \
-    libhdf5-openmpi-dev \
+    libhdf5-dev libhdf5-openmpi-dev \
     libparmetis-dev \
-    wget \
-    libgtest-dev \
-    libtbb-dev \
-    rsync \
-    swig4.0 \
-    libhypre-dev \
-    petsc-dev \
-    ninja-build \
-    ccache \
-    gpg-agent \
-    valgrind \
-    paraview \
-    && rm -rf /var/lib/apt/lists/*
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 \
+    && update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-11 100 \
+    && update-alternatives --set g++ /usr/bin/g++-11 \
+    && update-alternatives --set gcc /usr/bin/gcc-11 \
+    && update-alternatives --set cpp-bin /usr/bin/cpp-11
 
 # On installe dotnet 6.
 RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
@@ -60,7 +67,7 @@ RUN cd /tmp \
     && chmod +x llvm.sh \
     && ./llvm.sh 13 \
     && rm -rf /tmp/* \
-    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-13 100 \
-    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-13 100 \
+    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-13 90 \
+    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-13 90 \
     && update-alternatives --set clang /usr/bin/clang-13 \
     && update-alternatives --set clang++ /usr/bin/clang++-13
