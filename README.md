@@ -64,6 +64,7 @@ Les workflows disponibles sont:
 
 - install_vcpkg_packages.yml
 - ci-direct.yml
+- create_image_OS_{Compilateurs}.yml
 
 ### install_vcpkg_packages
 
@@ -132,6 +133,33 @@ et optimisées). Sous windows, `vcpkg` va aussi automatiquement
 recopier dans le répertoire de l'exécutable les DLLs nécessaires à son
 exécution (mais uniquement les DLLs associées à des packages installés
 par `vcpkg`).
+
+### create_image
+
+Ces workflows permettent de construire des images Docker contenant le
+nécessaire pour compiler, installer et lancer Arcane.
+
+Actuellement, il y a trois versions d'images possibles :
+- **minimal** : contient le minimum de packages pour pouvoir utiliser
+  Arcane.
+- **full** : contient le maximum de package pour pouvoir utiliser le
+  maximum des fonctionnalités d'Arcane. Dépend de **minimal** pour être
+  construite.
+- **doc** : contient les packages nécessaires pour compiler la
+  documentation. Dépend aussi de **minimal** pour être construite.
+
+Le nom du fichier YAML permet de retrouver les Dockerfiles associés.
+Par exemple, les Dockerfiles de
+create_image_ubuntu-2004_gcc-11_clang-13.yml se trouve ici : 
+./docker/dockerfiles/ubuntu-2004/gcc-11_clang-13/
+
+Puis, selon les versions disponibles, on peut avoir les sous-répertoires
+**minimal**/, **full**/, **doc**/ qui contiennent le Dockerfile associé.
+
+L'image créée aura pour nom **ubuntu-2004** et pour tag
+**gcc-11_clang-13_minimal** (donc **ubuntu-2004:gcc-11_clang-13_minimal**)
+
+Les images sont accessibles dans la partie "Package" de ce dépôt.
 
 ## Utilisation de 'Github CLI'
 

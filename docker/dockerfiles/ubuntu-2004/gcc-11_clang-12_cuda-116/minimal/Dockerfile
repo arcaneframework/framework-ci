@@ -1,6 +1,8 @@
-# Ubuntu 20.04 dependencies for Arcane.
-# Version with GCC 11 and CUDA 11.6.
+# Ubuntu 20.04 minimal dependencies for Arcane.
+# Version with GCC 11 / CUDA 11.6 / CMake 3.21.3.
+
 # Based on https://github.com/arcaneframework/alien/blob/main/docker/base/ubuntu-20.04/Dockerfile
+
 FROM nvidia/cuda:11.6.0-devel-ubuntu20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -15,13 +17,12 @@ RUN apt-get update -y \
     && add-apt-repository ppa:ubuntu-toolchain-r/test -y \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
+    apt-utils \
+    build-essential \
     gcc-11 \
     g++-11 \
-    libc6-dev \
-    make \
-    dpkg-dev \
-    cmake \
-    apt-utils \
+    ccache \
+    ninja-build \
     iputils-ping \
     python3 \
     git \
@@ -31,16 +32,8 @@ RUN apt-get update -y \
     libhdf5-openmpi-dev \
     libparmetis-dev \
     wget \
-    libgtest-dev \
-    libtbb-dev \
     rsync \
-    swig4.0 \
-    libhypre-dev \
-    petsc-dev \
-    ninja-build \
-    ccache \
-    valgrind \
-    paraview \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
     && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100 \
     && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 \
@@ -63,3 +56,14 @@ RUN cd /tmp \
     && cd /tmp/cmake-3.21.3-linux-x86_64/ \
     && rsync -au . /usr/local \
     && cd .. && rm -rf /tmp/*
+
+# On installe CLang 12.
+RUN cd /tmp \
+    && wget https://apt.llvm.org/llvm.sh \
+    && chmod +x llvm.sh \
+    && ./llvm.sh 12 \
+    && rm -rf /tmp/* \
+    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 90 \
+    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 90 \
+    && update-alternatives --set clang /usr/bin/clang-12 \
+    && update-alternatives --set clang++ /usr/bin/clang++-12
