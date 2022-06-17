@@ -48,9 +48,9 @@ RUN cd /tmp \
     
 # On installe OTF2.
 RUN cd /tmp \
-    && wget https://perftools.pages.jsc.fz-juelich.de/cicd/otf2/tags/otf2-2.3/otf2-2.3.tar.gz \
-    && tar zxf otf2-2.3.tar.gz \
-    && cd otf2-2.3/ \
+    && wget https://perftools.pages.jsc.fz-juelich.de/cicd/otf2/tags/otf2-3.0/otf2-3.0.tar.gz \
+    && tar zxf otf2-3.0.tar.gz \
+    && cd otf2-3.0/ \
     && ./configure --prefix=/usr/local --exec-prefix=/usr/local \
     && make \
     && make install \
