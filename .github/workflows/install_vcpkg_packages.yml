@@ -15,16 +15,20 @@ jobs:
       VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/builddir/vcpkg_archives
       VCPKG_DISABLE_METRICS: 1
       VCPKG_BUILD_DIR: '${{ github.workspace }}/../../build_base/framework-ci/vcpkg'
-      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.0.12-${{ matrix.os }}-${{ matrix.triplet }}'
-      VCPKG_PREINSTALL_HASH_PACKAGE_NAME: '1.0.11-${{ matrix.os }}-${{ matrix.triplet }}'
+      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.0.13-${{ matrix.os }}-${{ matrix.triplet }}'
+#      VCPKG_PREINSTALL_HASH_PACKAGE_NAME: '1.0.12-${{ matrix.os }}-${{ matrix.triplet }}'
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
-      DOTNET_VERSION: '3.1.x'
+      DOTNET_VERSION: '6.x'
 
     strategy:
       matrix:
         include:
           - os: 'windows-2019'
+            triplet: x64-windows
+            nugetexe: nuget.exe
+            mono: ''
+          - os: 'windows-2022'
             triplet: x64-windows
             nugetexe: nuget.exe
             mono: ''
@@ -61,7 +65,7 @@ jobs:
 
       - name: Remove installed version of cmake if needed
         shell: 'bash'
-        if: ${{ matrix.os == 'windows-2019' }}
+        if: ${{ matrix.os == 'windows-2019' || matrix.os == 'windows-2022' }}
         run: |
           rm '/c/Program Files/CMake/bin/cmake'
 
