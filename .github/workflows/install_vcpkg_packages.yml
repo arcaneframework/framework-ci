@@ -37,6 +37,11 @@ jobs:
             nugetexe: /usr/local/bin/nuget.exe
             # To run `nuget.exe` on non-Windows platforms, we must use `mono`.
             mono: 'mono'
+          - os: 'ubuntu-22.04'
+            triplet: 'x64-linux'
+            nugetexe: /usr/local/bin/nuget.exe
+            # To run `nuget.exe` on non-Windows platforms, we must use `mono`.
+            mono: 'mono'
 
     steps:
 
