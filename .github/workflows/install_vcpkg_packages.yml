@@ -109,7 +109,7 @@ jobs:
       - name: 'Install vpckg packages'
         shell: 'bash'
         run: >
-          ${VCPKG_BUILD_DIR}/vcpkg --debug install glib libxml2 mpi hypre hdf5 hwloc lz4 tbb boost-program-options boost-property-tree gtest --triplet ${{ matrix.triplet }}
+          ${VCPKG_BUILD_DIR}/vcpkg --debug install glib libxml2 mpi parmetis hypre hdf5 hwloc lz4 tbb boost-program-options boost-property-tree gtest --triplet ${{ matrix.triplet }}
 
       - name: 'Create nuget package for vcpkg installed packages'
         shell: 'bash'
