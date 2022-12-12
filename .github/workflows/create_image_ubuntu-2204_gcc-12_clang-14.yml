@@ -58,7 +58,8 @@ jobs:
             org.opencontainers.image.description=Image to Build/Install/Run Arcane Framework
             org.opencontainers.image.vendor=CEA
           tags: |
-            type=raw, ${{ env.IMAGE_OS_TAG }}_minimal
+            type=raw, gcc_clang_minimal_latest
+            type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_{{date 'YYYYMMDD'}}
 
       - name: Build and push Docker image
@@ -101,7 +102,8 @@ jobs:
             org.opencontainers.image.description=Image to Build/Install/Run Arcane Framework
             org.opencontainers.image.vendor=CEA
           tags: |
-            type=raw, ${{ env.IMAGE_OS_TAG }}_full
+            type=raw, gcc_clang_full_latest
+            type=raw, ${{ env.IMAGE_OS_TAG }}_full_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_{{date 'YYYYMMDD'}}
 
       - name: Build and push Docker image
@@ -143,7 +145,8 @@ jobs:
             org.opencontainers.image.description=Image to Build/Install/Run Arcane Framework
             org.opencontainers.image.vendor=CEA
           tags: |
-            type=raw, ${{ env.IMAGE_OS_TAG }}_doc
+            type=raw, gcc_clang_doc_latest
+            type=raw, ${{ env.IMAGE_OS_TAG }}_doc_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_doc_{{date 'YYYYMMDD'}}
 
       - name: Build and push Docker image

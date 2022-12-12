@@ -148,18 +148,49 @@ Actuellement, il y a trois versions d'images possibles :
 - **doc** : contient les packages nécessaires pour compiler la
   documentation. Dépend aussi de **minimal** pour être construite.
 
-Le nom du fichier YAML permet de retrouver les Dockerfiles associés.
-Par exemple, les Dockerfiles de
-create_image_ubuntu-2004_gcc-11_clang-13.yml se trouve ici : 
-./docker/dockerfiles/ubuntu-2004/gcc-11_clang-13/
+Les Dockerfiles se trouvent dans le répertoire 
+`./docker/dockerfiles/os/compilers/version`.
 
 Puis, selon les versions disponibles, on peut avoir les sous-répertoires
 **minimal**/, **full**/, **doc**/ qui contiennent le Dockerfile associé.
 
-L'image créée aura pour nom **ubuntu-2004** et pour tag
-**gcc-11_clang-13_minimal** (donc **ubuntu-2004:gcc-11_clang-13_minimal**)
+L'image créée aura, par exemple, pour nom **ubuntu-2004** et pour tag
+**gcc-11_clang-13_minimal_latest** 
+(donc **ubuntu-2004:gcc-11_clang-13_minimal_latest**).
+
+Au lieu de `latest`, il est possible de mettre la date de création
+de l'image.
 
 Les images sont accessibles dans la partie "Package" de ce dépôt.
+
+Il y a trois tags par image :
+- Dernières versions des compilateurs (exemple : gcc_clang_full_latest)
+- Versions des compilateurs au choix (exemple : gcc-12_clang-14_full_latest)
+- Versions des compilateurs au choix, avec date de création (exemple : gcc-12_clang-14_full_20220617)
+
+Cela permet de choisir le niveau de stabilité voulu selon l'utilisation faite
+de l'image.
+
+Images disponibles (pour les dates de création, voir dans la partie "Package") :
+- ubuntu-2204:
+ - gcc_clang
+ - gcc-12_clang-14
+  - _full_latest
+  - _minimal_latest
+  - _doc_latest
+ - gcc_clang_cuda
+ - gcc-11_clang-13_cuda-117
+  - _full_latest
+  - _minimal_latest
+- ubuntu-2004:
+ - gcc_clang
+ - gcc-11_clang-13
+  - _full_latest
+  - _minimal_latest
+ - gcc_clang_cuda
+ - gcc-11_clang-12_cuda-116
+  - _full_latest
+  - _minimal_latest
 
 ## Utilisation de 'Github CLI'
 

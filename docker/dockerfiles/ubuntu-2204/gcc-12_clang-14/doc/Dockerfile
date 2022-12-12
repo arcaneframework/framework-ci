@@ -1,6 +1,6 @@
 # Ubuntu 22.04 minimal dependencies for Documentation Arcane.
 
-FROM ghcr.io/arcaneframework/ubuntu-2204:gcc-12_clang-14_minimal
+FROM ghcr.io/arcaneframework/ubuntu-2204:gcc-12_clang-14_minimal_latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
