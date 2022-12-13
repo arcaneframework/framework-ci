@@ -1,7 +1,7 @@
 # README
 ## ubuntu-2004:gcc-11_clang-13_cuda-118
 
-This branch contains the workflow and the dockerfiles to create
+This branch contains the workflow and dockerfiles to create an
 image with Ubuntu 20.04 and:
 - GCC 11
 - CLang 13
