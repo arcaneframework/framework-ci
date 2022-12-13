@@ -1,12 +1,12 @@
 # README
 ## ubuntu-2004:gcc-11_clang-13
 
-This branch contains the workflow and the dockerfiles to create
+This branch contains the workflow and dockerfiles to create an
 image with Ubuntu 20.04 and:
 - GCC 11
 - CLang 13
 
-Two availables version:
+Two available versions:
 - **minimal** : with the minimal set of packages to compile and 
   run Arcane Framework.
 - **full** : with the maximum set of packages to compile and run
