@@ -1,0 +1,19 @@
+name: 'Image Creator'
+
+on:
+  workflow_dispatch:
+    inputs:
+      minimal_version:
+        description: 'Choose an other branch!'
+        required: true
+        type: boolean
+
+jobs:
+  main:
+    name: Choose an other branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Exit
+        shell: bash
+        run: exit 1

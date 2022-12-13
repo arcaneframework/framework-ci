@@ -29,7 +29,7 @@ conservés dans la partie `secrets`. Le secret 'ArcaneFrameworkCI'
 permet d'accéder au dépot Arcane. Il doit être spécifié dans le
 workflow lors du checkout de Arcane.
 
-## Compilation des packages
+# Compilation des packages
 
 Actuellement pour avoir la même configuration entre windows et linux
 (ubuntu), on utilise [vcpkg](https://vcpkg.io) pour installer les
@@ -58,7 +58,7 @@ Les produits installés par `vcpkg` sont mis dans le sous-répertoire `installed
 NOTE: Sous Linux, `vcpkg` utilise des bibliothèques statiques
 (`.a`). Sous windows, il utilise des bibliothèques dynamiques (DLL).
 
-## Workflows
+# Workflows
 
 Les workflows disponibles sont:
 
@@ -66,7 +66,7 @@ Les workflows disponibles sont:
 - ci-direct.yml
 - create_image_OS_{Compilateurs}.yml
 
-### install_vcpkg_packages
+## install_vcpkg_packages
 
 Ce workflow permet de compiler (via `vcpkg`) les packages nécessaires
 et de les publier dans le 'GitHub Packages' sous la forme de packages
@@ -100,7 +100,7 @@ packages, dont le nom est donné par la variable
 `VCPKG_PREINSTALL_HASH_PACKAGE_NAME`. Cette étape exécute le script
 `_build/vcpkg_cache/DoUntar.cmake` pour faire cela.
 
-### ci-direct
+## ci-direct
 
 Le workflow `ci-direct` est celui qui permet de compiler Arcane en
 même temps que les composantes Arccon, Arccore et Axlstar. Ce workflow
@@ -134,7 +134,7 @@ recopier dans le répertoire de l'exécutable les DLLs nécessaires à son
 exécution (mais uniquement les DLLs associées à des packages installés
 par `vcpkg`).
 
-### create_image
+## create_image
 
 Ces workflows permettent de construire des images Docker contenant le
 nécessaire pour compiler, installer et lancer Arcane.
@@ -148,20 +148,95 @@ Actuellement, il y a trois versions d'images possibles :
 - **doc** : contient les packages nécessaires pour compiler la
   documentation. Dépend aussi de **minimal** pour être construite.
 
-Le nom du fichier YAML permet de retrouver les Dockerfiles associés.
-Par exemple, les Dockerfiles de
-create_image_ubuntu-2004_gcc-11_clang-13.yml se trouve ici : 
-./docker/dockerfiles/ubuntu-2004/gcc-11_clang-13/
+Les Dockerfiles se trouvent dans le répertoire 
+`./docker/dockerfiles/os/compilers/version`.
 
 Puis, selon les versions disponibles, on peut avoir les sous-répertoires
 **minimal**/, **full**/, **doc**/ qui contiennent le Dockerfile associé.
 
-L'image créée aura pour nom **ubuntu-2004** et pour tag
-**gcc-11_clang-13_minimal** (donc **ubuntu-2004:gcc-11_clang-13_minimal**)
+L'image créée aura, par exemple, pour nom **ubuntu-2004** et pour tag
+**gcc-11_clang-13_minimal_latest** 
+(donc **ubuntu-2004:gcc-11_clang-13_minimal_latest**).
+
+Au lieu de `latest`, il est possible de mettre la date de création
+de l'image.
 
 Les images sont accessibles dans la partie "Package" de ce dépôt.
 
-## Utilisation de 'Github CLI'
+
+### Les tags
+
+Il y a quatre types de tags :
+1. Dernière version du compilateur (exemple : gcc_full_latest)
+2. Version du compilateur au choix (exemple : gcc-12_full_latest)
+3. Versions des compilateurs de l'image au choix 
+   (exemple : gcc-12_clang-14_full_latest)
+4. Versions des compilateurs de l'image au choix, avec date de création 
+   (exemple : gcc-12_clang-14_full_20220617)
+
+Cela permet de choisir le niveau de stabilité voulu selon l'utilisation faite
+de l'image.
+
+Le tag `1.` permet d'avoir la dernière version du compilateur.
+C'est l'image qui sera le plus souvent mise à jour. Par exemple, si vous
+compilez Arcane et que vous vous fichez de la version de `gcc` ou de `clang`,
+ce tag convient.
+
+Le tag `2.` permet de choisir une version majeur de compilateur. Si la
+version du compilateur importe pour vous, ce tag convient.
+
+Le tag `3.` est lié à la façon dont on crée les images. En effet, pour
+éviter de multiplier les images, on réunit plusieurs compilateurs dans
+la même image. Ce tag présente donc l'ensemble des compilateurs C/C++
+présents dans l'image, avec leurs versions. Ce tag permet d'être sûr
+des compilateurs présents dans l'image et peux vous être utile si vous
+souhaitez tester plusieurs compilateurs en même temps.
+
+Le tag `4.` est le plus stable. En effet, il permet de choisir une image
+qui ne changera jamais (sauf si plusieurs images sont générées le même
+jour, dans le cas de hotfix par exemple). Si vous souhaitez avoir le même
+environnement de travail, les mêmes versions des outils en permanance
+(pour reproduire des bugs par exemple), ce tag convient.
+
+Attention néanmoins, aujourd'hui, les images créées contiennent plusieurs
+compilateurs. Par exemple, si vous choisissez le tag `gcc_full_latest`,
+vous aurez aussi le compilateur `clang`. Mais c'est quelque chose qui peut
+être amené à changer.
+
+<br>
+
+Images disponibles (pour les dates de création, voir dans la partie
+"Package") :
+- ubuntu-2204:
+  - gcc
+  - clang
+  - cuda
+  - gcc-12
+  - clang-14
+  - cuda-117
+  - gcc-12_clang-14
+  - gcc-11_clang-13_cuda-117
+    - _full_latest
+    - _minimal_latest
+ 
+- ubuntu-2004:
+  - gcc
+  - clang
+  - cuda
+  - gcc-11
+  - clang-13
+  - cuda-116
+  - gcc-11_clang-13
+  - gcc-11_clang-12_cuda-116
+    - _full_latest
+    - _minimal_latest
+
+Pour générer la documentation, voici les images disponibles (pour les
+dates de création, voir dans la partie "Package"):
+- ubuntu-2204:gcc-12_clang-14_doc_latest
+- ubuntu-2204:gcc_doc_latest
+
+# Utilisation de 'Github CLI'
 
 Il existe une version en ligne de commande (CLI) pour appeler l'API
 GitHub: [GitHub CLI](https://github.com/cli/cli). Il est possible de
@@ -177,7 +252,7 @@ gh workflow run ci-direct.yml -f framework_branch=dev/cea
 Cet outil permet de faire beaucoup plus de choses comme suivre les
 workflow, faire des 'pull request', ...
 
-## TODO
+# TODO
 
 - [ ] Ajouter l'exécution de plus de tests (par exemple des tests parallèles)
 - [ ] Regarder pourquoi l'installation séparée ne fonctionne pas.
