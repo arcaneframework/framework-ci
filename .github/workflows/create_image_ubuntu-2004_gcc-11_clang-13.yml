@@ -54,7 +54,10 @@ jobs:
             org.opencontainers.image.description=Image to Build/Install/Run Arcane Framework
             org.opencontainers.image.vendor=CEA
           tags: |
-            type=raw, gcc_clang_minimal_latest
+            type=raw, gcc_minimal_latest
+            type=raw, clang_minimal_latest
+            type=raw, gcc-11_minimal_latest
+            type=raw, clang-13_minimal_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_{{date 'YYYYMMDD'}}
 
@@ -98,7 +101,10 @@ jobs:
             org.opencontainers.image.description=Image to Build/Install/Run Arcane Framework
             org.opencontainers.image.vendor=CEA
           tags: |
-            type=raw, gcc_clang_full_latest
+            type=raw, gcc_full_latest
+            type=raw, clang_full_latest
+            type=raw, gcc-11_full_latest
+            type=raw, clang-13_full_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_{{date 'YYYYMMDD'}}
 
