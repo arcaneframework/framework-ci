@@ -22,7 +22,7 @@ env:
 jobs:
   # Quand on demande minimal et full, le minimal doit être fait avant le full.
   build-and-push-minimal:
-    name: Build and Push Minimal Image
+    name: U20_G11_C13 Minimal Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -69,7 +69,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   build-and-push-full:
-    name: Build and Push Full Image
+    name: U20_G11_C13 Full Image
     if: ${{ inputs.full_version }}
     needs:
       - build-and-push-minimal
