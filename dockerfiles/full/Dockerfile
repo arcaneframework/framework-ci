@@ -1,7 +1,7 @@
-# Ubuntu 20.04 full dependencies for Arcane.
-# Version with GCC 11 / CUDA 11.6 / CMake 3.21.3.
+# Ubuntu 22.04 full dependencies for Arcane.
+# Version with GCC 12 / CLang 14.
 
-FROM ghcr.io/arcaneframework/ubuntu-2004:gcc-11_clang-12_cuda-116_minimal_latest
+FROM ghcr.io/arcaneframework/ubuntu-2204:gcc-12_clang-14_minimal_latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
@@ -18,7 +18,7 @@ RUN apt-get update -y \
     pd-bsaylor \
     libopenmpi-dev \
     libgtest-dev \
-    libtbb-dev \
+    libtbb2-dev \
     libhypre-dev \
     libosmesa6-dev \
     libunwind-dev \
@@ -32,7 +32,7 @@ RUN apt-get update -y \
     libpapi-dev \
     libglvnd-dev \
     libgl1-mesa-dev libxt-dev \
-    libqt5opengl5-dev qt5-default libqt5x11extras5-dev libqt5help5 qttools5-dev qtxmlpatterns5-dev-tools libqt5svg5-dev \
+    libqt5opengl5-dev libqt5x11extras5-dev libqt5help5 qttools5-dev qtxmlpatterns5-dev-tools libqt5svg5-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # On installe IceT.
@@ -48,9 +48,9 @@ RUN cd /tmp \
     
 # On installe OTF2.
 RUN cd /tmp \
-    && wget https://perftools.pages.jsc.fz-juelich.de/cicd/otf2/tags/otf2-3.0/otf2-3.0.tar.gz \
-    && tar zxf otf2-3.0.tar.gz \
-    && cd otf2-3.0/ \
+    && wget https://perftools.pages.jsc.fz-juelich.de/cicd/otf2/tags/otf2-3.0.2/otf2-3.0.2.tar.gz \
+    && tar zxf otf2-3.0.2.tar.gz \
+    && cd otf2-3.0.2/ \
     && ./configure --prefix=/usr/local --exec-prefix=/usr/local \
     && make \
     && make install \
@@ -67,3 +67,4 @@ RUN cd /tmp \
     && cmake .. -DPARAVIEW_USE_MPI=ON -DVTK_SMP_IMPLEMENTATION_TYPE=TBB -DCMAKE_BUILD_TYPE=Release -GNinja \
     && cmake --build . --target install \
     && cd / && rm -rf /tmp/*
+

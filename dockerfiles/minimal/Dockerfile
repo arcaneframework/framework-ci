@@ -1,7 +1,5 @@
 # Ubuntu 22.04 minimal dependencies for Arcane.
-# Version with GCC 12 / CLang 14 / CMake 3.22.1.
-
-# Based on https://github.com/arcaneframework/alien/blob/main/docker/base/ubuntu-20.04/Dockerfile
+# Version with GCC 12 / CLang 14.
 
 FROM ubuntu:22.04
 
