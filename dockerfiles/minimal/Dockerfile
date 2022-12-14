@@ -1,7 +1,5 @@
 # Ubuntu 20.04 minimal dependencies for Arcane.
-# Version with GCC 11 / CLang 13 / CMake 3.21.3.
-
-# Based on https://github.com/arcaneframework/alien/blob/main/docker/base/ubuntu-20.04/Dockerfile
+# Version with GCC 11 / CLang 13 / CMake 3.22.1.
 
 FROM ubuntu:20.04
 
@@ -52,11 +50,11 @@ RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-p
     && apt-get install -y apt-transport-https dotnet-sdk-6.0 \
     && rm -rf /var/lib/apt/lists/*
 
-# On installe la version 3.21 de CMake.
+# On installe la version 3.22 de CMake.
 RUN cd /tmp \
-    && wget https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3-Linux-x86_64.tar.gz \
-    && tar xf cmake-3.21.3-Linux-x86_64.tar.gz \
-    && cd /tmp/cmake-3.21.3-linux-x86_64/ \
+    && wget https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-Linux-x86_64.tar.gz \
+    && tar xf cmake-3.22.1-Linux-x86_64.tar.gz \
+    && cd /tmp/cmake-3.22.1-linux-x86_64/ \
     && rsync -au . /usr/local \
     && cd .. && rm -rf /tmp/*
 
