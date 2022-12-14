@@ -1,7 +1,7 @@
 # Ubuntu 20.04 full dependencies for Arcane.
-# Version with GCC 11 / CLang 13 / CMake 3.21.3.
+# Version with GCC 11 / CLang 14 / CMake 3.22.1.
 
-FROM ghcr.io/arcaneframework/ubuntu-2004:gcc-11_clang-13_minimal_latest
+FROM ghcr.io/arcaneframework/ubuntu-2004:gcc-11_clang-14_minimal_latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
@@ -48,9 +48,9 @@ RUN cd /tmp \
     
 # On installe OTF2.
 RUN cd /tmp \
-    && wget https://perftools.pages.jsc.fz-juelich.de/cicd/otf2/tags/otf2-3.0/otf2-3.0.tar.gz \
-    && tar zxf otf2-3.0.tar.gz \
-    && cd otf2-3.0/ \
+    && wget https://perftools.pages.jsc.fz-juelich.de/cicd/otf2/tags/otf2-3.0.2/otf2-3.0.2.tar.gz \
+    && tar zxf otf2-3.0.2.tar.gz \
+    && cd otf2-3.0.2/ \
     && ./configure --prefix=/usr/local --exec-prefix=/usr/local \
     && make \
     && make install \

@@ -16,13 +16,13 @@ env:
   REGISTRY: 'ghcr.io'
   USER_NAME: 'arcaneframework'
   IMAGE_OS_NAME: 'ubuntu-2004'
-  IMAGE_OS_TAG: 'gcc-11_clang-13'
+  IMAGE_OS_TAG: 'gcc-11_clang-14'
   DOCKERFILE_PATH: './dockerfiles'
 
 jobs:
   # Quand on demande minimal et full, le minimal doit être fait avant le full.
   build-and-push-minimal:
-    name: U20_G11_C13 Minimal Image
+    name: U20_G11_C14 Minimal Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -55,7 +55,7 @@ jobs:
             type=raw, gcc_minimal_latest
             type=raw, clang_minimal_latest
             type=raw, gcc-11_minimal_latest
-            type=raw, clang-13_minimal_latest
+            type=raw, clang-14_minimal_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_{{date 'YYYYMMDD'}}
 
@@ -69,7 +69,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   build-and-push-full:
-    name: U20_G11_C13 Full Image
+    name: U20_G11_C14 Full Image
     if: ${{ inputs.full_version }}
     needs:
       - build-and-push-minimal
@@ -102,7 +102,7 @@ jobs:
             type=raw, gcc_full_latest
             type=raw, clang_full_latest
             type=raw, gcc-11_full_latest
-            type=raw, clang-13_full_latest
+            type=raw, clang-14_full_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_{{date 'YYYYMMDD'}}
 
