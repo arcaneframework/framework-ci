@@ -1,5 +1,5 @@
 # Ubuntu 20.04 minimal dependencies for Arcane.
-# Version with GCC 11 / CLang 14 / CMake 3.22.1.
+# Version with GCC 11 / CLang 15 / CMake 3.22.1.
 
 FROM ubuntu:20.04
 
@@ -58,14 +58,14 @@ RUN cd /tmp \
     && rsync -au . /usr/local \
     && cd .. && rm -rf /tmp/*
 
-# On installe CLang 14.
-# On met la version par défaut du compiler clang en version 14.
+# On installe CLang 15.
+# On met la version par défaut du compiler clang en version 15.
 RUN cd /tmp \
     && wget https://apt.llvm.org/llvm.sh \
     && chmod +x llvm.sh \
-    && ./llvm.sh 14 \
+    && ./llvm.sh 15 \
     && rm -rf /tmp/* \
-    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 90 \
-    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-14 90 \
-    && update-alternatives --set clang /usr/bin/clang-14 \
-    && update-alternatives --set clang++ /usr/bin/clang++-14
+    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-15 90 \
+    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-15 90 \
+    && update-alternatives --set clang /usr/bin/clang-15 \
+    && update-alternatives --set clang++ /usr/bin/clang++-15

@@ -1,10 +1,10 @@
 # README
-## ubuntu-2004:gcc-11_clang-13
+## ubuntu-2004:gcc-11_clang-15
 
 This branch contains the workflow and dockerfiles to create an
 image with Ubuntu 20.04 and:
 - GCC 11
-- CLang 13
+- CLang 15
 
 Two available versions:
 - **minimal** : with the minimal set of packages to compile and 

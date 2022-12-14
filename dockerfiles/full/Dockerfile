@@ -1,7 +1,7 @@
 # Ubuntu 20.04 full dependencies for Arcane.
-# Version with GCC 11 / CLang 14 / CMake 3.22.1.
+# Version with GCC 11 / CLang 15 / CMake 3.22.1.
 
-FROM ghcr.io/arcaneframework/ubuntu-2004:gcc-11_clang-14_minimal_latest
+FROM ghcr.io/arcaneframework/ubuntu-2004:gcc-11_clang-15_minimal_latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
