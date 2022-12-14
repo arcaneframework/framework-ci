@@ -53,7 +53,6 @@ jobs:
             org.opencontainers.image.vendor=CEA
           tags: |
             type=raw, gcc_minimal_latest
-            type=raw, clang_minimal_latest
             type=raw, gcc-11_minimal_latest
             type=raw, clang-14_minimal_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_latest
@@ -100,7 +99,6 @@ jobs:
             org.opencontainers.image.vendor=CEA
           tags: |
             type=raw, gcc_full_latest
-            type=raw, clang_full_latest
             type=raw, gcc-11_full_latest
             type=raw, clang-14_full_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_latest
