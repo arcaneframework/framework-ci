@@ -1,5 +1,5 @@
 # Ubuntu 22.04 minimal dependencies for Arcane.
-# Version with GCC 12 / CLang 14.
+# Version with GCC 12 / CLang 15.
 
 FROM ubuntu:22.04
 
@@ -15,7 +15,6 @@ RUN apt-get update -y \
     build-essential \
     gcc-12 \
     g++-12 \
-    clang-14 \
     make \
     ccache \
     ninja-build \
@@ -31,14 +30,25 @@ RUN apt-get update -y \
     ca-certificates \
     dotnet6 \
     cmake \
+    software-properties-common \
+    gnupg \
     && rm -rf /var/lib/apt/lists/* \
     && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100 \
     && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
     && update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-12 100 \
     && update-alternatives --set g++ /usr/bin/g++-12 \
     && update-alternatives --set gcc /usr/bin/gcc-12 \
-    && update-alternatives --set cpp-bin /usr/bin/cpp-12 \
-    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 90 \
-    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-14 90 \
-    && update-alternatives --set clang /usr/bin/clang-14 \
-    && update-alternatives --set clang++ /usr/bin/clang++-14
+    && update-alternatives --set cpp-bin /usr/bin/cpp-12
+
+# On installe CLang 15.
+# On met la version par défaut du compiler clang en version 15.
+# (Nécessite software-properties-common et gnupg)
+RUN cd /tmp \
+    && wget https://apt.llvm.org/llvm.sh \
+    && chmod +x llvm.sh \
+    && ./llvm.sh 15 \
+    && rm -rf /tmp/* \
+    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-15 90 \
+    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-15 90 \
+    && update-alternatives --set clang /usr/bin/clang-15 \
+    && update-alternatives --set clang++ /usr/bin/clang++-15
