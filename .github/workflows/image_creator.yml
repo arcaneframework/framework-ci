@@ -3,8 +3,12 @@ name: 'Image Creator'
 on:
   workflow_dispatch:
     inputs:
-      minimal_version:
+      one:
         description: 'Choose an other branch!'
+        required: true
+        type: boolean
+      two:
+        description: 'To find a valid branch, search "image" in the searchbar'
         required: true
         type: boolean
 
