@@ -2,12 +2,18 @@
 
 Ce dépot contient les scripts pour l'intégration continue (CI) de Arcane.
 
-Il permet de découpler le code gérant le CI du code source
-d'Arcane. Il n'y a donc aucun code spécifique pour le CI dans le dépot
-Arcane.
-
-Il permet aussi d'avoir un temps illimité pour le CI via 'GitHub' tant
-que le dépot de Arcane est privé.
+- [README](#readme)
+- [Compilation des packages](#compilation-des-packages)
+- [Images Docker](#images-docker)
+  - [Les types](#les-types)
+  - [Les tags](#les-tags)
+  - [Images disponibles](#images-disponibles)
+- [Workflows](#workflows)
+  - [install\_vcpkg\_packages](#install_vcpkg_packages)
+  - [ci-direct](#ci-direct)
+  - [image\_creator](#image_creator)
+- [Utilisation de 'Github CLI'](#utilisation-de-github-cli)
+- [TODO](#todo)
 
 Actuellement, le CI utilise le mécanisme de 'GitHub', appelé 'GitHub
 Actions'. Ce mécanisme utilise des scripts au format YAML qui sont dans
@@ -22,12 +28,6 @@ Le CI fonctionne à la fois sous windows et linux
 Afin d'éviter d'être dépendant de produits externes et d'être portable
 entre les plateformes, le CI utilise uniquement des scripts CMake.
 
-Lors de l'exécution d'un workflow, ce dépot a besoin d'accéder au
-dépot contenant les sources de Arcane. Comme ce dépot est privé, il
-est nécessaire de s'authentifier. Pour cela, GitHub utilise des tokens
-conservés dans la partie `secrets`. Le secret 'ArcaneFrameworkCI'
-permet d'accéder au dépot Arcane. Il doit être spécifié dans le
-workflow lors du checkout de Arcane.
 
 # Compilation des packages
 
@@ -58,13 +58,122 @@ Les produits installés par `vcpkg` sont mis dans le sous-répertoire `installed
 NOTE: Sous Linux, `vcpkg` utilise des bibliothèques statiques
 (`.a`). Sous windows, il utilise des bibliothèques dynamiques (DLL).
 
+# Images Docker
+## Les types
+
+Actuellement, il y a trois types d'images possibles :
+- **minimal** : contient le minimum de packages pour pouvoir utiliser
+  Arcane.
+- **full** : contient le maximum de package pour pouvoir utiliser le
+  maximum des fonctionnalités d'Arcane. Dépend de **minimal** pour être
+  construite.
+- **doc** : contient les packages nécessaires pour compiler la
+  documentation. Dépend aussi de **minimal** pour être construite.
+
+## Les tags
+
+Il y a quatre types de tags :
+1. Dernière version du compilateur (exemple : `gcc_full_latest`)
+2. Version du compilateur au choix (exemple : `gcc-12_full_latest`)
+3. Versions des compilateurs de l'image au choix 
+   (exemple : `gcc-12_clang-14_full_latest`)
+4. Versions des compilateurs de l'image au choix, avec date de création 
+   (exemple : `gcc-12_clang-14_full_20220617`)
+
+Cela permet de choisir le niveau de stabilité voulu selon l'utilisation faite
+de l'image.
+
+Le tag `1.` permet d'avoir la dernière version du compilateur.
+C'est l'image qui sera le plus souvent mise à jour. Par exemple, si vous
+compilez Arcane et que vous vous fichez de la version de `gcc` ou de `clang`,
+ce tag convient.
+
+Le tag `2.` permet de choisir une version majeur de compilateur. Si la
+version du compilateur importe pour vous, ce tag convient.
+
+Le tag `3.` est lié à la façon dont on crée les images. En effet, pour
+éviter de multiplier les images, on réunit plusieurs compilateurs dans
+la même image. Ce tag présente donc l'ensemble des compilateurs C/C++
+présents dans l'image, avec leurs versions. Ce tag permet d'être sûr
+des compilateurs présents dans l'image et peux vous être utile si vous
+souhaitez tester plusieurs compilateurs en même temps.
+
+Le tag `4.` est le plus stable. En effet, il permet de choisir une image
+qui ne changera jamais (sauf si plusieurs images sont générées le même
+jour, dans le cas de hotfix par exemple). Si vous souhaitez avoir le même
+environnement de travail, les mêmes versions des outils en permanance
+(pour reproduire des bugs par exemple), ce tag convient.
+
+Attention néanmoins, aujourd'hui, les images créées contiennent plusieurs
+compilateurs. Par exemple, si vous choisissez le tag `gcc_full_latest`,
+vous aurez aussi le compilateur `clang`. Mais c'est quelque chose qui peut
+être amené à changer.
+
+## Images disponibles
+
+Pour voir directement toutes les images disponibles ou pour les dates de
+création, voir dans la partie "Package".
+
+Voici les images disponibles :
+- `ubuntu-2204:`
+  - `gcc`
+  - `clang`
+  - `cuda`
+  - `gcc-12`
+  - `clang-14`
+  - `clang-15`
+  - `cuda-117`
+  - `cuda-118`
+  - `gcc-12_clang-14`
+  - `gcc-12_clang-15`
+  - `gcc-11_clang-13_cuda-117`
+  - `gcc-11_clang-13_cuda-118`
+    - `_full_latest`
+    - `_minimal_latest`
+ 
+- `ubuntu-2004:`
+  - `gcc`
+  - `clang`
+  - `cuda`
+  - `gcc-11`
+  - `clang-13`
+  - `clang-14`
+  - `clang-15`
+  - `cuda-116`
+  - `cuda-118`
+  - `gcc-11_clang-13`
+  - `gcc-11_clang-14`
+  - `gcc-11_clang-15`
+  - `gcc-11_clang-12_cuda-116`
+  - `gcc-11_clang-13_cuda-118`
+    - `_full_latest`
+    - `_minimal_latest`
+
+Exemples :
+- `ubuntu-2204:clang-14_full_latest`
+- `ubuntu-2004:gcc_minimal_latest`
+
+<br>
+
+Pour générer la documentation, voici l'image actuellement disponible :
+- `ubuntu-2204:gcc_doc_latest`
+
+L'image de génération de documentation n'est utile que pour générer
+la documentation, il n'y a donc qu'un tag recommandé. Les autres tags
+peuvent ne plus fonctionner du jour au lendemain. En revanche,
+lorsque l'on change d'OS pour ce type d'image, l'ancienne image perdurera
+(mais ne sera plus forcement mise à jour).
+En bref, le tag `gcc_doc_latest` fonctionnera toujours mais la version
+de gcc n'est pas connu.
+
+
 # Workflows
 
 Les workflows disponibles sont:
 
 - install_vcpkg_packages.yml
 - ci-direct.yml
-- create_image_OS_{Compilateurs}.yml
+- image_creator.yml
 
 ## install_vcpkg_packages
 
@@ -134,107 +243,43 @@ recopier dans le répertoire de l'exécutable les DLLs nécessaires à son
 exécution (mais uniquement les DLLs associées à des packages installés
 par `vcpkg`).
 
-## create_image
+## image_creator
 
-Ces workflows permettent de construire des images Docker contenant le
+Ce workflow permet de construire des images Docker contenant le
 nécessaire pour compiler, installer et lancer Arcane.
 
-Actuellement, il y a trois versions d'images possibles :
-- **minimal** : contient le minimum de packages pour pouvoir utiliser
-  Arcane.
-- **full** : contient le maximum de package pour pouvoir utiliser le
-  maximum des fonctionnalités d'Arcane. Dépend de **minimal** pour être
-  construite.
-- **doc** : contient les packages nécessaires pour compiler la
-  documentation. Dépend aussi de **minimal** pour être construite.
+Les Dockerfiles et leur workflow se trouvent dans différentes branches.
+En effet, il y a plusieurs versions du même workflow `image_creator`.
+Ces branches dédiées ont un nom ayant la structure suivante :
+`image/os-versionos/compilo1-version1_compilon-versionn_type`
 
-Les Dockerfiles se trouvent dans le répertoire 
-`./docker/dockerfiles/os/compilers/version`.
+Exemples :
+- `image/ubuntu-2004/gcc-11_clang-14`
+- `image/ubuntu-2204/gcc-12_clang-15`
 
-Puis, selon les versions disponibles, on peut avoir les sous-répertoires
-**minimal**/, **full**/, **doc**/ qui contiennent le Dockerfile associé.
+Comme on peut le voir dans les exemples ci-dessus, chaque branche
+est dédiée à un couple "os/compilos".
 
-L'image créée aura, par exemple, pour nom **ubuntu-2004** et pour tag
-**gcc-11_clang-13_minimal_latest** 
-(donc **ubuntu-2004:gcc-11_clang-13_minimal_latest**).
+Si l'on veut générer une image spécifique, on doit aller dans la partie
+"Actions", choisir le workflow "Image Creator", cliquer sur "Run workflow"
+et choisir la branche correspondante au couple "os/compilos" voulu.
 
-Au lieu de `latest`, il est possible de mettre la date de création
-de l'image.
+Si l'on veut ajouter une nouvelle version de compilateur, pour un OS donné,
+il faut impérativement supprimer le tag `compilo_type_latest` des yamls
+ayant l'ancienne version du compilateur (vu que les anciennes versions
+du compilateur ne représentent plus la nouvelle version...).
+
+Voici la procédure précise (l'exemple présente la mise à jour du compilateur
+`clang` de la version `14` à la version `15` de l'OS `ubuntu-2204`) :
+1. Checkout la/les branche(s) avec la version `clang-14`,
+2. supprimer les tags `clang_minimal_latest` et `clang_full_latest`,
+3. créer une autre branche à partir de la branche la plus récente avec
+   `clang-14`,
+4. modifier ce qu'il faut dans les Dockerfiles et dans le yaml,
+5. ajouter les tags `clang_minimal_latest` et `clang_full_latest`,
+6. générer l'image avec le workflow "Image Creator".
 
 Les images sont accessibles dans la partie "Package" de ce dépôt.
-
-
-### Les tags
-
-Il y a quatre types de tags :
-1. Dernière version du compilateur (exemple : gcc_full_latest)
-2. Version du compilateur au choix (exemple : gcc-12_full_latest)
-3. Versions des compilateurs de l'image au choix 
-   (exemple : gcc-12_clang-14_full_latest)
-4. Versions des compilateurs de l'image au choix, avec date de création 
-   (exemple : gcc-12_clang-14_full_20220617)
-
-Cela permet de choisir le niveau de stabilité voulu selon l'utilisation faite
-de l'image.
-
-Le tag `1.` permet d'avoir la dernière version du compilateur.
-C'est l'image qui sera le plus souvent mise à jour. Par exemple, si vous
-compilez Arcane et que vous vous fichez de la version de `gcc` ou de `clang`,
-ce tag convient.
-
-Le tag `2.` permet de choisir une version majeur de compilateur. Si la
-version du compilateur importe pour vous, ce tag convient.
-
-Le tag `3.` est lié à la façon dont on crée les images. En effet, pour
-éviter de multiplier les images, on réunit plusieurs compilateurs dans
-la même image. Ce tag présente donc l'ensemble des compilateurs C/C++
-présents dans l'image, avec leurs versions. Ce tag permet d'être sûr
-des compilateurs présents dans l'image et peux vous être utile si vous
-souhaitez tester plusieurs compilateurs en même temps.
-
-Le tag `4.` est le plus stable. En effet, il permet de choisir une image
-qui ne changera jamais (sauf si plusieurs images sont générées le même
-jour, dans le cas de hotfix par exemple). Si vous souhaitez avoir le même
-environnement de travail, les mêmes versions des outils en permanance
-(pour reproduire des bugs par exemple), ce tag convient.
-
-Attention néanmoins, aujourd'hui, les images créées contiennent plusieurs
-compilateurs. Par exemple, si vous choisissez le tag `gcc_full_latest`,
-vous aurez aussi le compilateur `clang`. Mais c'est quelque chose qui peut
-être amené à changer.
-
-<br>
-
-Images disponibles (pour les dates de création, voir dans la partie
-"Package") :
-- ubuntu-2204:
-  - gcc
-  - clang
-  - cuda
-  - gcc-12
-  - clang-14
-  - cuda-117
-  - gcc-12_clang-14
-  - gcc-11_clang-13_cuda-117
-    - _full_latest
-    - _minimal_latest
- 
-- ubuntu-2004:
-  - gcc
-  - clang
-  - cuda
-  - gcc-11
-  - clang-13
-  - cuda-116
-  - gcc-11_clang-13
-  - gcc-11_clang-12_cuda-116
-    - _full_latest
-    - _minimal_latest
-
-Pour générer la documentation, voici les images disponibles (pour les
-dates de création, voir dans la partie "Package"):
-- ubuntu-2204:gcc-12_clang-14_doc_latest
-- ubuntu-2204:gcc_doc_latest
 
 # Utilisation de 'Github CLI'
 
