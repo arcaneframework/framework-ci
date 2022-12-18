@@ -174,9 +174,9 @@ jobs:
           steps.install-arccon.outcome == 'success'
         uses: actions/checkout@v3
         with:
-          repository: ${{ github.repository_owner }}/framework
-          path: ${{ env.ARCCORE_SOURCE_DIR }}
-          ref: ${{ github.event.inputs.framework_branch }}
+          repository: ${{ github.repository_owner }}/dependencies
+          path: ${{ env.DEPENDENCIES_SOURCE_DIR }}
+          ref: ${{ github.event.inputs.dependencies_branch }}
       - name: Configure Dependencies
         id: configure-dependencies
         if: |
