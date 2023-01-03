@@ -1,7 +1,7 @@
 # Ubuntu 22.04 minimal dependencies for Arcane.
-# Version with GCC 11 / CLang 13 / CUDA 11.8.
+# Version with GCC 12 / CLang 14 / CUDA 12.0.
 
-FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
+FROM nvidia/cuda:12.0.0-devel-ubuntu22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
@@ -13,9 +13,9 @@ RUN apt-get update -y \
     wget \
     rsync \
     build-essential \
-    gcc-11 \
-    g++-11 \
-    clang-13 \
+    gcc-12 \
+    g++-12 \
+    clang-14 \
     make \
     ccache \
     ninja-build \
@@ -32,13 +32,13 @@ RUN apt-get update -y \
     dotnet6 \
     cmake \
     && rm -rf /var/lib/apt/lists/* \
-    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100 \
-    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 \
-    && update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-11 100 \
-    && update-alternatives --set g++ /usr/bin/g++-11 \
-    && update-alternatives --set gcc /usr/bin/gcc-11 \
-    && update-alternatives --set cpp-bin /usr/bin/cpp-11 \
-    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-13 90 \
-    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-13 90 \
-    && update-alternatives --set clang /usr/bin/clang-13 \
-    && update-alternatives --set clang++ /usr/bin/clang++-13
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
+    && update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-12 100 \
+    && update-alternatives --set g++ /usr/bin/g++-12 \
+    && update-alternatives --set gcc /usr/bin/gcc-12 \
+    && update-alternatives --set cpp-bin /usr/bin/cpp-12 \
+    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 90 \
+    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-14 90 \
+    && update-alternatives --set clang /usr/bin/clang-14 \
+    && update-alternatives --set clang++ /usr/bin/clang++-14

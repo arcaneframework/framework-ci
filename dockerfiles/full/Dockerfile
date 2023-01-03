@@ -1,7 +1,7 @@
 # Ubuntu 22.04 full dependencies for Arcane.
-# Version with GCC 11 / CLang 13 / CUDA 11.8.
+# Version with GCC 12 / CLang 14 / CUDA 12.0.
 
-FROM ghcr.io/arcaneframework/ubuntu-2204:gcc-11_clang-13_cuda-118_minimal_latest
+FROM ghcr.io/arcaneframework/ubuntu-2204:gcc-12_clang-14_cuda-120_minimal_latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
