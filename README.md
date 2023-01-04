@@ -124,10 +124,12 @@ Voici les images disponibles :
   - `clang-15`
   - `cuda-117`
   - `cuda-118`
+  - `cuda-120`
   - `gcc-12_clang-14`
   - `gcc-12_clang-15`
   - `gcc-11_clang-13_cuda-117`
   - `gcc-11_clang-13_cuda-118`
+  - `gcc-12_clang-14_cuda-120`
     - `_full_latest`
     - `_minimal_latest`
  
