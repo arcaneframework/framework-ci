@@ -25,7 +25,7 @@ set(FRAMEWORKCI_CMAKE_WANTED_VERSION "3.21.3")
 if (WIN32)
   # Récupère et installe Microsoft MPI.
   # Cela est nécessaire pour installer ensuite MPI via vcpkg
-  do_command(${CMAKE_CURRENT_LIST_DIR}/download_mswin_10.bat)
+  do_command(${CMAKE_CURRENT_LIST_DIR}/download_intel_mpi_2021.bat)
   # Installe une version récente de cmake via chocolatey
   #do_command(choco install cmake)
   # Installe une version récente de ninja via chocolatey
