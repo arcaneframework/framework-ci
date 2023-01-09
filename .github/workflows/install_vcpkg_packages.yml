@@ -1,7 +1,6 @@
 name: install_vcpkg_packages
 on:
   workflow_dispatch:
-  push:
 
 jobs:
   job:
@@ -139,7 +138,7 @@ jobs:
         shell: 'bash'
         continue-on-error: true
         run: |
-          #cmake -DHASH_PACKAGE_NAME="${{ env.VCPKG_PUSH_HASH_PACKAGE_NAME }}" -DNUGET_API_KEY="${{ secrets.GITHUB_TOKEN }}" -DVCPKG_BUILD_DIR='${{ env.VCPKG_BUILD_DIR }}' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoTar.cmake'
+          cmake -DHASH_PACKAGE_NAME="${{ env.VCPKG_PUSH_HASH_PACKAGE_NAME }}" -DNUGET_API_KEY="${{ secrets.GITHUB_TOKEN }}" -DVCPKG_BUILD_DIR='${{ env.VCPKG_BUILD_DIR }}' -P '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache/DoTar.cmake'
           ls -lart '${{ env.VCPKG_BUILD_DIR }}'
           du -sh '${{ env.VCPKG_BUILD_DIR }}'
           ls -lart '${{ env.BUILD_COMMANDS_ROOT }}/vcpkg_cache'
