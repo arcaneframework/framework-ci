@@ -6,17 +6,18 @@ jobs:
   job:
     runs-on: ${{ matrix.os }}
   
-    name: ${{ matrix.os }}-test-ci
+    name: ${{ matrix.full_name }}-install_vcpkg_packages
   
     env:
       VCPKG_BINARY_SOURCES: 'clear;nuget,github,readwrite'
       FRAMEWORKCI_ROOT_PATH: '${{ github.workspace }}/../../build_base/framework-ci'
       BUILD_COMMANDS_ROOT: '${{ github.workspace }}/../../build_base/framework-ci/_build'
       VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/builddir/vcpkg_archives
+      VCPKG_OVERLAY_PORTS: ${{ github.workspace }}/../../build_base/framework-ci/vcpkg_overlays/${{ matrix.vcpkg_overlay }}
       VCPKG_DISABLE_METRICS: 1
       VCPKG_BUILD_DIR: '${{ github.workspace }}/../../build_base/framework-ci/vcpkg'
-      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.0.16-${{ matrix.os }}-${{ matrix.triplet }}'
-      VCPKG_PREINSTALL_HASH_PACKAGE_NAME: '1.0.15-${{ matrix.os }}-${{ matrix.triplet }}'
+      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.1.0-${{ matrix.full_name }}-${{ matrix.triplet }}'
+      VCPKG_PREINSTALL_HASH_PACKAGE_NAME: '1.1.1-${{ matrix.full_name }}-${{ matrix.triplet }}'
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
       DOTNET_VERSION: '6.x'
@@ -25,28 +26,48 @@ jobs:
       matrix:
         include:
           - os: 'windows-2019'
+            full_name: 'windows-2019-msmpi'
             triplet: x64-windows
             nugetexe: nuget.exe
+            vcpkg_overlay: none
+            mono: ''
+          - os: 'windows-2019'
+            full_name: 'windows-2019-intelmpi'
+            triplet: x64-windows
+            nugetexe: nuget.exe
+            vcpkg_overlay: win32-intelmpi
             mono: ''
           - os: 'windows-2022'
+            full_name: 'windows-2022-msmpi'
             triplet: x64-windows
             nugetexe: nuget.exe
+            vcpkg_overlay: none
+            mono: ''
+          - os: 'windows-2022'
+            full_name: 'windows-2022-intelmpi'
+            triplet: x64-windows
+            nugetexe: nuget.exe
+            vcpkg_overlay: win32-intelmpi
             mono: ''
           - os: 'ubuntu-20.04'
+            full_name: 'ubuntu-20.04'
             triplet: 'x64-linux'
             nugetexe: /usr/local/bin/nuget.exe
+            vcpkg_overlay: none
             # To run `nuget.exe` on non-Windows platforms, we must use `mono`.
             mono: 'mono'
           - os: 'ubuntu-22.04'
+            full_name: 'ubuntu-22.04'
             triplet: 'x64-linux'
             nugetexe: /usr/local/bin/nuget.exe
+            vcpkg_overlay: none
             # To run `nuget.exe` on non-Windows platforms, we must use `mono`.
             mono: 'mono'
 
     steps:
 
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: true
 
@@ -55,7 +76,7 @@ jobs:
         run: |
           mkdir -p '${{ env.FRAMEWORKCI_ROOT_PATH }}'
           ls -lart '${{ github.workspace }}'
-          cd '${{ github.workspace }}' && mv _build docs nuget.config vcpkg '${{ env.FRAMEWORKCI_ROOT_PATH }}'
+          cd '${{ github.workspace }}' && mv _build docs nuget.config vcpkg vcpkg_overlays '${{ env.FRAMEWORKCI_ROOT_PATH }}'
           ls -lart '${{ env.FRAMEWORKCI_ROOT_PATH }}'
 
       - name: Setup environment
@@ -66,7 +87,7 @@ jobs:
           echo Path variable is: ${PATH}
           echo CMake path is: `which cmake`
           cmake --version
-          cmake -DNUGET_PASSWORD="${{ secrets.GITHUB_TOKEN }}" -P '${{ env.BUILD_COMMANDS_ROOT }}/Setup.cmake'
+          cmake -DNUGET_PASSWORD="${{ secrets.GITHUB_TOKEN }}" -DSETUP_VCPKG_OVERLAY=${{ matrix.vcpkg_overlay }} -P '${{ env.BUILD_COMMANDS_ROOT }}/Setup.cmake' 
 
       - name: Remove installed version of cmake if needed
         shell: 'bash'
@@ -78,6 +99,8 @@ jobs:
         shell: 'bash'
         continue-on-error: true
         run: |
+          echo 'VCPKG_OVERLAYS_PORTS = {{ env.VCPKG_OVERLAY_PORTS }}'
+          ls -lart '${{ env.VCPKG_OVERLAY_PORTS }}'
           echo 'VCPKG_BUILD_DIR=${VCPKG_BUILD_DIR}'
           echo 'Content of local_bin_dir'
           ls -lart "${RUNNER_TEMP}/local_bin_dir"

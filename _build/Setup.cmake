@@ -9,6 +9,8 @@ cmake_minimum_required(VERSION 3.18.0)
 # - sous linux, téléchargement de 'nuget'
 # - enregistrement des autorisations pour accéder à 'GitHub packages' via nuget.
 
+message(STATUS "INFO: Setup CI SETUP_VCPKG_OVERLAY = ${SETUP_VCPKG_OVERLAY}")
+
 include(${CMAKE_CURRENT_LIST_DIR}/CommonFunctions.cmake)
 
 # Vérifie les arguments obligatoires
@@ -23,11 +25,13 @@ set(FRAMEWORKCI_CMAKE_WANTED_VERSION "3.21.3")
 # plateforme donnée est mis à jour régulièrement
 
 if (WIN32)
-  # Récupère et installe Microsoft MPI.
-  # Cela est nécessaire pour installer ensuite MPI via vcpkg
-  do_command(${CMAKE_CURRENT_LIST_DIR}/download_mswin_10.bat)
-  # Installe une version récente de cmake via chocolatey
-  #do_command(choco install cmake)
+  if (SETUP_VCPKG_OVERLAY STREQUAL "win32-intelmpi")
+    # Récupère et installe Intel MPI.
+    do_command(${CMAKE_CURRENT_LIST_DIR}/download_intel_mpi_2021.bat)
+  else()
+    # Récupère et installe Microsoft MPI.
+    do_command(${CMAKE_CURRENT_LIST_DIR}/download_mswin_10.bat)
+  endif()
   # Installe une version récente de ninja via chocolatey
   message(STATUS "Downloading 'ninja'")
   file(DOWNLOAD "https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-win.zip" "ninja-win.zip")
