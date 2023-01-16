@@ -28,6 +28,8 @@ RUN apt-get update -y \
     libxml2-dev \
     libhdf5-openmpi-dev \
     libparmetis-dev \
+    libopenmpi-dev \
+    libtbb2-dev \
     ca-certificates \
     dotnet6 \
     cmake \
