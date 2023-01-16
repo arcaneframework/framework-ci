@@ -34,6 +34,8 @@ RUN apt-get update -y \
     libxml2-dev \
     libhdf5-dev libhdf5-openmpi-dev \
     libparmetis-dev \
+    libopenmpi-dev \
+    libtbb-dev \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
     && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100 \

@@ -16,9 +16,7 @@ RUN apt-get update -y \
     petsc-dev \
     trilinos-all-dev \
     pd-bsaylor \
-    libopenmpi-dev \
     libgtest-dev \
-    libtbb-dev \
     libhypre-dev \
     libosmesa6-dev \
     libunwind-dev \
