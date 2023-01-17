@@ -26,8 +26,8 @@ RUN apt-get update -y \
     libglib2.0-dev \
     libxml2-dev \
     libhdf5-dev libhdf5-openmpi-dev \
-    libparmetis-dev \
     libopenmpi-dev \
+    libmpich-dev \
     libtbb2-dev \
     ca-certificates \
     dotnet6 \
@@ -38,9 +38,17 @@ RUN apt-get update -y \
     && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100 \
     && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
     && update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-12 100 \
+    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-12 100 \
+    \
     && update-alternatives --set g++ /usr/bin/g++-12 \
     && update-alternatives --set gcc /usr/bin/gcc-12 \
-    && update-alternatives --set cpp-bin /usr/bin/cpp-12
+    && update-alternatives --set cpp-bin /usr/bin/cpp-12 \
+    && update-alternatives --set gcov /usr/bin/gcov-12 \
+    \
+    && update-alternatives --set mpirun /usr/bin/mpirun.openmpi \
+    && update-alternatives --set mpi /usr/bin/mpicc.openmpi \
+    && update-alternatives --set h5pcc /usr/bin/h5pcc.openmpi \
+    && update-alternatives --set mpi-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/openmpi/include
 
 # On installe CLang 15.
 # On met la version par défaut du compiler clang en version 15.
@@ -54,3 +62,12 @@ RUN cd /tmp \
     && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-15 90 \
     && update-alternatives --set clang /usr/bin/clang-15 \
     && update-alternatives --set clang++ /usr/bin/clang++-15
+
+RUN cd /tmp \
+    && wget https://ftp.mcs.anl.gov/pub/pdetools/spack-pkgs/parmetis-4.0.3.tar.gz \
+    && tar -zxf parmetis-4.0.3.tar.gz \
+    && cd parmetis-4.0.3 \
+    && make config shared=1 prefix=/usr/local/parmetis_openmpi \
+    && make install \
+    && rm -rf /tmp/*
+    
