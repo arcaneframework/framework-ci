@@ -23,6 +23,7 @@ jobs:
       DOTNET_VERSION: '6.x'
 
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: 'windows-2019'
