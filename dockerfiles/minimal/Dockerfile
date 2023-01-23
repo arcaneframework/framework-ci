@@ -25,9 +25,12 @@ RUN apt-get update -y \
     libc6-dev \
     libglib2.0-dev \
     libxml2-dev \
-    libhdf5-dev libhdf5-openmpi-dev \
+    libhdf5-dev \
+    libhdf5-openmpi-dev \
+    libhdf5-mpich-dev \
     libopenmpi-dev \
     libmpich-dev \
+    libmetis-dev \
     libtbb2-dev \
     ca-certificates \
     dotnet6 \
@@ -43,12 +46,7 @@ RUN apt-get update -y \
     && update-alternatives --set g++ /usr/bin/g++-12 \
     && update-alternatives --set gcc /usr/bin/gcc-12 \
     && update-alternatives --set cpp-bin /usr/bin/cpp-12 \
-    && update-alternatives --set gcov /usr/bin/gcov-12 \
-    \
-    && update-alternatives --set mpirun /usr/bin/mpirun.openmpi \
-    && update-alternatives --set mpi /usr/bin/mpicc.openmpi \
-    && update-alternatives --set h5pcc /usr/bin/h5pcc.openmpi \
-    && update-alternatives --set mpi-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/openmpi/include
+    && update-alternatives --set gcov /usr/bin/gcov-12
 
 # On installe CLang 15.
 # On met la version par défaut du compiler clang en version 15.
@@ -63,11 +61,34 @@ RUN cd /tmp \
     && update-alternatives --set clang /usr/bin/clang-15 \
     && update-alternatives --set clang++ /usr/bin/clang++-15
 
+# On compile et installe deux versions de ParMETIS :
+# - une version compilée avec OpenMPI,
+# - une version compilée avec MPICH.
+# La version OpenMPI est installé dans le répertoire
+# d'installation par défaut et la version MPICH est
+# installé dans le répértoire "/usr/local/parmetis_mpich".
 RUN cd /tmp \
     && wget https://ftp.mcs.anl.gov/pub/pdetools/spack-pkgs/parmetis-4.0.3.tar.gz \
     && tar -zxf parmetis-4.0.3.tar.gz \
     && cd parmetis-4.0.3 \
-    && make config shared=1 prefix=/usr/local/parmetis_openmpi \
+    \
+    && update-alternatives --set mpirun /usr/bin/mpirun.mpich \
+    && update-alternatives --set mpi /usr/bin/mpicc.mpich \
+    && update-alternatives --set h5pcc /usr/bin/h5pcc.mpich \
+    && update-alternatives --set mpi-x86_64-linux-gnu /usr/include/x86_64-linux-gnu/mpich \
+    \
+    && make config shared=1 prefix=/usr/local/parmetis_mpich \
     && make install \
+    && make distclean \
+    \
+    && update-alternatives --set mpirun /usr/bin/mpirun.openmpi \
+    && update-alternatives --set mpi /usr/bin/mpicc.openmpi \
+    && update-alternatives --set h5pcc /usr/bin/h5pcc.openmpi \
+    && update-alternatives --set mpi-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/openmpi/include \
+    \
+    && make config shared=1 prefix=/usr/local \
+    && make install \
+    && make distclean \
+    \
     && rm -rf /tmp/*
     
