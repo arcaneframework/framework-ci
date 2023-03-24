@@ -10,9 +10,9 @@ RUN apt-get update -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN cd /tmp \
-    && wget https://www.doxygen.nl/files/doxygen-1.9.5.linux.bin.tar.gz \
-    && tar xf doxygen-1.9.5.linux.bin.tar.gz \
-    && cd /tmp/doxygen-1.9.5/ \
+    && wget https://www.doxygen.nl/files/doxygen-1.9.6.linux.bin.tar.gz \
+    && tar xf doxygen-1.9.6.linux.bin.tar.gz \
+    && cd /tmp/doxygen-1.9.6/ \
     && make \
     && make install \
     && cd / \
