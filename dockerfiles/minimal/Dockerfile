@@ -1,5 +1,5 @@
 # Ubuntu 22.04 minimal dependencies for Arcane.
-# Version with GCC 12 / CLang 15.
+# Version with GCC 12 / CLang 16.
 
 FROM ubuntu:22.04
 
@@ -42,15 +42,15 @@ RUN apt-get update -y \
     && update-alternatives --set gcc /usr/bin/gcc-12 \
     && update-alternatives --set cpp-bin /usr/bin/cpp-12
 
-# On installe CLang 15.
-# On met la version par défaut du compiler clang en version 15.
+# On installe CLang 16.
+# On met la version par défaut du compiler clang en version 16.
 # (Nécessite software-properties-common et gnupg)
 RUN cd /tmp \
     && wget https://apt.llvm.org/llvm.sh \
     && chmod +x llvm.sh \
-    && ./llvm.sh 15 \
+    && ./llvm.sh 16 \
     && rm -rf /tmp/* \
-    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-15 90 \
-    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-15 90 \
-    && update-alternatives --set clang /usr/bin/clang-15 \
-    && update-alternatives --set clang++ /usr/bin/clang++-15
+    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 90 \
+    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 90 \
+    && update-alternatives --set clang /usr/bin/clang-16 \
+    && update-alternatives --set clang++ /usr/bin/clang++-16
