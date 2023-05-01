@@ -1,7 +1,7 @@
-# Ubuntu 22.04 minimal dependencies for Arcane.
-# Version with GCC 12 / CLang 15.
+# Ubuntu 23.04 minimal dependencies for Arcane.
+# Version with GCC 13 / CLang 16.
 
-FROM ubuntu:22.04
+FROM ubuntu:23.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
@@ -13,8 +13,8 @@ RUN apt-get update -y \
     wget \
     rsync \
     build-essential \
-    gcc-12 \
-    g++-12 \
+    gcc-13 \
+    g++-13 \
     make \
     ccache \
     ninja-build \
@@ -28,29 +28,16 @@ RUN apt-get update -y \
     libhdf5-dev libhdf5-openmpi-dev \
     libparmetis-dev \
     libopenmpi-dev \
-    libtbb2-dev \
+    libtbb-dev \
     ca-certificates \
-    dotnet6 \
+    dotnet7 \
     cmake \
-    software-properties-common \
-    gnupg \
     && rm -rf /var/lib/apt/lists/* \
-    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100 \
-    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
-    && update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-12 100 \
-    && update-alternatives --set g++ /usr/bin/g++-12 \
-    && update-alternatives --set gcc /usr/bin/gcc-12 \
-    && update-alternatives --set cpp-bin /usr/bin/cpp-12
-
-# On installe CLang 15.
-# On met la version par défaut du compiler clang en version 15.
-# (Nécessite software-properties-common et gnupg)
-RUN cd /tmp \
-    && wget https://apt.llvm.org/llvm.sh \
-    && chmod +x llvm.sh \
-    && ./llvm.sh 15 \
-    && rm -rf /tmp/* \
-    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-15 90 \
-    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-15 90 \
-    && update-alternatives --set clang /usr/bin/clang-15 \
-    && update-alternatives --set clang++ /usr/bin/clang++-15
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 \
+    && update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-13 100 \
+    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-13 100 \
+    && update-alternatives --set g++ /usr/bin/g++-13 \
+    && update-alternatives --set gcc /usr/bin/gcc-13 \
+    && update-alternatives --set cpp-bin /usr/bin/cpp-13 \
+    && update-alternatives --set gcov /usr/bin/gcov-13
