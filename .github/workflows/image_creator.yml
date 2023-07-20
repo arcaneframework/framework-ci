@@ -52,7 +52,6 @@ jobs:
             org.opencontainers.image.description=Image to Build/Install/Run Arcane Framework
             org.opencontainers.image.vendor=CEA
           tags: |
-            type=raw, cuda_minimal_latest
             type=raw, cuda-118_minimal_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_{{date 'YYYYMMDD'}}
@@ -97,7 +96,6 @@ jobs:
             org.opencontainers.image.description=Image to Build/Install/Run Arcane Framework
             org.opencontainers.image.vendor=CEA
           tags: |
-            type=raw, cuda_full_latest
             type=raw, cuda-118_full_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_{{date 'YYYYMMDD'}}
