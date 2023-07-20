@@ -31,6 +31,7 @@ RUN apt-get update -y \
     libglvnd-dev \
     libgl1-mesa-dev libxt-dev \
     libqt5opengl5-dev libqt5x11extras5-dev libqt5help5 qttools5-dev qtxmlpatterns5-dev-tools libqt5svg5-dev \
+    libarchive-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # On installe IceT.

@@ -25,6 +25,8 @@ RUN apt-get update -y \
     gfortran \
     libc6-dev \
     libglib2.0-dev \
+    libboost-program-options-dev \
+    libopenblas-dev \
     libxml2-dev \
     libhdf5-openmpi-dev \
     libparmetis-dev \
