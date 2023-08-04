@@ -41,9 +41,12 @@ RUN apt-get update -y \
     && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100 \
     && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
     && update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-12 100 \
+    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-12 100 \
+    \
     && update-alternatives --set g++ /usr/bin/g++-12 \
     && update-alternatives --set gcc /usr/bin/gcc-12 \
-    && update-alternatives --set cpp-bin /usr/bin/cpp-12
+    && update-alternatives --set cpp-bin /usr/bin/cpp-12 \
+    && update-alternatives --set gcov /usr/bin/gcov-12
 
 # On installe CLang 16.
 # On met la version par défaut du compiler clang en version 16.
