@@ -11,6 +11,7 @@ RUN apt-get update -y \
     && apt-get install -y --no-install-recommends \
     apt-utils \
     wget \
+    curl \
     rsync \
     build-essential \
     gcc-12 \
