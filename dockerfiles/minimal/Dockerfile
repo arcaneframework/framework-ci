@@ -24,6 +24,8 @@ RUN apt-get update -y \
     gfortran \
     libc6-dev \
     libglib2.0-dev \
+    libboost-program-options-dev \
+    libopenblas-dev \
     libxml2-dev \
     libhdf5-dev libhdf5-openmpi-dev \
     libparmetis-dev \
@@ -50,6 +52,7 @@ RUN cd /tmp \
     && chmod +x llvm.sh \
     && ./llvm.sh 16 \
     && rm -rf /tmp/* \
+    && rm -rf /var/lib/apt/lists/* \
     && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 90 \
     && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 90 \
     && update-alternatives --set clang /usr/bin/clang-16 \
