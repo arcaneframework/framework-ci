@@ -54,14 +54,13 @@ jobs:
             org.opencontainers.image.description=Image to Build/Install/Run Arcane Framework
             org.opencontainers.image.vendor=CEA
           tags: |
-            type=raw, cuda_minimal_latest
             type=raw, cuda-120_minimal_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_{{date 'YYYYMMDD'}}
 
       - name: Build and push Docker image
         if: ${{ inputs.minimal_version }}
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           file: ${{ env.DOCKERFILE_PATH }}/minimal/Dockerfile
           push: true
@@ -99,13 +98,12 @@ jobs:
             org.opencontainers.image.description=Image to Build/Install/Run Arcane Framework
             org.opencontainers.image.vendor=CEA
           tags: |
-            type=raw, cuda_full_latest
             type=raw, cuda-120_full_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_{{date 'YYYYMMDD'}}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           file: ${{ env.DOCKERFILE_PATH }}/full/Dockerfile
           push: true
