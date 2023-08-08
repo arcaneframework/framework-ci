@@ -17,6 +17,7 @@ RUN apt-get update -y \
     gcc-12 \
     g++-12 \
     make \
+    cmake \
     ccache \
     ninja-build \
     iputils-ping \
@@ -37,7 +38,6 @@ RUN apt-get update -y \
     libtbb2-dev \
     ca-certificates \
     dotnet6 \
-    cmake \
     software-properties-common \
     gnupg \
     && rm -rf /var/lib/apt/lists/* \
