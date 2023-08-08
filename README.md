@@ -1,11 +1,11 @@
 # README
-## ubuntu-2204:gcc-12_clang-14_cuda-120
+## ubuntu-2204:gcc-12_clang-15_cuda-122
 
 This branch contains the workflow and dockerfiles to create an
 image with Ubuntu 22.04 and:
 - GCC 12
-- CLang 14
-- CUDA 12.0
+- CLang 15
+- CUDA 12.2
 
 Two available versions:
 - **minimal** : with the minimal set of packages to compile and 
