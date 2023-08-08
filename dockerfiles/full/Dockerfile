@@ -38,9 +38,6 @@ RUN apt-get update -y \
     libbz2-dev \
     liblz4-dev \
     libpapi-dev \
-    libglvnd-dev \
-    libgl1-mesa-dev libxt-dev \
-    libqt5opengl5-dev libqt5x11extras5-dev libqt5help5 qttools5-dev qtxmlpatterns5-dev-tools libqt5svg5-dev \
     libarchive-dev \
     && rm -rf /var/lib/apt/lists/*
 
@@ -63,16 +60,4 @@ RUN cd /tmp \
     && ./configure --prefix=/usr/local --exec-prefix=/usr/local \
     && make \
     && make install \
-    && cd / && rm -rf /tmp/*
-
-# On installe Paraview.
-RUN cd /tmp \
-    && git clone https://gitlab.kitware.com/paraview/paraview.git \
-    && cd paraview \
-    && git checkout release \
-    && git submodule update --init --recursive \
-    && mkdir build \
-    && cd build \
-    && cmake .. -DPARAVIEW_USE_MPI=ON -DVTK_SMP_IMPLEMENTATION_TYPE=TBB -DCMAKE_BUILD_TYPE=Release -GNinja \
-    && cmake --build . --target install \
     && cd / && rm -rf /tmp/*
