@@ -65,7 +65,7 @@ jobs:
 
       - name: Build and push Docker image
         if: ${{ inputs.minimal_version }}
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           file: ${{ env.DOCKERFILE_PATH }}/minimal/Dockerfile
           push: true
@@ -111,7 +111,7 @@ jobs:
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_{{date 'YYYYMMDD'}}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           file: ${{ env.DOCKERFILE_PATH }}/full/Dockerfile
           push: true
@@ -154,7 +154,7 @@ jobs:
             type=raw, ${{ env.IMAGE_OS_TAG }}_doc_{{date 'YYYYMMDD'}}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           file: ${{ env.DOCKERFILE_PATH }}/doc/Dockerfile
           push: true
