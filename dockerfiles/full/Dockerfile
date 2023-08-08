@@ -9,7 +9,7 @@ ARG TZ=Europe/Paris
 # On installe les packages pour compiler Arcane.
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends \
-    googletest \
+    googletest libgtest-dev \
     swig4.0 \
     libhypre-dev \
     libpetsc-real-dev \
@@ -25,6 +25,7 @@ RUN apt-get update -y \
     libtrilinos-intrepid2-dev libtrilinos-teko-dev libtrilinos-sacado-dev \
     libtrilinos-stratimikos-dev libtrilinos-shylu-dev \
     libtrilinos-zoltan-dev libtrilinos-zoltan2-dev \
+    libtrilinos-aztecoo-dev libtrilinos-ml-dev \
     dpkg-dev \
     python3-dev python3-numpy \
     valgrind \
@@ -34,7 +35,6 @@ RUN apt-get update -y \
     libptscotch-dev \
     libexpat1-dev \
     libudunits2-dev \
-    libmkl-full-dev \
     libbz2-dev \
     liblz4-dev \
     libpapi-dev \
