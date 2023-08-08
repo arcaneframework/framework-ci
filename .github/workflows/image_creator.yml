@@ -57,7 +57,6 @@ jobs:
             org.opencontainers.image.vendor=CEA
           tags: |
             type=raw, gcc_minimal_latest
-            type=raw, clang_minimal_latest
             type=raw, gcc-12_minimal_latest
             type=raw, clang-15_minimal_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_latest
@@ -65,7 +64,7 @@ jobs:
 
       - name: Build and push Docker image
         if: ${{ inputs.minimal_version }}
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           file: ${{ env.DOCKERFILE_PATH }}/minimal/Dockerfile
           push: true
@@ -104,59 +103,15 @@ jobs:
             org.opencontainers.image.vendor=CEA
           tags: |
             type=raw, gcc_full_latest
-            type=raw, clang_full_latest
             type=raw, gcc-12_full_latest
             type=raw, clang-15_full_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_{{date 'YYYYMMDD'}}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           file: ${{ env.DOCKERFILE_PATH }}/full/Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-  build-and-push-doc:
-    name: U22_G12_C15 Doc Image
-    if: ${{ inputs.doc_version }}
-    needs:
-      - build-and-push-minimal
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_OS_NAME }}
-          labels: |
-            org.opencontainers.image.title=ArcaneFramework
-            org.opencontainers.image.description=Image to Build/Install/Run Arcane Framework
-            org.opencontainers.image.vendor=CEA
-          tags: |
-            type=raw, gcc_doc_latest
-            type=raw, ${{ env.IMAGE_OS_TAG }}_doc_latest
-            type=raw, ${{ env.IMAGE_OS_TAG }}_doc_{{date 'YYYYMMDD'}}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v3
-        with:
-          file: ${{ env.DOCKERFILE_PATH }}/doc/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

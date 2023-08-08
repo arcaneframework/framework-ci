@@ -12,6 +12,3 @@ Two available versions:
 - **full** : with the maximum set of packages to compile and run
   Arcane Framework will all its capacities. Depends on the
   **minimal** image for its build.
-- **doc** : with packages needed to build the documentation. Also
-  depends on the **minimal** image for its build.
-  
