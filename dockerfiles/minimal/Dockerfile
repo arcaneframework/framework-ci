@@ -72,13 +72,15 @@ RUN cd /tmp \
 # "/usr/local/parmetis_openmpi" et la version MPICH est
 # installé dans le répértoire "/usr/local/parmetis_mpich".
 RUN cd /tmp \
+    && ARCH=`uname -m` \
+    \
     && wget https://ftp.mcs.anl.gov/pub/pdetools/spack-pkgs/parmetis-4.0.3.tar.gz \
     && tar -zxf parmetis-4.0.3.tar.gz \
     && cd parmetis-4.0.3 \
     \
     && update-alternatives --set mpirun /usr/bin/mpirun.mpich \
     && update-alternatives --set mpi /usr/bin/mpicc.mpich \
-    && update-alternatives --set mpi-x86_64-linux-gnu /usr/include/x86_64-linux-gnu/mpich \
+    && update-alternatives --set mpi-${ARCH}-linux-gnu /usr/include/${ARCH}-linux-gnu/mpich \
     \
     && make config prefix=/usr/local/parmetis_mpich \
     && make install \
@@ -90,8 +92,8 @@ RUN cd /tmp \
     && update-alternatives --set mpirun /usr/bin/mpirun.openmpi \
     && update-alternatives --set mpi /usr/bin/mpicc.openmpi \
     && update-alternatives --set h5pcc /usr/bin/h5pcc.openmpi \
-    && update-alternatives --set hdf5.pc /usr/lib/x86_64-linux-gnu/pkgconfig/hdf5-openmpi.pc \
-    && update-alternatives --set mpi-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/openmpi/include \
+    && update-alternatives --set hdf5.pc /usr/lib/${ARCH}-linux-gnu/pkgconfig/hdf5-openmpi.pc \
+    && update-alternatives --set mpi-${ARCH}-linux-gnu /usr/lib/${ARCH}-linux-gnu/openmpi/include \
     \
     && make config prefix=/usr/local/parmetis_openmpi \
     && make install \
@@ -101,12 +103,12 @@ RUN cd /tmp \
     && make distclean \
     \
     && update-alternatives --install /usr/include/parmetis.h parmetis /usr/local/parmetis_openmpi/include/parmetis.h 50 \
-                           --slave /usr/lib/x86_64-linux-gnu/libparmetis.a libparmetisa /usr/local/parmetis_openmpi/lib/libparmetis.a \
-                           --slave /usr/lib/x86_64-linux-gnu/libparmetis.so libparmetisso /usr/local/parmetis_openmpi/lib/libparmetis.so \
+                           --slave /usr/lib/${ARCH}-linux-gnu/libparmetis.a libparmetisa /usr/local/parmetis_openmpi/lib/libparmetis.a \
+                           --slave /usr/lib/${ARCH}-linux-gnu/libparmetis.so libparmetisso /usr/local/parmetis_openmpi/lib/libparmetis.so \
     \
     && update-alternatives --install /usr/include/parmetis.h parmetis /usr/local/parmetis_mpich/include/parmetis.h 40 \
-                           --slave /usr/lib/x86_64-linux-gnu/libparmetis.a libparmetisa /usr/local/parmetis_mpich/lib/libparmetis.a \
-                           --slave /usr/lib/x86_64-linux-gnu/libparmetis.so libparmetisso /usr/local/parmetis_mpich/lib/libparmetis.so \
+                           --slave /usr/lib/${ARCH}-linux-gnu/libparmetis.a libparmetisa /usr/local/parmetis_mpich/lib/libparmetis.a \
+                           --slave /usr/lib/${ARCH}-linux-gnu/libparmetis.so libparmetisso /usr/local/parmetis_mpich/lib/libparmetis.so \
     \
     && update-alternatives --set parmetis /usr/local/parmetis_openmpi/include/parmetis.h \
     && rm -rf /tmp/*
