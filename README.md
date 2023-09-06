@@ -7,6 +7,7 @@ Ce dépot contient les scripts pour l'intégration continue (CI) de Arcane.
 - [Images Docker](#images-docker)
   - [Les types](#les-types)
   - [Les tags](#les-tags)
+  - [Les architectures](#les-architectures)
   - [Images disponibles](#images-disponibles)
 - [Workflows](#workflows)
   - [install\_vcpkg\_packages](#install_vcpkg_packages)
@@ -108,6 +109,15 @@ Attention néanmoins, aujourd'hui, les images créées contiennent plusieurs
 compilateurs. Par exemple, si vous choisissez le tag `gcc_full_latest`,
 vous aurez aussi le compilateur `clang`. Mais c'est quelque chose qui peut
 être amené à changer.
+
+## Les architectures
+
+À partir des versions 20230906 (donc les images générées le 06/09/2023 et après),
+deux architectures sont supportées par image :
+- AMD64
+- ARM64
+
+Les images précédentes n'ont été générées que pour l'architecture AMD64.
 
 ## Images disponibles
 
