@@ -29,14 +29,19 @@ jobs:
       packages: write
 
     steps:
+      - name: Delete huge unnecessary tools folder
+        run: rm -rf /opt/hostedtoolcache
+
       - name: Checkout repository
         if: ${{ inputs.minimal_version }}
         uses: actions/checkout@v3
 
       - name: Set up QEMU
+        if: ${{ inputs.minimal_version }}
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
+        if: ${{ inputs.minimal_version }}
         uses: docker/setup-buildx-action@v2
 
       - name: Log in to the Container registry
@@ -89,6 +94,9 @@ jobs:
       packages: write
 
     steps:
+      - name: Delete huge unnecessary tools folder
+        run: rm -rf /opt/hostedtoolcache
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
