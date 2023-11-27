@@ -1,5 +1,5 @@
 # Ubuntu 22.04 full dependencies for Arcane.
-# Version with GCC 12 / CLang 15 / CUDA 12.2.
+# Version with GCC 12 / CLang 15 / CUDA 12.2 / CMake 3.27.8.
 
 FROM ghcr.io/arcaneframework/ubuntu-2204:gcc-12_clang-15_cuda-122_minimal_latest
 
@@ -31,7 +31,6 @@ RUN apt-get update -y \
     valgrind \
     pd-bsaylor \
     libosmesa6-dev \
-    libunwind-dev \
     libptscotch-dev \
     libexpat1-dev \
     libudunits2-dev \
