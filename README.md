@@ -1,11 +1,15 @@
 # README
 ## ubuntu-2004:gcc-11_clang-13_cuda-118
 
-This branch contains the workflow and dockerfiles to create an
-image with Ubuntu 20.04 and:
+This branch contains the workflow and dockerfiles to create
+images with Ubuntu 20.04 and:
 - GCC 11
 - CLang 13
 - CUDA 11.8
+
+Two available architectures:
+- AMD64
+- ARM64
 
 Two available versions:
 - **minimal** : with the minimal set of packages to compile and 

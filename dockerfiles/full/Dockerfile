@@ -1,5 +1,5 @@
 # Ubuntu 20.04 full dependencies for Arcane.
-# Version with GCC 11 / CLang 13 / CUDA 11.8 / CMake 3.22.1.
+# Version with GCC 11 / CLang 13 / CUDA 11.8 / CMake 3.27.8.
 
 FROM ghcr.io/arcaneframework/ubuntu-2004:gcc-11_clang-13_cuda-118_minimal_latest
 
@@ -31,7 +31,6 @@ RUN apt-get update -y \
     valgrind \
     pd-bsaylor \
     libosmesa6-dev \
-    libunwind-dev \
     libptscotch-dev \
     libexpat1-dev \
     libudunits2-dev \
@@ -58,6 +57,6 @@ RUN cd /tmp \
     && tar zxf otf2-3.0.3.tar.gz \
     && cd otf2-3.0.3/ \
     && ./configure --prefix=/usr/local --exec-prefix=/usr/local \
-    && make \
-    && make install \
+    && make -j 2 \
+    && make install -j 2 \
     && cd / && rm -rf /tmp/*
