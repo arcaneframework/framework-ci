@@ -6,7 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
 
 RUN apt-get update -y \
-    && apt-get install -y texlive-full graphviz \
+    && apt-get install -y texlive-full graphviz python3-sphinx python3-breathe python3-exhale \
     && rm -rf /var/lib/apt/lists/*
 
 RUN cd /tmp \
