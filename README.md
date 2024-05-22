@@ -125,6 +125,15 @@ Pour voir directement toutes les images disponibles ou pour les dates de
 création, voir dans la partie "Package".
 
 Voici les images disponibles :
+- `ubuntu-2404:`
+  - `gcc`
+  - `clang`
+  - `gcc-14`
+  - `clang-18`
+  - `gcc-14_clang-18`
+    - `_full_latest`
+    - `_minimal_latest`
+
 - `ubuntu-2204:`
   - `gcc`
   - `clang`
@@ -172,7 +181,7 @@ Exemples :
 <br>
 
 Pour générer la documentation, voici l'image actuellement disponible :
-- `ubuntu-2204:gcc_doc_latest`
+- `ubuntu-2404:gcc_doc_latest`
 
 L'image de génération de documentation n'est utile que pour générer
 la documentation, il n'y a donc qu'un tag recommandé. Les autres tags
