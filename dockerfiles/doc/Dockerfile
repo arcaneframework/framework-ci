@@ -1,19 +1,11 @@
-# Ubuntu 22.04 minimal dependencies for Documentation Arcane.
+# Ubuntu 24.04 minimal dependencies for Documentation Arcane.
+# Version with Doxygen 1.9.8.
 
-FROM ghcr.io/arcaneframework/ubuntu-2204:gcc-12_clang-16_minimal_latest
+FROM ghcr.io/arcaneframework/ubuntu-2404:gcc-14_clang-18_minimal_latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
 
 RUN apt-get update -y \
-    && apt-get install -y texlive-full graphviz python3-sphinx python3-breathe python3-exhale \
+    && apt-get install -y texlive-full graphviz python3-sphinx python3-breathe python3-exhale doxygen \
     && rm -rf /var/lib/apt/lists/*
-
-RUN cd /tmp \
-    && wget https://www.doxygen.nl/files/doxygen-1.9.8.linux.bin.tar.gz \
-    && tar xf doxygen-1.9.8.linux.bin.tar.gz \
-    && cd /tmp/doxygen-1.9.8/ \
-    && make \
-    && make install \
-    && cd / \
-    && rm -rf /tmp/*

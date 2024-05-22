@@ -1,7 +1,7 @@
-# Ubuntu 22.04 full dependencies for Arcane.
-# Version with GCC 12 / CLang 16.
+# Ubuntu 24.04 full dependencies for Arcane.
+# Version with GCC 14 / CLang 18.
 
-FROM ghcr.io/arcaneframework/ubuntu-2204:gcc-12_clang-16_minimal_latest
+FROM ghcr.io/arcaneframework/ubuntu-2404:gcc-14_clang-18_minimal_latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
@@ -10,7 +10,7 @@ ARG TZ=Europe/Paris
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends \
     googletest libgtest-dev \
-    swig4.0 \
+    swig \
     libhypre-dev \
     libpetsc-real-dev \
     libtrilinos-teuchos-dev libtrilinos-epetra-dev \
@@ -31,7 +31,6 @@ RUN apt-get update -y \
     valgrind \
     pd-bsaylor \
     libosmesa6-dev \
-    libunwind-dev \
     libptscotch-dev \
     libexpat1-dev \
     libudunits2-dev \
@@ -39,6 +38,7 @@ RUN apt-get update -y \
     liblz4-dev \
     libpapi-dev \
     libarchive-dev \
+    libotf2-trace-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # On installe IceT.
@@ -50,14 +50,4 @@ RUN cd /tmp \
     && cd build \
     && cmake .. -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -GNinja \
     && cmake --build . --target install \
-    && cd / && rm -rf /tmp/*
-    
-# On installe OTF2.
-RUN cd /tmp \
-    && wget https://perftools.pages.jsc.fz-juelich.de/cicd/otf2/tags/otf2-3.0.3/otf2-3.0.3.tar.gz \
-    && tar zxf otf2-3.0.3.tar.gz \
-    && cd otf2-3.0.3/ \
-    && ./configure --prefix=/usr/local --exec-prefix=/usr/local \
-    && make \
-    && make install \
     && cd / && rm -rf /tmp/*

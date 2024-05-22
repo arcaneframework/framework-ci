@@ -1,10 +1,11 @@
-# Ubuntu 22.04 minimal dependencies for Arcane.
-# Version with GCC 12 / CLang 16.
+# Ubuntu 24.04 minimal dependencies for Arcane.
+# Version with GCC 14 / CLang 18.
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
+ARG HOME="/root"
 
 # On installe les packages pour compiler Arcane.
 RUN apt-get update -y \
@@ -14,8 +15,9 @@ RUN apt-get update -y \
     curl \
     rsync \
     build-essential \
-    gcc-12 \
-    g++-12 \
+    gcc-14 \
+    g++-14 \
+    clang-18 \
     make \
     cmake \
     ccache \
@@ -35,35 +37,24 @@ RUN apt-get update -y \
     libopenmpi-dev \
     libmpich-dev \
     libmetis-dev \
-    libtbb2-dev \
+    libtbb-dev \
+    libunwind-dev \
     ca-certificates \
-    dotnet6 \
-    software-properties-common \
-    gnupg \
+    dotnet8 \
     && rm -rf /var/lib/apt/lists/* \
-    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100 \
-    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
-    && update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-12 100 \
-    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-12 100 \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100 \
+    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-14 100 \
     \
-    && update-alternatives --set g++ /usr/bin/g++-12 \
-    && update-alternatives --set gcc /usr/bin/gcc-12 \
-    && update-alternatives --set cpp-bin /usr/bin/cpp-12 \
-    && update-alternatives --set gcov /usr/bin/gcov-12
-
-# On installe CLang 16.
-# On met la version par défaut du compiler clang en version 16.
-# (Nécessite software-properties-common et gnupg)
-RUN cd /tmp \
-    && wget https://apt.llvm.org/llvm.sh \
-    && chmod +x llvm.sh \
-    && ./llvm.sh 16 \
-    && rm -rf /tmp/* \
-    && rm -rf /var/lib/apt/lists/* \
-    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 100 \
-    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 100 \
-    && update-alternatives --set clang /usr/bin/clang-16 \
-    && update-alternatives --set clang++ /usr/bin/clang++-16
+    && update-alternatives --set g++ /usr/bin/g++-14 \
+    && update-alternatives --set gcc /usr/bin/gcc-14 \
+    && update-alternatives --set gcov /usr/bin/gcov-14 \
+    \
+    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100 \
+    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100 \
+    \
+    && update-alternatives --set clang /usr/bin/clang-18 \
+    && update-alternatives --set clang++ /usr/bin/clang++-18
 
 # On compile et installe deux versions de ParMETIS :
 # - une version compilée avec OpenMPI,
@@ -83,10 +74,10 @@ RUN cd /tmp \
     && update-alternatives --set mpi-${ARCH}-linux-gnu /usr/include/${ARCH}-linux-gnu/mpich \
     \
     && make config prefix=/usr/local/parmetis_mpich \
-    && make install \
+    && make install -j 2 \
     && make clean \
     && make config shared=1 prefix=/usr/local/parmetis_mpich \
-    && make install \
+    && make install -j 2 \
     && make distclean \
     \
     && update-alternatives --set mpirun /usr/bin/mpirun.openmpi \
@@ -96,10 +87,10 @@ RUN cd /tmp \
     && update-alternatives --set mpi-${ARCH}-linux-gnu /usr/lib/${ARCH}-linux-gnu/openmpi/include \
     \
     && make config prefix=/usr/local/parmetis_openmpi \
-    && make install \
+    && make install -j 2 \
     && make clean \
     && make config shared=1 prefix=/usr/local/parmetis_openmpi \
-    && make install \
+    && make install -j 2 \
     && make distclean \
     \
     && update-alternatives --install /usr/include/parmetis.h parmetis /usr/local/parmetis_openmpi/include/parmetis.h 50 \

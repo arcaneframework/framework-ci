@@ -1,10 +1,10 @@
 # README
-## ubuntu-2204:gcc-12_clang-16
+## ubuntu-2404:gcc-14_clang-18
 
 This branch contains the workflow and dockerfiles to create
-images with Ubuntu 22.04 and:
-- GCC 12
-- CLang 16
+images with Ubuntu 24.04 and:
+- GCC 14
+- CLang 18
 
 Two available architectures:
 - AMD64
