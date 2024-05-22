@@ -65,8 +65,6 @@ jobs:
             org.opencontainers.image.vendor=CEA
             org.opencontainers.image.licenses=Apache2
           tags: |
-            type=raw, gcc_minimal_latest
-            type=raw, clang_minimal_latest
             type=raw, gcc-12_minimal_latest
             type=raw, clang-16_minimal_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_latest
@@ -124,8 +122,6 @@ jobs:
             org.opencontainers.image.vendor=CEA
             org.opencontainers.image.licenses=Apache2
           tags: |
-            type=raw, gcc_full_latest
-            type=raw, clang_full_latest
             type=raw, gcc-12_full_latest
             type=raw, clang-16_full_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_full_latest
@@ -175,8 +171,6 @@ jobs:
             org.opencontainers.image.vendor=CEA
             org.opencontainers.image.licenses=Apache2
           tags: |
-            type=raw, gcc_doc_latest
-            type=raw, ${{ env.IMAGE_OS_TAG }}_doc_latest
             type=raw, ${{ env.IMAGE_OS_TAG }}_doc_{{date 'YYYYMMDD'}}
 
       - name: Build and push Docker image
