@@ -56,6 +56,30 @@ RUN apt-get update -y \
     && update-alternatives --set clang /usr/bin/clang-18 \
     && update-alternatives --set clang++ /usr/bin/clang++-18
 
+# On downgrade MPICH de la version 4.2.0 vers la version 4.1.2.
+RUN ARCH=`uname -m` \
+    && if [ "$ARCH" = "x86_64" ]; then \
+      apt-get update -y \
+      && apt-get install -y --no-install-recommends \
+      libhwloc-dev \
+      libucx-dev \
+      \
+      && cd /tmp \
+      \
+      && wget http://launchpadlibrarian.net/714624482/mpich_4.1.2-3_amd64.deb -O mpich.deb \
+      && wget http://launchpadlibrarian.net/714624474/libmpich12_4.1.2-3_amd64.deb -O libmpich12.deb \
+      && wget http://launchpadlibrarian.net/714624463/libmpich-dev_4.1.2-3_amd64.deb -O libmpich-dev.deb \
+      \
+      && dpkg -i mpich.deb libmpich12.deb libmpich-dev.deb \
+      \
+      && rm -rf /var/lib/apt/lists/* \
+      && rm -rf /tmp/* ; \
+    elif [ "$ARCH" = "aarch64" ]; then \
+      : \
+    else \
+      exit 1; \
+    fi
+
 # On compile et installe deux versions de ParMETIS :
 # - une version compilée avec OpenMPI,
 # - une version compilée avec MPICH.
