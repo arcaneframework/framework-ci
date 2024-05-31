@@ -11,6 +11,7 @@ ARG HOME="/root"
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends \
     apt-utils \
+    gnupg \
     wget \
     curl \
     rsync \
