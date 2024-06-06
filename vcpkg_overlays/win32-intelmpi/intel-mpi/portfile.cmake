@@ -1,4 +1,4 @@
-set(INTELMPI_VERSION "2021.8.0")
+set(INTELMPI_VERSION "2021.12")
 set(SOURCE_PATH "${CURRENT_BUILDTREES_DIR}/src/intel-mpi-${INTELMPI_VERSION}")
 
 file(TO_NATIVE_PATH "C:/Program Files (x86)/Intel/oneAPI" SDK_SOURCE_DIR)
@@ -8,10 +8,10 @@ message(STATUS "IntelMPI source SDK = ${SDK_SOURCE_DIR}")
 set(SDK_SOURCE_MPI_DIR "${SDK_SOURCE_DIR}/mpi/${INTELMPI_VERSION}")
 
 set(SOURCE_INCLUDE_PATH "${SDK_SOURCE_MPI_DIR}/include")
-set(SOURCE_LIB_PATH "${SDK_SOURCE_MPI_DIR}/lib/release")
-set(SOURCE_DEBUG_LIB_PATH "${SDK_SOURCE_MPI_DIR}/lib/debug")
-set(SOURCE_BIN_PATH "${SDK_SOURCE_MPI_DIR}/bin/release")
-set(SOURCE_DEBUG_BIN_PATH "${SDK_SOURCE_MPI_DIR}/bin/debug")
+set(SOURCE_LIB_PATH "${SDK_SOURCE_MPI_DIR}/lib")
+set(SOURCE_DEBUG_LIB_PATH "${SDK_SOURCE_MPI_DIR}/lib/mpi/debug")
+set(SOURCE_BIN_PATH "${SDK_SOURCE_MPI_DIR}/bin")
+set(SOURCE_DEBUG_BIN_PATH "${SDK_SOURCE_MPI_DIR}/bin/mpi/debug")
 set(SOURCE_TOOLS_PATH "${SDK_SOURCE_MPI_DIR}/bin")
 set(SOURCE_INCLUDE_FILES
   "${SOURCE_INCLUDE_PATH}/mpi.h"
@@ -38,10 +38,17 @@ file(INSTALL
 
 # Also install include files in the tools directory
 # because the compiler wrappers (mpicc.bat for example) needs them
+# With Intel 2024.12 and CMake 2.27 we have to create a 'mpi' directory
+# in the header directory to avoid an error with packages using MPI
 file(INSTALL
   ${SOURCE_INCLUDE_FILES}
   DESTINATION
   "${CURRENT_PACKAGES_DIR}/tools/${PORT}/include"
+  )
+file(INSTALL
+  ${SOURCE_INCLUDE_FILES}
+  DESTINATION
+  "${CURRENT_PACKAGES_DIR}/tools/${PORT}/include/mpi"
   )
 
 # Install include files
@@ -69,19 +76,20 @@ file(INSTALL
 file(INSTALL
   "${SOURCE_BIN_PATH}/impi.dll"
   "${SOURCE_BIN_PATH}/impi.pdb"
-  "${SDK_SOURCE_MPI_DIR}/libfabric/bin/libfabric.dll"
+  "${SDK_SOURCE_MPI_DIR}/opt/mpi/libfabric/bin/libfabric.dll"
   DESTINATION "${CURRENT_PACKAGES_DIR}/bin"
   )
 
 file(INSTALL
   "${SOURCE_DEBUG_BIN_PATH}/impi.dll"
   "${SOURCE_DEBUG_BIN_PATH}/impi.pdb"
-  "${SDK_SOURCE_MPI_DIR}/libfabric/bin/libfabric.dll"
+  "${SDK_SOURCE_MPI_DIR}/opt/mpi/libfabric/bin/libfabric.dll"
   DESTINATION "${CURRENT_PACKAGES_DIR}/debug/bin"
   )
 
 file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/mpi-wrapper.cmake" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
 
 # Handle copyright
-file(COPY "${SDK_SOURCE_DIR}/licensing/2023.0.0/license.htm" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
+# C:\Program Files (x86)\Intel\oneAPI\licensing\2024.1\licensing\2024.1
+file(COPY "${SDK_SOURCE_DIR}/licensing/2024.1/licensing/2024.1/license.htm" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
 file(WRITE "${CURRENT_PACKAGES_DIR}/share/${PORT}/copyright" "See the accompanying 'licence.htm'")
