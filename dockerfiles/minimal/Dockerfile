@@ -47,6 +47,7 @@ RUN apt-get update -y \
 
 COPY build_scripts/ /root/build_scripts/
 RUN /root/build_scripts/parmetis.sh
+RUN /root/build_scripts/mpich.sh
 RUN /root/build_scripts/default_alternative.sh
 
 # # On downgrade MPICH de la version 4.2.0 vers la version 4.1.2.
