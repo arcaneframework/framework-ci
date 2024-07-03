@@ -25,6 +25,7 @@ RUN apt-get update -y \
     ninja-build \
     iputils-ping \
     python3 \
+    python3-pip \
     git \
     gfortran \
     libc6-dev \
@@ -128,3 +129,7 @@ RUN cd /tmp \
     \
     && update-alternatives --set parmetis /usr/local/parmetis_openmpi/include/parmetis.h \
     && rm -rf /tmp/*
+
+# Installation de PythonNet.
+RUN pip install --break-system-packages pythonnet \
+    && rm -rf ${HOME}/.cache
