@@ -27,7 +27,6 @@ RUN apt-get update -y \
     libtrilinos-zoltan-dev libtrilinos-zoltan2-dev \
     libtrilinos-aztecoo-dev libtrilinos-ml-dev \
     dpkg-dev \
-    python3-dev python3-numpy \
     valgrind \
     pd-bsaylor \
     libosmesa6-dev \
