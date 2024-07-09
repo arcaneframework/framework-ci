@@ -81,7 +81,7 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           provenance: false
-          file: ${{ env.DOCKERFILE_PATH }}/minimal/Dockerfile
+          context: ${{ env.DOCKERFILE_PATH }}/minimal
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -142,7 +142,7 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           provenance: false
-          file: ${{ env.DOCKERFILE_PATH }}/full/Dockerfile
+          context: ${{ env.DOCKERFILE_PATH }}/full
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -191,7 +191,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          file: ${{ env.DOCKERFILE_PATH }}/doc/Dockerfile
+          context: ${{ env.DOCKERFILE_PATH }}/doc
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
