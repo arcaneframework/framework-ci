@@ -40,13 +40,5 @@ RUN apt-get update -y \
     libotf2-trace-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# On installe IceT.
-RUN cd /tmp \
-    && git clone https://gitlab.kitware.com/icet/icet.git \
-    && cd icet \
-    && git checkout release \
-    && mkdir build \
-    && cd build \
-    && cmake .. -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -GNinja \
-    && cmake --build . --target install \
-    && cd / && rm -rf /tmp/*
+COPY build_scripts/ /root/build_scripts/
+RUN /root/build_scripts/icet.sh

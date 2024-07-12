@@ -46,4 +46,5 @@ update-alternatives --install /usr/include/${ARCH}-linux-gnu/mpi mpi-${ARCH}-lin
 #---------------------------------------------------------------------------
 
 # Cleanup
+cd /
 rm -rf /tmp/*

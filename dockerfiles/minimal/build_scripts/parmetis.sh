@@ -68,4 +68,5 @@ update-alternatives --install /usr/include/parmetis.h parmetis ${PARMETIS_OPENMP
 #---------------------------------------------------------------------------
 
 # Cleanup
+cd /
 rm -rf /tmp/*
