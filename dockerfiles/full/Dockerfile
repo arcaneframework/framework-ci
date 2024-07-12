@@ -6,6 +6,9 @@ FROM ghcr.io/arcaneframework/ubuntu-2404:gcc-14_clang-18_minimal_latest
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
 
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
 # On installe les packages pour compiler Arcane.
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends \
@@ -40,5 +43,28 @@ RUN apt-get update -y \
     libotf2-trace-dev \
     && rm -rf /var/lib/apt/lists/*
 
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Copie des scripts de construction d'image.
 COPY build_scripts/ /root/build_scripts/
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de IceT.
 RUN /root/build_scripts/icet.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de Cuda.
+RUN /root/build_scripts/cuda.sh
+ENV PATH="/usr/local/cuda/bin${PATH:+:$PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Copie des scripts pour configurer le container.
+COPY scripts/ /root/scripts/

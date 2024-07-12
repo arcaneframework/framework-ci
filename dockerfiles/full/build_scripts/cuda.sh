@@ -1,6 +1,7 @@
 #!/bin/sh
 
-# Script permettant de compiler et d'installer Cuda 12.5.
+# Script permettant de compiler et d'installer Cuda 12.5 (avec
+# un minimum de packages).
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
@@ -20,6 +21,7 @@ fi
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/${ARCH_A}/cuda-keyring_1.1-1_all.deb
 dpkg -i cuda-keyring_1.1-1_all.deb
 
+# À noter que CUDA 12.5 est compatible uniquement avec g++-13 max et clang-17 max.
 apt-get update
 apt-get -y install \
   cuda-compiler-12-5 \
@@ -29,7 +31,19 @@ apt-get -y install \
   cuda-command-line-tools-12-5 \
   cuda-gdb-12-5 \
   cuda-nvdisasm-12-5 \
-  cuda-toolkit-12-5-config-common
+  cuda-toolkit-12-5-config-common \
+  nvidia-driver-555-open \
+  gcc-13 g++-13 \
+  clang-17
+
+update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 90
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 90
+update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-13 90
+
+update-alternatives --install /usr/bin/clang clang /usr/bin/clang-17 90
+update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 90
+
+
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------

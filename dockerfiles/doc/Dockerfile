@@ -6,6 +6,9 @@ FROM ghcr.io/arcaneframework/ubuntu-2404:gcc-14_clang-18_minimal_latest
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
 
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
 RUN apt-get update -y \
     && apt-get install -y texlive-full graphviz python3-sphinx python3-breathe python3-exhale doxygen \
     && rm -rf /var/lib/apt/lists/*
