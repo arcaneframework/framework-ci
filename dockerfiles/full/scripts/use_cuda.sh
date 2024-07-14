@@ -18,13 +18,11 @@ update-alternatives --set gcov /usr/bin/gcov-13
 update-alternatives --set clang /usr/bin/clang-17
 update-alternatives --set clang++ /usr/bin/clang++-17
 
-if [ -e /usr/lib/libcuda.so.1 ]
-then
+if [ -e /usr/lib/libcuda.so.1 ]; then
   echo "Nvidia driver found."
 else
   echo "Nvidia driver not found. Use stub libcuda.so lib."
-  if [ -e /usr/local/cuda/lib64/libcuda.so.1 ]
-  then
+  if [ -e /usr/local/cuda/lib64/libcuda.so.1 ]; then
     echo "Symlink already created."
   else
     echo "Creating symlink..."

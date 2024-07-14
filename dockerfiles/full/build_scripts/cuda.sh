@@ -22,6 +22,8 @@ wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/${ARCH_
 dpkg -i cuda-keyring_1.1-1_all.deb
 
 # À noter que CUDA 12.5 est compatible uniquement avec g++-13 max et clang-17 max.
+# Le driver n'est pas inclus. Le driver de l'host sera utilisé.
+# Le package libcurand-dev-12-5 est nécessaire pour AdaptiveCpp.
 apt-get update
 apt-get -y install \
   cuda-compiler-12-5 \
@@ -32,6 +34,7 @@ apt-get -y install \
   cuda-gdb-12-5 \
   cuda-nvdisasm-12-5 \
   cuda-toolkit-12-5-config-common \
+  libcurand-dev-12-5 \
   gcc-13 g++-13 \
   clang-17
 
