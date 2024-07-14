@@ -66,5 +66,11 @@ ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
+# Installation de AdaptiveCPP.
+RUN /root/build_scripts/adaptivecpp.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
 # Copie des scripts pour configurer le container.
 COPY scripts/ /root/scripts/
