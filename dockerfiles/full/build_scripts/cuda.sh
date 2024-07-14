@@ -32,7 +32,6 @@ apt-get -y install \
   cuda-gdb-12-5 \
   cuda-nvdisasm-12-5 \
   cuda-toolkit-12-5-config-common \
-  nvidia-driver-555-open \
   gcc-13 g++-13 \
   clang-17
 
@@ -42,8 +41,6 @@ update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-13 90
 
 update-alternatives --install /usr/bin/clang clang /usr/bin/clang-17 90
 update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 90
-
-
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
