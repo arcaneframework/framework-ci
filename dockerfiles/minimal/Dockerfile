@@ -1,10 +1,13 @@
 # Ubuntu 22.04 minimal dependencies for Arcane.
-# Version with GCC 12 / CLang 16.
 
 FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
+ARG HOME="/root"
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
 
 # On installe les packages pour compiler Arcane.
 RUN apt-get update -y \
@@ -14,14 +17,15 @@ RUN apt-get update -y \
     curl \
     rsync \
     build-essential \
-    gcc-12 \
-    g++-12 \
+    gcc-12 g++-12 \
+    gcc-11 g++-11 \
+    gcc g++ \
     make \
-    cmake \
     ccache \
     ninja-build \
     iputils-ping \
     python3 \
+    python3-pip \
     git \
     gfortran \
     libc6-dev \
@@ -31,84 +35,66 @@ RUN apt-get update -y \
     libxml2-dev \
     libhdf5-dev \
     libhdf5-openmpi-dev \
-    libhdf5-mpich-dev \
     libopenmpi-dev \
-    libmpich-dev \
     libmetis-dev \
     libtbb2-dev \
+    libunwind-dev \
     ca-certificates \
     dotnet6 \
-    software-properties-common \
-    gnupg \
-    && rm -rf /var/lib/apt/lists/* \
+    \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 90 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 90 \
+    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-11 90 \
+    \
     && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100 \
     && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
-    && update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-12 100 \
     && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-12 100 \
     \
-    && update-alternatives --set g++ /usr/bin/g++-12 \
-    && update-alternatives --set gcc /usr/bin/gcc-12 \
-    && update-alternatives --set cpp-bin /usr/bin/cpp-12 \
-    && update-alternatives --set gcov /usr/bin/gcov-12
+    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 100 \
+    \
+    && rm -rf /var/lib/apt/lists/*
 
-# On installe CLang 16.
-# On met la version par défaut du compiler clang en version 16.
-# (Nécessite software-properties-common et gnupg)
-RUN cd /tmp \
-    && wget https://apt.llvm.org/llvm.sh \
-    && chmod +x llvm.sh \
-    && ./llvm.sh 16 \
-    && rm -rf /tmp/* \
-    && rm -rf /var/lib/apt/lists/* \
-    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 100 \
-    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 100 \
-    && update-alternatives --set clang /usr/bin/clang-16 \
-    && update-alternatives --set clang++ /usr/bin/clang++-16
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
 
-# On compile et installe deux versions de ParMETIS :
-# - une version compilée avec OpenMPI,
-# - une version compilée avec MPICH.
-# La version OpenMPI est installé dans le répertoire
-# "/usr/local/parmetis_openmpi" et la version MPICH est
-# installé dans le répértoire "/usr/local/parmetis_mpich".
-RUN cd /tmp \
-    && ARCH=`uname -m` \
-    \
-    && wget https://ftp.mcs.anl.gov/pub/pdetools/spack-pkgs/parmetis-4.0.3.tar.gz \
-    && tar -zxf parmetis-4.0.3.tar.gz \
-    && cd parmetis-4.0.3 \
-    \
-    && update-alternatives --set mpirun /usr/bin/mpirun.mpich \
-    && update-alternatives --set mpi /usr/bin/mpicc.mpich \
-    && update-alternatives --set mpi-${ARCH}-linux-gnu /usr/include/${ARCH}-linux-gnu/mpich \
-    \
-    && make config prefix=/usr/local/parmetis_mpich \
-    && make install \
-    && make clean \
-    && make config shared=1 prefix=/usr/local/parmetis_mpich \
-    && make install \
-    && make distclean \
-    \
-    && update-alternatives --set mpirun /usr/bin/mpirun.openmpi \
-    && update-alternatives --set mpi /usr/bin/mpicc.openmpi \
-    && update-alternatives --set h5pcc /usr/bin/h5pcc.openmpi \
-    && update-alternatives --set hdf5.pc /usr/lib/${ARCH}-linux-gnu/pkgconfig/hdf5-openmpi.pc \
-    && update-alternatives --set mpi-${ARCH}-linux-gnu /usr/lib/${ARCH}-linux-gnu/openmpi/include \
-    \
-    && make config prefix=/usr/local/parmetis_openmpi \
-    && make install \
-    && make clean \
-    && make config shared=1 prefix=/usr/local/parmetis_openmpi \
-    && make install \
-    && make distclean \
-    \
-    && update-alternatives --install /usr/include/parmetis.h parmetis /usr/local/parmetis_openmpi/include/parmetis.h 50 \
-                           --slave /usr/lib/${ARCH}-linux-gnu/libparmetis.a libparmetisa /usr/local/parmetis_openmpi/lib/libparmetis.a \
-                           --slave /usr/lib/${ARCH}-linux-gnu/libparmetis.so libparmetisso /usr/local/parmetis_openmpi/lib/libparmetis.so \
-    \
-    && update-alternatives --install /usr/include/parmetis.h parmetis /usr/local/parmetis_mpich/include/parmetis.h 40 \
-                           --slave /usr/lib/${ARCH}-linux-gnu/libparmetis.a libparmetisa /usr/local/parmetis_mpich/lib/libparmetis.a \
-                           --slave /usr/lib/${ARCH}-linux-gnu/libparmetis.so libparmetisso /usr/local/parmetis_mpich/lib/libparmetis.so \
-    \
-    && update-alternatives --set parmetis /usr/local/parmetis_openmpi/include/parmetis.h \
-    && rm -rf /tmp/*
+# Copie des scripts de construction d'image.
+COPY build_scripts/ /root/build_scripts/
+
+# Copie des scripts pour configurer le container.
+COPY scripts/ /root/scripts/
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de CMake.
+RUN /root/build_scripts/cmake.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de CLang 16.
+RUN /root/build_scripts/clang16.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de MPICH.
+RUN /root/build_scripts/mpich.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de Parmetis.
+RUN /root/build_scripts/parmetis.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de packages Python avec PIP.
+RUN /root/build_scripts/pip.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Définition des programmes par défaut.
+RUN /root/scripts/default_alternatives.sh

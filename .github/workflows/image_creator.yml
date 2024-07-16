@@ -11,28 +11,26 @@ on:
         description: 'Build Full Image'
         required: true
         type: boolean
-      doc_version:
-        description: 'Build Doc Image'
-        required: true
-        type: boolean
 
 env:
   REGISTRY: 'ghcr.io'
   USER_NAME: 'arcaneframework'
   IMAGE_OS_NAME: 'ubuntu-2204'
-  IMAGE_OS_TAG: 'gcc-12_clang-16'
   DOCKERFILE_PATH: './dockerfiles'
 
 jobs:
   # Quand on demande minimal et full, le minimal doit être fait avant le full.
   build-and-push-minimal:
-    name: U22_G12_C16 Minimal Image
+    name: Ubuntu 22.04 Minimal Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
 
     steps:
+      - name: Delete huge unnecessary tools folder
+        run: rm -rf /opt/hostedtoolcache
+
       - name: Checkout repository
         if: ${{ inputs.minimal_version }}
         uses: actions/checkout@v4
@@ -65,12 +63,16 @@ jobs:
             org.opencontainers.image.vendor=CEA
             org.opencontainers.image.licenses=Apache2
           tags: |
+            type=raw, minimal_latest
+            type=raw, minimal_{{date 'YYYYMMDD'}}
             type=raw, gcc_minimal_latest
             type=raw, clang_minimal_latest
+            type=raw, gcc-12_minimal_{{date 'YYYYMMDD'}}
             type=raw, gcc-12_minimal_latest
+            type=raw, gcc-11_minimal_{{date 'YYYYMMDD'}}
+            type=raw, gcc-11_minimal_latest
             type=raw, clang-16_minimal_latest
-            type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_latest
-            type=raw, ${{ env.IMAGE_OS_TAG }}_minimal_{{date 'YYYYMMDD'}}
+            type=raw, clang-16_minimal_{{date 'YYYYMMDD'}}
 
       - name: Build and push Docker image
         if: ${{ inputs.minimal_version }}
@@ -78,7 +80,7 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           provenance: false
-          file: ${{ env.DOCKERFILE_PATH }}/minimal/Dockerfile
+          context: ${{ env.DOCKERFILE_PATH }}/minimal
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -87,7 +89,7 @@ jobs:
             
 
   build-and-push-full:
-    name: U22_G12_C16 Full Image
+    name: Ubuntu 22.04 Full Image
     if: ${{ inputs.full_version }}
     needs:
       - build-and-push-minimal
@@ -97,6 +99,9 @@ jobs:
       packages: write
 
     steps:
+      - name: Delete huge unnecessary tools folder
+        run: rm -rf /opt/hostedtoolcache
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -124,65 +129,28 @@ jobs:
             org.opencontainers.image.vendor=CEA
             org.opencontainers.image.licenses=Apache2
           tags: |
+            type=raw, full_latest
+            type=raw, full_{{date 'YYYYMMDD'}}
             type=raw, gcc_full_latest
             type=raw, clang_full_latest
+            type=raw, cuda_full_latest
             type=raw, gcc-12_full_latest
+            type=raw, gcc-12_full_{{date 'YYYYMMDD'}}
+            type=raw, gcc-11_full_latest
+            type=raw, gcc-11_full_{{date 'YYYYMMDD'}}
             type=raw, clang-16_full_latest
-            type=raw, ${{ env.IMAGE_OS_TAG }}_full_latest
-            type=raw, ${{ env.IMAGE_OS_TAG }}_full_{{date 'YYYYMMDD'}}
+            type=raw, clang-16_full_{{date 'YYYYMMDD'}}
+            type=raw, cuda-125_full_latest
+            type=raw, cuda-125_full_{{date 'YYYYMMDD'}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
           provenance: false
-          file: ${{ env.DOCKERFILE_PATH }}/full/Dockerfile
+          context: ${{ env.DOCKERFILE_PATH }}/full
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: |
             type=image,name=target,annotation-index.org.opencontainers.image.description=Full image to Build/Install/Run Arcane Framework. Available on AMD64 and ARM64.
-
-  build-and-push-doc:
-    name: U22_G12_C16 Doc Image
-    if: ${{ inputs.doc_version }}
-    needs:
-      - build-and-push-minimal
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_OS_NAME }}
-          labels: |
-            org.opencontainers.image.title=ArcaneFramework
-            org.opencontainers.image.description=Doc image to Build/Install/Run Arcane Framework
-            org.opencontainers.image.vendor=CEA
-            org.opencontainers.image.licenses=Apache2
-          tags: |
-            type=raw, gcc_doc_latest
-            type=raw, ${{ env.IMAGE_OS_TAG }}_doc_latest
-            type=raw, ${{ env.IMAGE_OS_TAG }}_doc_{{date 'YYYYMMDD'}}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          file: ${{ env.DOCKERFILE_PATH }}/doc/Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}

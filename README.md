@@ -1,10 +1,12 @@
 # README
-## ubuntu-2204:gcc-12_clang-16
+## ubuntu-2204
 
 This branch contains the workflow and dockerfiles to create
 images with Ubuntu 22.04 and:
 - GCC 12
+- GCC 11
 - CLang 16
+- CUDA 12.5 (full only)
 
 Two available architectures:
 - AMD64
@@ -16,5 +18,3 @@ Three available versions:
 - **full** : with the maximum set of packages to compile and run
   Arcane Framework will all its capacities. Depends on the
   **minimal** image for its build.
-- **doc** : with packages needed to build the documentation. Also
-  depends on the **minimal** image for its build (AMD64 only).

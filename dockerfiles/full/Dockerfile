@@ -1,10 +1,12 @@
 # Ubuntu 22.04 full dependencies for Arcane.
-# Version with GCC 12 / CLang 16.
 
-FROM ghcr.io/arcaneframework/ubuntu-2204:gcc-12_clang-16_minimal_latest
+FROM ghcr.io/arcaneframework/ubuntu-2204:minimal_latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
 
 # On installe les packages pour compiler Arcane.
 RUN apt-get update -y \
@@ -27,11 +29,9 @@ RUN apt-get update -y \
     libtrilinos-zoltan-dev libtrilinos-zoltan2-dev \
     libtrilinos-aztecoo-dev libtrilinos-ml-dev \
     dpkg-dev \
-    python3-dev python3-numpy \
     valgrind \
     pd-bsaylor \
     libosmesa6-dev \
-    libunwind-dev \
     libptscotch-dev \
     libexpat1-dev \
     libudunits2-dev \
@@ -39,25 +39,46 @@ RUN apt-get update -y \
     liblz4-dev \
     libpapi-dev \
     libarchive-dev \
+    \
     && rm -rf /var/lib/apt/lists/*
-
-# On installe IceT.
-RUN cd /tmp \
-    && git clone https://gitlab.kitware.com/icet/icet.git \
-    && cd icet \
-    && git checkout release \
-    && mkdir build \
-    && cd build \
-    && cmake .. -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -GNinja \
-    && cmake --build . --target install \
-    && cd / && rm -rf /tmp/*
     
-# On installe OTF2.
-RUN cd /tmp \
-    && wget https://perftools.pages.jsc.fz-juelich.de/cicd/otf2/tags/otf2-3.0.3/otf2-3.0.3.tar.gz \
-    && tar zxf otf2-3.0.3.tar.gz \
-    && cd otf2-3.0.3/ \
-    && ./configure --prefix=/usr/local --exec-prefix=/usr/local \
-    && make \
-    && make install \
-    && cd / && rm -rf /tmp/*
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Copie des scripts de construction d'image.
+COPY build_scripts/ /root/build_scripts/
+
+# Copie des scripts pour configurer le container.
+COPY scripts/ /root/scripts/
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Définition des programmes par défaut.
+RUN /root/scripts/default_alternatives.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de IceT.
+RUN /root/build_scripts/icet.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de IceT.
+RUN /root/build_scripts/otf2.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de Cuda.
+RUN /root/build_scripts/cuda.sh
+ENV PATH="/usr/local/cuda/bin${PATH:+:$PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de AdaptiveCPP.
+RUN /root/build_scripts/adaptivecpp.sh
