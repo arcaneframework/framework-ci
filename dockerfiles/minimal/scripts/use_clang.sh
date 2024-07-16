@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# Script permettant de configurer CUDA.
+# Script permettant de définir le clang par défaut à utiliser.
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
-. /root/scripts/use_cuda125.sh
+. /root/scripts/use_clang18.sh

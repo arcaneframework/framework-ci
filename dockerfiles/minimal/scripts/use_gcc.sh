@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# Script permettant de configurer CUDA.
+# Script permettant de définir le gcc par défaut à utiliser.
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
-. /root/scripts/use_cuda125.sh
+. /root/scripts/use_gcc14.sh
