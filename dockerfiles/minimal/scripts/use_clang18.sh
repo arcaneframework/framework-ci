@@ -13,5 +13,5 @@ echo "--------------------------------------------------------------------------
 update-alternatives --set clang /usr/bin/clang-18
 update-alternatives --set clang++ /usr/bin/clang++-18
 
-clang --version
-clang++ --version
+clang -v
+clang++ -v

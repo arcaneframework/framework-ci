@@ -10,8 +10,8 @@ echo "--------------------------------------------------------------------------
 echo "Define CLang-17 alternative"
 echo "---------------------------------------------------------------------------"
 
-update-alternatives --set clang /usr/bin/clang-17
-update-alternatives --set clang++ /usr/bin/clang++-17
+update-alternatives --set clang /usr/bin/clang-17-gcc13
+update-alternatives --set clang++ /usr/bin/clang++-17-gcc13
 
-clang --version
-clang++ --version
+clang -v
+clang++ -v

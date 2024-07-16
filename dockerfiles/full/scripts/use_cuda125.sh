@@ -24,3 +24,5 @@ else
     ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/libcuda.so.1
   fi
 fi
+
+nvcc --version

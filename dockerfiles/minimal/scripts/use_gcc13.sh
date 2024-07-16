@@ -14,6 +14,6 @@ update-alternatives --set g++ /usr/bin/g++-13
 update-alternatives --set gcc /usr/bin/gcc-13
 update-alternatives --set gcov /usr/bin/gcov-13
 
-g++ --version
-gcc --version
-gcov --version
+g++ -v
+gcc -v
+gcov -v

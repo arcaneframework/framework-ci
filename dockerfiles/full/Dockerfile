@@ -82,3 +82,9 @@ ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
 # Installation de AdaptiveCPP.
 RUN /root/build_scripts/adaptivecpp.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Création du launcher de clang++-17 avec toolchain g++-13.
+RUN /root/build_scripts/patch_clang17.sh
