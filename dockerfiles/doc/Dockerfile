@@ -1,7 +1,7 @@
 # Ubuntu 24.04 minimal dependencies for Documentation Arcane.
 # Version with Doxygen 1.9.8.
 
-FROM ghcr.io/arcaneframework/ubuntu-2404:gcc-14_clang-18_minimal_latest
+FROM ghcr.io/arcaneframework/ubuntu-2404:minimal_latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris

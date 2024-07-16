@@ -67,6 +67,8 @@ jobs:
             org.opencontainers.image.vendor=CEA
             org.opencontainers.image.licenses=Apache2
           tags: |
+            type=raw, minimal_latest
+            type=raw, minimal_{{date 'YYYYMMDD'}}
             type=raw, gcc_minimal_latest
             type=raw, clang_minimal_latest
             type=raw, gcc-14_minimal_{{date 'YYYYMMDD'}}
@@ -131,6 +133,8 @@ jobs:
             org.opencontainers.image.vendor=CEA
             org.opencontainers.image.licenses=Apache2
           tags: |
+            type=raw, full_latest
+            type=raw, full_{{date 'YYYYMMDD'}}
             type=raw, gcc_full_latest
             type=raw, clang_full_latest
             type=raw, cuda_full_latest
@@ -192,8 +196,8 @@ jobs:
             org.opencontainers.image.vendor=CEA
             org.opencontainers.image.licenses=Apache2
           tags: |
-            type=raw, gcc_doc_latest
-            type=raw, gcc_doc_{{date 'YYYYMMDD'}}
+            type=raw, doc_latest
+            type=raw, doc_{{date 'YYYYMMDD'}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
