@@ -10,8 +10,8 @@
 # Initialisation
 ARCH=`uname -m`
 
-. /root/scripts/use_gcc13.sh
-. /root/scripts/use_clang17.sh
+. /root/scripts/use_gcc-13.sh
+. /root/scripts/use_clang-17.sh
 
 if [ -e /usr/lib/libcuda.so.1 ]; then
   echo "Nvidia driver found."
