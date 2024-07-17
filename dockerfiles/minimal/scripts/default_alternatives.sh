@@ -5,6 +5,6 @@
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
-. /root/scripts/use_gcc12.sh
-. /root/scripts/use_clang16.sh
+. /root/scripts/use_gcc-12.sh
+. /root/scripts/use_clang-16.sh
 . /root/scripts/use_openmpi.sh
