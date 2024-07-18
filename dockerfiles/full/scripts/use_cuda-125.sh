@@ -13,6 +13,10 @@ ARCH=`uname -m`
 . /root/scripts/use_gcc-13.sh
 . /root/scripts/use_clang-17.sh
 
+echo "---------------------------------------------------------------------------"
+echo "Configure CUDA-12.5"
+echo "---------------------------------------------------------------------------"
+
 if [ -e /usr/lib/libcuda.so.1 ]; then
   echo "Nvidia driver found."
 else
