@@ -10,6 +10,10 @@
 # Initialisation
 ARCH=`uname -m`
 
+echo "---------------------------------------------------------------------------"
+echo "Configure CUDA-12.5"
+echo "---------------------------------------------------------------------------"
+
 if [ -e /usr/lib/libcuda.so.1 ]; then
   echo "Nvidia driver found."
 else
