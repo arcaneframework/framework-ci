@@ -46,6 +46,7 @@ RUN apt-get update -y \
     libunwind-dev \
     ca-certificates \
     dotnet8 \
+    jq \
     \
     && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 90 \
     && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 90 \
