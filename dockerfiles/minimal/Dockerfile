@@ -29,7 +29,7 @@ RUN apt-get update -y \
     ccache \
     ninja-build \
     iputils-ping \
-    python3 \
+    python3-dev \
     python3-pip \
     git \
     gfortran \

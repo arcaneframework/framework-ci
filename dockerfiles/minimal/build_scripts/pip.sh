@@ -5,8 +5,10 @@
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
-# Installation de PythonNet.
-pip install --break-system-packages pythonnet
+# Installation de PythonNet et de NumPy.
+pip install --break-system-packages \
+  pythonnet \
+  numpy
 
 # Cleanup
 rm -rf ${HOME}/.cache
