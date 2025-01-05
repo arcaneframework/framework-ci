@@ -106,6 +106,6 @@ endif()
 file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/mpi-wrapper.cmake" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
 
 # Handle copyright
-# C:\Program Files (x86)\Intel\oneAPI\licensing\2024.1\licensing\2024.1
-file(COPY "${SDK_SOURCE_DIR}/licensing/2024.1/licensing/2024.1/license.htm" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
+# C:\Program Files (x86)\Intel\oneAPI\licensing\2025.0\licensing\2025.0
+file(COPY "${SDK_SOURCE_DIR}/licensing/2025.0/licensing/2025.0/license.htm" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
 file(WRITE "${CURRENT_PACKAGES_DIR}/share/${PORT}/copyright" "See the accompanying 'licence.htm'")
