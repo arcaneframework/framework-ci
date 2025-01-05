@@ -16,8 +16,8 @@ jobs:
       VCPKG_OVERLAY_PORTS: ${{ github.workspace }}/../../build_base/framework-ci/vcpkg_overlays/${{ matrix.vcpkg_overlay }}
       VCPKG_DISABLE_METRICS: 1
       VCPKG_BUILD_DIR: '${{ github.workspace }}/../../build_base/framework-ci/vcpkg'
-      VCPKG_PREINSTALL_HASH_PACKAGE_NAME: '1.7.0-${{ matrix.full_name }}-${{ matrix.triplet }}'
-      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.7.1-${{ matrix.full_name }}-${{ matrix.triplet }}'
+      VCPKG_PREINSTALL_HASH_PACKAGE_NAME: '1.7.1-${{ matrix.full_name }}-${{ matrix.triplet }}'
+      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.7.2-${{ matrix.full_name }}-${{ matrix.triplet }}'
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
       DOTNET_VERSION: '6.x'
