@@ -144,10 +144,8 @@ jobs:
             type=raw, gcc-13_full_{{date 'YYYYMMDD'}}
             type=raw, clang-18_full_latest
             type=raw, clang-18_full_{{date 'YYYYMMDD'}}
-            type=raw, clang-17_full_latest
-            type=raw, clang-17_full_{{date 'YYYYMMDD'}}
-            type=raw, cuda-125_full_latest
-            type=raw, cuda-125_full_{{date 'YYYYMMDD'}}
+            type=raw, cuda-126_full_latest
+            type=raw, cuda-126_full_{{date 'YYYYMMDD'}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
