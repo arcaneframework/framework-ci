@@ -28,6 +28,7 @@ RUN apt-get update -y \
     cmake \
     ccache \
     ninja-build \
+    mold \
     iputils-ping \
     python3-dev \
     python3-pip \
