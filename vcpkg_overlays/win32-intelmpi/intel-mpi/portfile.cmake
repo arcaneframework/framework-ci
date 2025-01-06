@@ -1,4 +1,6 @@
-set(INTELMPI_VERSION "2021.12")
+# The last digit in the version is not used in the path
+# For example, use '2021.14' for version '2021.14.1'
+set(INTELMPI_VERSION "2021.14")
 set(SOURCE_PATH "${CURRENT_BUILDTREES_DIR}/src/intel-mpi-${INTELMPI_VERSION}")
 
 file(TO_NATIVE_PATH "C:/Program Files (x86)/Intel/oneAPI" SDK_SOURCE_DIR)
@@ -9,9 +11,7 @@ set(SDK_SOURCE_MPI_DIR "${SDK_SOURCE_DIR}/mpi/${INTELMPI_VERSION}")
 
 set(SOURCE_INCLUDE_PATH "${SDK_SOURCE_MPI_DIR}/include")
 set(SOURCE_LIB_PATH "${SDK_SOURCE_MPI_DIR}/lib")
-set(SOURCE_DEBUG_LIB_PATH "${SDK_SOURCE_MPI_DIR}/lib/mpi/debug")
 set(SOURCE_BIN_PATH "${SDK_SOURCE_MPI_DIR}/bin")
-set(SOURCE_DEBUG_BIN_PATH "${SDK_SOURCE_MPI_DIR}/bin/mpi/debug")
 set(SOURCE_TOOLS_PATH "${SDK_SOURCE_MPI_DIR}/bin")
 set(SOURCE_INCLUDE_FILES
   "${SOURCE_INCLUDE_PATH}/mpi.h"
@@ -20,6 +20,10 @@ set(SOURCE_INCLUDE_FILES
   "${SOURCE_INCLUDE_PATH}/mpio.h"
   "${SOURCE_INCLUDE_PATH}/mpiof.h"
   )
+
+# Debug directory do not always exists if no debug is installed
+set(SOURCE_DEBUG_LIB_PATH "${SDK_SOURCE_MPI_DIR}/lib/mpi/debug")
+set(SOURCE_DEBUG_BIN_PATH "${SDK_SOURCE_MPI_DIR}/bin/mpi/debug")
 
 # Get files in bin directory
 file(GLOB
@@ -75,21 +79,33 @@ file(INSTALL
 # for the runtime and should be in the PATH for 'mpiexec' to work
 file(INSTALL
   "${SOURCE_BIN_PATH}/impi.dll"
-  "${SOURCE_BIN_PATH}/impi.pdb"
   "${SDK_SOURCE_MPI_DIR}/opt/mpi/libfabric/bin/libfabric.dll"
   DESTINATION "${CURRENT_PACKAGES_DIR}/bin"
   )
 
+if(EXISTS "${SOURCE_BIN_PATH}/impi.pdb")
+  file(INSTALL
+    "${SOURCE_BIN_PATH}/impi.pdb"
+    DESTINATION "${CURRENT_PACKAGES_DIR}/bin"
+  )
+endif()
+
 file(INSTALL
   "${SOURCE_DEBUG_BIN_PATH}/impi.dll"
-  "${SOURCE_DEBUG_BIN_PATH}/impi.pdb"
   "${SDK_SOURCE_MPI_DIR}/opt/mpi/libfabric/bin/libfabric.dll"
   DESTINATION "${CURRENT_PACKAGES_DIR}/debug/bin"
   )
 
+if (EXISTS "${SOURCE_DEBUG_BIN_PATH}/impi.pdb")
+  file(INSTALL
+    "${SOURCE_DEBUG_BIN_PATH}/impi.pdb"
+    DESTINATION "${CURRENT_PACKAGES_DIR}/debug/bin"
+    )
+endif()
+
 file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/mpi-wrapper.cmake" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
 
 # Handle copyright
-# C:\Program Files (x86)\Intel\oneAPI\licensing\2024.1\licensing\2024.1
-file(COPY "${SDK_SOURCE_DIR}/licensing/2024.1/licensing/2024.1/license.htm" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
+# C:\Program Files (x86)\Intel\oneAPI\licensing\2025.0\licensing\2025.0
+file(COPY "${SDK_SOURCE_DIR}/licensing/2025.0/licensing/2025.0/license.htm" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
 file(WRITE "${CURRENT_PACKAGES_DIR}/share/${PORT}/copyright" "See the accompanying 'licence.htm'")
