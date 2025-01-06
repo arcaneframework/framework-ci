@@ -6,7 +6,7 @@ images with Ubuntu 22.04 and:
 - GCC 12
 - GCC 11
 - CLang 16
-- CUDA 12.5 (full only)
+- CUDA 12.6 (full only)
 
 Two available architectures:
 - AMD64

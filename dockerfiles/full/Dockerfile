@@ -82,3 +82,9 @@ ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
 # Installation de AdaptiveCPP.
 RUN /root/build_scripts/adaptivecpp.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de VTK.
+RUN /root/build_scripts/vtk.sh

@@ -6,7 +6,9 @@
 #---------------------------------------------------------------------------
 
 # Installation de PythonNet.
-pip install pythonnet
+pip install \
+  pythonnet \
+  numpy
 
 # Cleanup
 rm -rf ${HOME}/.cache
