@@ -17,7 +17,7 @@ jobs:
       VCPKG_DISABLE_METRICS: 1
       VCPKG_BUILD_DIR: '${{ github.workspace }}/../../build_base/framework-ci/vcpkg'
       VCPKG_PREINSTALL_HASH_PACKAGE_NAME: '1.7.2-${{ matrix.full_name }}-${{ matrix.triplet }}'
-      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.7.4-${{ matrix.full_name }}-${{ matrix.triplet }}'
+      VCPKG_PUSH_HASH_PACKAGE_NAME: '1.7.3-${{ matrix.full_name }}-${{ matrix.triplet }}'
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
       DOTNET_VERSION: '6.x'
@@ -69,7 +69,7 @@ jobs:
     steps:
 
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
 
@@ -80,6 +80,13 @@ jobs:
           ls -lart '${{ github.workspace }}'
           cd '${{ github.workspace }}' && mv _build docs nuget.config vcpkg vcpkg_overlays '${{ env.FRAMEWORKCI_ROOT_PATH }}'
           ls -lart '${{ env.FRAMEWORKCI_ROOT_PATH }}'
+
+      - name: Install mono
+        shell: 'bash'
+        # Mono is needed for 'ubuntu-24.04' because it is no longer installed on the runner
+        if: ${{ matrix.os == 'ubuntu-24.04' }}
+        run: |
+          sudo apt-get install -y mono-complete
 
       - name: Setup environment
         shell: 'bash'
