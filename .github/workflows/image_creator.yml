@@ -26,10 +26,20 @@ jobs:
     permissions:
       contents: read
       packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
 
     steps:
-      - name: Delete huge unnecessary tools folder
-        run: rm -rf /opt/hostedtoolcache
+      - name: Prepare
+        if: ${{ inputs.minimal_version }}
+        run: |
+          platform=${{ matrix.platform }}
+          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+          echo "REGISTRY_IMAGE=${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_OS_NAME }}" >> $GITHUB_ENV
 
       - name: Checkout repository
         if: ${{ inputs.minimal_version }}
@@ -51,17 +61,86 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for Docker
+      - name: Extract metadata (labels) for Docker
         if: ${{ inputs.minimal_version }}
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_OS_NAME }}
+          images: ${{ env.REGISTRY_IMAGE }}
           labels: |
             org.opencontainers.image.title=ArcaneFramework
             org.opencontainers.image.description=Minimal image to Build/Install/Run Arcane Framework
             org.opencontainers.image.vendor=CEA
             org.opencontainers.image.licenses=Apache2
+
+      - name: Build and push by digest
+        if: ${{ inputs.minimal_version }}
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          platforms: ${{ matrix.platform }}
+          context: ${{ env.DOCKERFILE_PATH }}/minimal
+          labels: ${{ steps.meta.outputs.labels }}
+          outputs: |
+            type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
+
+      - name: Export digest
+        if: ${{ inputs.minimal_version }}
+        run: |
+          mkdir -p /tmp/digests
+          digest="${{ steps.build.outputs.digest }}"
+          touch "/tmp/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        if: ${{ inputs.minimal_version }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-minimal-${{ env.IMAGE_OS_NAME }}-${{ github.run_number }}-${{ env.PLATFORM_PAIR }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge-minimal:
+    name: Merge Ubuntu 22.04 Minimal Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs:
+      - build-and-push-minimal
+
+    steps:
+      - name: Prepare
+        if: ${{ inputs.minimal_version }}
+        run: |
+          echo "REGISTRY_IMAGE=${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_OS_NAME }}" >> $GITHUB_ENV
+
+      - name: Download minimal digests
+        if: ${{ inputs.minimal_version }}
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/digests
+          pattern: digests-minimal-${{ env.IMAGE_OS_NAME }}-${{ github.run_number }}-*
+          merge-multiple: true
+
+      - name: Log in to the Container registry
+        if: ${{ inputs.minimal_version }}
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        if: ${{ inputs.minimal_version }}
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata (tags) for Docker
+        if: ${{ inputs.minimal_version }}
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY_IMAGE }}
           tags: |
             type=raw, minimal_latest
             type=raw, minimal_{{date 'YYYYMMDD'}}
@@ -74,33 +153,41 @@ jobs:
             type=raw, clang-16_minimal_latest
             type=raw, clang-16_minimal_{{date 'YYYYMMDD'}}
 
-      - name: Build and push Docker image
+      - name: Create manifest list and push
         if: ${{ inputs.minimal_version }}
-        uses: docker/build-push-action@v5
-        with:
-          platforms: linux/amd64,linux/arm64
-          provenance: false
-          context: ${{ env.DOCKERFILE_PATH }}/minimal
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          outputs: |
-            type=image,name=target,annotation-index.org.opencontainers.image.description=Minimal image to Build/Install/Run Arcane Framework. Available on AMD64 and ARM64.
-            
+        working-directory: /tmp/digests
+        run: |
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
+
+      - name: Inspect image
+        if: ${{ inputs.minimal_version }}
+        run: |
+          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
+
 
   build-and-push-full:
     name: Ubuntu 22.04 Full Image
     if: ${{ inputs.full_version }}
     needs:
-      - build-and-push-minimal
+      - merge-minimal
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
 
     steps:
-      - name: Delete huge unnecessary tools folder
-        run: rm -rf /opt/hostedtoolcache
+      - name: Prepare
+        run: |
+          platform=${{ matrix.platform }}
+          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+          echo "REGISTRY_IMAGE=${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_OS_NAME }}" >> $GITHUB_ENV
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -118,16 +205,79 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for Docker
+      - name: Extract metadata (labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_OS_NAME }}
+          images: ${{ env.REGISTRY_IMAGE }}
           labels: |
             org.opencontainers.image.title=ArcaneFramework
             org.opencontainers.image.description=Full image to Build/Install/Run Arcane Framework
             org.opencontainers.image.vendor=CEA
             org.opencontainers.image.licenses=Apache2
+
+      - name: Build and push by digest
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          platforms: ${{ matrix.platform }}
+          context: ${{ env.DOCKERFILE_PATH }}/full
+          labels: ${{ steps.meta.outputs.labels }}
+          outputs: |
+            type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
+
+      - name: Export digest
+        run: |
+          mkdir -p /tmp/digests
+          digest="${{ steps.build.outputs.digest }}"
+          touch "/tmp/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-full-${{ env.IMAGE_OS_NAME }}-${{ github.run_number }}-${{ env.PLATFORM_PAIR }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge-full:
+    name: Merge Ubuntu 22.04 Full Image
+    if: ${{ inputs.full_version }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs:
+      - build-and-push-full
+
+    steps:
+      - name: Prepare
+        if: ${{ inputs.minimal_version }}
+        run: |
+          echo "REGISTRY_IMAGE=${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_OS_NAME }}" >> $GITHUB_ENV
+
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/digests
+          pattern: digests-full-${{ env.IMAGE_OS_NAME }}-${{ github.run_number }}-*
+          merge-multiple: true
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata (tags) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY_IMAGE }}
           tags: |
             type=raw, full_latest
             type=raw, full_{{date 'YYYYMMDD'}}
@@ -143,14 +293,12 @@ jobs:
             type=raw, cuda-126_full_latest
             type=raw, cuda-126_full_{{date 'YYYYMMDD'}}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          platforms: linux/amd64,linux/arm64
-          provenance: false
-          context: ${{ env.DOCKERFILE_PATH }}/full
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          outputs: |
-            type=image,name=target,annotation-index.org.opencontainers.image.description=Full image to Build/Install/Run Arcane Framework. Available on AMD64 and ARM64.
+      - name: Create manifest list and push
+        working-directory: /tmp/digests
+        run: |
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
+
+      - name: Inspect image
+        run: |
+          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
