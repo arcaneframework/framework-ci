@@ -99,7 +99,7 @@ jobs:
         if: ${{ inputs.minimal_version }}
         uses: actions/upload-artifact@v4
         with:
-          name: minimal_digests-${{ env.PLATFORM_PAIR }}
+          name: digests-minimal-${{ env.IMAGE_OS_NAME }}-${{ github.run_number }}-${{ env.PLATFORM_PAIR }}
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -124,7 +124,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: /tmp/digests
-          pattern: minimal_digests-*
+          pattern: digests-minimal-${{ env.IMAGE_OS_NAME }}-${{ github.run_number }}-*
           merge-multiple: true
 
       - name: Log in to the Container registry
@@ -239,7 +239,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: full_digests-${{ env.PLATFORM_PAIR }}
+          name: digests-full-${{ env.IMAGE_OS_NAME }}-${{ github.run_number }}-${{ env.PLATFORM_PAIR }}
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -264,7 +264,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: /tmp/digests
-          pattern: full_digests-*
+          pattern: digests-full-${{ env.IMAGE_OS_NAME }}-${{ github.run_number }}-*
           merge-multiple: true
 
       - name: Log in to the Container registry
