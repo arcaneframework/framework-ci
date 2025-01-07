@@ -5,13 +5,18 @@
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
+# VTK est trop long à compiler sur les machines GH/qemu/ARM64.
+if [ "$ARCH" = "aarch64" ]; then
+  exit 0;
+fi
+
+apt-get update -y
+apt-get install -y mesa-common-dev mesa-utils
+
 # Initialisation
 cd /tmp
 git clone -b v9.4.0 --recursive https://gitlab.kitware.com/vtk/vtk.git vtk
 mkdir build
-
-apt-get update -y
-apt-get install -y mesa-common-dev mesa-utils
 
 # Configure
 cmake \
