@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # On compile et installe deux versions de ParMETIS :
 # - une version compilée avec OpenMPI,

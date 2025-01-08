@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Script permettant de compiler et d'installer Cuda 12.6 (avec
 # un minimum de packages).
