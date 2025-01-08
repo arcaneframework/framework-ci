@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Script permettant de compiler et d'installer MPICH et d'installer les
 # alternatives.

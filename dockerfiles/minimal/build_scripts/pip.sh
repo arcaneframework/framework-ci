@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Script permettant d'installer des packages Python avec PIP.
 

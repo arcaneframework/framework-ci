@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Script permettant de créer un launcher de clang-18 utilisant
 # la toolchain de g++-13.
