@@ -38,7 +38,7 @@ RUN apt-get update -y \
     libhdf5-openmpi-dev \
     libopenmpi-dev \
     libmetis-dev \
-    libtbb-dev \
+    libtbb2-dev \
     libunwind-dev \
     ca-certificates \
     dotnet6 \

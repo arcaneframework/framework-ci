@@ -9,7 +9,15 @@ set -e
 # Initialisation
 cd /tmp
 
+# Lima utilise lsb_release pour trouver le nom de la distribution.
+apt-get update -y
+apt-get install -y lsb-release
+
 git clone -b 7.11.2 https://github.com/LIHPC-Computational-Geometry/lima lima
+
+# Patch pour la compilation en ARM64.
+sed -i '33,38d' /tmp/lima/src/Lima/CMakeLists.txt
+
 mkdir build
 cmake \
       -S /tmp/lima \
@@ -37,4 +45,5 @@ ninja install
 
 # Cleanup
 cd /
+rm -rf /var/lib/apt/lists/*
 rm -rf /tmp/*

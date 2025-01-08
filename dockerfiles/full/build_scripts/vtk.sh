@@ -7,8 +7,9 @@ set -e
 #---------------------------------------------------------------------------
 
 # VTK est trop long à compiler sur les machines GH/qemu/ARM64.
+ARCH=`uname -m`
 if [ "$ARCH" = "aarch64" ]; then
-  exit 0;
+  exit 0
 fi
 
 apt-get update -y
