@@ -6,15 +6,16 @@ set -e
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
-apt-get update -y
-
 # VTK est trop long à compiler sur les machines GH/qemu/ARM64.
+ARCH=`uname -m`
 if [ "$ARCH" = "aarch64" ]; then
+  apt-get update -y
   apt-get install -y libvtk9-dev
   rm -rf /var/lib/apt/lists/*
-  exit 0;
+  exit 0
 fi
 
+apt-get update -y
 apt-get install -y mesa-common-dev mesa-utils
 
 # Initialisation
