@@ -11,10 +11,10 @@
 ARCH=`uname -m`
 
 . /root/scripts/use_gcc-13.sh
-. /root/scripts/use_clang-17.sh
+. /root/scripts/use_clang-18-wtc-gcc-13.sh
 
 echo "---------------------------------------------------------------------------"
-echo "Configure CUDA-12.5"
+echo "Configure CUDA-12.6"
 echo "---------------------------------------------------------------------------"
 
 if [ -e /usr/lib/libcuda.so.1 ]; then

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Launcher de clang-18 avec la toolchain de gcc-13.
+/usr/bin/clang-18 --gcc-install-dir="/usr/bin/../lib/gcc/@ARCH@-linux-gnu/13" "$@"

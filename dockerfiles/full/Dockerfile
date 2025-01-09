@@ -9,7 +9,7 @@ ARG TZ=Europe/Paris
 #---------------------------------------------------------------------------
 
 # On installe les packages pour compiler Arcane.
-# À noter que CUDA 12.5 est compatible uniquement avec g++-13 max et clang-17 max.
+# À noter que CUDA 12.6 est compatible uniquement avec g++-13 max et clang-18 max.
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends \
     googletest libgtest-dev \
@@ -41,10 +41,6 @@ RUN apt-get update -y \
     libpapi-dev \
     libarchive-dev \
     libotf2-trace-dev \
-    clang-17 \
-    \
-    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-17 90 \
-    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 90 \
     \
     && rm -rf /var/lib/apt/lists/*
 
@@ -56,12 +52,6 @@ COPY build_scripts/ /root/build_scripts/
 
 # Copie des scripts pour configurer le container.
 COPY scripts/ /root/scripts/
-
-#---------------------------------------------------------------------------
-#---------------------------------------------------------------------------
-
-# Définition des programmes par défaut.
-RUN /root/scripts/default_alternatives.sh
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
@@ -86,5 +76,11 @@ RUN /root/build_scripts/adaptivecpp.sh
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
-# Création du launcher de clang++-17 avec toolchain g++-13.
-RUN /root/build_scripts/patch_clang17.sh
+# Installation de VTK.
+RUN /root/build_scripts/vtk.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Création du launcher de clang++-18 avec toolchain g++-13.
+RUN /root/build_scripts/patch_clang-18.sh

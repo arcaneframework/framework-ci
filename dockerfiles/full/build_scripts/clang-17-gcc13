@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# Launcher de clang-17 avec la toolchain de gcc-13.
-/usr/bin/clang-17 --gcc-install-dir=/usr/bin/../lib/gcc/x86_64-linux-gnu/13 "$@"
