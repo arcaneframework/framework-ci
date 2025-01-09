@@ -1,18 +1,12 @@
 #!/bin/sh
 
-# Script permettant de définir les alternatives par défaut de l'image.
+# Script permettant de définir les alternatives par défaut de l'image full.
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
 echo "---------------------------------------------------------------------------"
-echo "Define default alternatives"
+echo "Define default alternatives (full image)"
 echo "---------------------------------------------------------------------------"
 
-. /root/scripts/use_gcc-12.sh
-. /root/scripts/use_clang-16.sh
-. /root/scripts/use_openmpi.sh
-
-if [ -f "/root/scripts/default_alternatives_full.sh" ]; then
-    . /root/scripts/default_alternatives_full.sh
-fi
+. /root/scripts/use_cuda-126.sh
