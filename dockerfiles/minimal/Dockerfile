@@ -23,8 +23,9 @@ RUN apt-get update -y \
     make \
     ccache \
     ninja-build \
+    mold \
     iputils-ping \
-    python3 \
+    python3-dev \
     python3-pip \
     git \
     gfortran \
@@ -41,6 +42,7 @@ RUN apt-get update -y \
     libunwind-dev \
     ca-certificates \
     dotnet6 \
+    jq \
     \
     && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 90 \
     && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 90 \
@@ -92,6 +94,12 @@ RUN /root/build_scripts/parmetis.sh
 
 # Installation de packages Python avec PIP.
 RUN /root/build_scripts/pip.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de Lima.
+RUN /root/build_scripts/lima.sh
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------

@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Script permettant d'installer des packages Python avec PIP.
 
@@ -6,7 +7,9 @@
 #---------------------------------------------------------------------------
 
 # Installation de PythonNet.
-pip install pythonnet
+pip install \
+  pythonnet \
+  numpy
 
 # Cleanup
 rm -rf ${HOME}/.cache

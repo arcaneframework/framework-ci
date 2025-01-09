@@ -1,11 +1,12 @@
 #!/bin/sh
+set -e
 
 # On compile et installe deux versions de ParMETIS :
 # - une version compilée avec OpenMPI,
 # - une version compilée avec MPICH.
-# La version OpenMPI est installé dans le répertoire
+# La version OpenMPI est installée dans le répertoire
 # "/usr/local/parmetis_openmpi" et la version MPICH est
-# installé dans le répértoire "/usr/local/parmetis_mpich".
+# installée dans le répértoire "/usr/local/parmetis_mpich".
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
