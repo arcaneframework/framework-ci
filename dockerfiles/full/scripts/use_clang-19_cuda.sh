@@ -1,18 +1,14 @@
 #!/bin/sh
 
-# Script permettant de définir les alternatives par défaut de l'image.
+# Script permettant de configurer CLang 19 de manière à pouvoir compiler les
+# parties CUDA avec Clang.
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
 echo "---------------------------------------------------------------------------"
-echo "Define default alternatives"
+echo "Configure Clang and CUDA to compile .cu with clang++-19"
 echo "---------------------------------------------------------------------------"
 
-. /root/scripts/use_gcc-14.sh
+. /root/scripts/use_cuda-126.sh
 . /root/scripts/use_clang-19.sh
-. /root/scripts/use_openmpi.sh
-
-if [ -f "/root/scripts/default_alternatives_full.sh" ]; then
-    . /root/scripts/default_alternatives_full.sh
-fi
