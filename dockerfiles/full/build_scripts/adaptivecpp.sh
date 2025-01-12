@@ -38,4 +38,6 @@ cmake --build . --target install
 # Cleanup
 cd /
 rm -rf /var/lib/apt/lists/*
+rm -rf /var/cache/*
+rm -rf /var/log/*
 rm -rf /tmp/*

@@ -12,7 +12,7 @@ if [ "$ARCH" = "aarch64" ]; then
   exit 0
 fi
 
-apt-get update -y
+apt-get update
 apt-get install -y mesa-common-dev mesa-utils
 
 # Initialisation
@@ -41,4 +41,6 @@ cmake --build /tmp/build --target install
 # Cleanup
 cd /
 rm -rf /var/lib/apt/lists/*
+rm -rf /var/cache/*
+rm -rf /var/log/*
 rm -rf /tmp/*

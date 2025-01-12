@@ -7,6 +7,7 @@ images with Ubuntu 22.04 and:
 - GCC 11
 - CLang 16
 - CUDA 12.6 (full only)
+- ROCM 5.7.1 (full/AMD64 only)
 
 Two available architectures:
 - AMD64
@@ -61,6 +62,14 @@ source /root/scripts/use_mpich.sh
 source /root/scripts/use_cuda.sh
 ```
 ```bash
-# To use CUDA 126:
+# To use CUDA 12.6:
 source /root/scripts/use_cuda-126.sh
+```
+```bash
+# To use default ROCM:
+source /root/scripts/use_rocm.sh
+```
+```bash
+# To use ROCM 5.7.1:
+source /root/scripts/use_rocm-571.sh
 ```
