@@ -284,6 +284,7 @@ jobs:
             type=raw, gcc_full_latest
             type=raw, clang_full_latest
             type=raw, cuda_full_latest
+            type=raw, rocm_full_latest
             type=raw, gcc-12_full_latest
             type=raw, gcc-12_full_{{date 'YYYYMMDD'}}
             type=raw, gcc-11_full_latest
@@ -292,6 +293,8 @@ jobs:
             type=raw, clang-16_full_{{date 'YYYYMMDD'}}
             type=raw, cuda-126_full_latest
             type=raw, cuda-126_full_{{date 'YYYYMMDD'}}
+            type=raw, rocm-571_full_latest
+            type=raw, rocm-571_full_{{date 'YYYYMMDD'}}
 
       - name: Create manifest list and push
         working-directory: /tmp/digests
