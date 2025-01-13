@@ -9,6 +9,8 @@ ARG TZ=Europe/Paris
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
-RUN apt-get update -y \
+RUN apt-get update \
     && apt-get install -y texlive-full graphviz python3-sphinx python3-breathe python3-exhale doxygen \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/cache/* \
+    && rm -rf /var/log/*

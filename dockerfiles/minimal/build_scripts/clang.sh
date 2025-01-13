@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
 
-# Script permettant de compiler et d'installer AdaptiveCPP.
+# Script permettant de compiler et d'installer Clang 19 et d'installer les
+# alternatives.
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
@@ -9,28 +10,15 @@ set -e
 # Initialisation
 cd /tmp
 
-git clone https://github.com/AdaptiveCpp/AdaptiveCpp
-cd AdaptiveCpp
-
-mkdir build
-cd build
-
 apt-get update
-apt-get -y install \
-  libboost-fiber-dev \
-  libboost-context-dev \
-  libomp-19-dev \
-  llvm-19-dev \
-  libclang-19-dev
+apt-get install -y software-properties-common gnupg
 
-cmake \
-  -S .. \
-  -B . \
-  -GNinja \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DWITH_OPENCL_BACKEND=OFF
+wget https://apt.llvm.org/llvm.sh
+chmod +x llvm.sh
+./llvm.sh 19
 
-cmake --build . --target install
+update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 100
+update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 100
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------

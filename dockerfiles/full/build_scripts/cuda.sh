@@ -16,7 +16,7 @@ if [ "$ARCH" = "x86_64" ]; then
 elif [ "$ARCH" = "aarch64" ]; then
   ARCH_A="sbsa"
 else
-  exit 1;
+  exit 1
 fi
 
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/${ARCH_A}/cuda-keyring_1.1-1_all.deb
@@ -37,10 +37,14 @@ apt-get -y install \
   cuda-toolkit-12-6-config-common \
   libcurand-dev-12-6
 
+/usr/local/cuda/bin/nvcc --version
+
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
 # Cleanup
 cd /
 rm -rf /var/lib/apt/lists/*
+rm -rf /var/cache/*
+rm -rf /var/log/*
 rm -rf /tmp/*

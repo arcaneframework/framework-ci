@@ -5,8 +5,10 @@ This branch contains the workflow and dockerfiles to create
 images with Ubuntu 24.04 and:
 - GCC 14
 - GCC 13
+- CLang 19
 - CLang 18
 - CUDA 12.6 (full only)
+- ROCM 6.3.1 (full/AMD64 only)
 
 Two available architectures:
 - AMD64
@@ -40,12 +42,16 @@ source /root/scripts/use_gcc-13.sh
 source /root/scripts/use_gcc-14.sh
 ```
 ```bash
-# To use default clang/clang++ (Clang 18):
+# To use default clang/clang++ (Clang 19):
 source /root/scripts/use_clang.sh
 ```
 ```bash
 # To use clang/clang++ 18:
 source /root/scripts/use_clang-18.sh
+```
+```bash
+# To use clang/clang++ 19:
+source /root/scripts/use_clang-19.sh
 ```
 ```bash
 # To use OpenMPI:
@@ -63,8 +69,24 @@ source /root/scripts/use_mpich.sh
 source /root/scripts/use_cuda.sh
 ```
 ```bash
-# To use CUDA 126:
+# To use CUDA 12.6:
 source /root/scripts/use_cuda-126.sh
+```
+```bash
+# To use default ROCM:
+source /root/scripts/use_rocm.sh
+```
+```bash
+# To use ROCM 6.3.1:
+source /root/scripts/use_rocm-631.sh
+```
+```bash
+# To use default Clang to compile CUDA part:
+source /root/scripts/use_clang_cuda.sh
+```
+```bash
+# To use Clang 19 to compile CUDA part:
+source /root/scripts/use_clang-19_cuda.sh
 ```
 ```bash
 # To use Clang 18 with toolchain GCC 13:

@@ -1,18 +1,17 @@
 #!/bin/sh
 
-# Script permettant de définir les alternatives par défaut de l'image.
+# Script permettant de définir clang-19 comme étant le clang par défaut
+# à utiliser.
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
 echo "---------------------------------------------------------------------------"
-echo "Define default alternatives"
+echo "Define CLang-19 alternative"
 echo "---------------------------------------------------------------------------"
 
-. /root/scripts/use_gcc-14.sh
-. /root/scripts/use_clang-19.sh
-. /root/scripts/use_openmpi.sh
+update-alternatives --set clang /usr/bin/clang-19
+update-alternatives --set clang++ /usr/bin/clang++-19
 
-if [ -f "/root/scripts/default_alternatives_full.sh" ]; then
-    . /root/scripts/default_alternatives_full.sh
-fi
+clang -v
+clang++ -v
