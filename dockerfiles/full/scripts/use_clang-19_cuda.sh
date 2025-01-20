@@ -10,6 +10,6 @@ echo "--------------------------------------------------------------------------
 echo "Configure Clang and CUDA to compile .cu with clang++-19"
 echo "---------------------------------------------------------------------------"
 
-. /root/scripts/use_cuda-126.sh
+. /root/scripts/configure_cuda_driver.sh
 
 update-alternatives --set clang++-cuda /usr/lib/llvm-19/bin/clang++
