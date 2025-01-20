@@ -12,4 +12,4 @@ echo "--------------------------------------------------------------------------
 
 . /root/scripts/use_cuda-126.sh
 
-update-alternatives --set clang++_cuda /usr/bin/clang++-19
+update-alternatives --set clang++-cuda /usr/lib/llvm-19/bin/clang++
