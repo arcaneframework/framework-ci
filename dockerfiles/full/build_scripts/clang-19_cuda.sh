@@ -9,4 +9,4 @@ set -e
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
-update-alternatives --install /usr/bin/clang++_cuda clang++_cuda /usr/bin/clang++-19 92
+update-alternatives --install /usr/bin/clang++-cuda clang++-cuda /usr/lib/llvm-19/bin/clang++ 92
