@@ -1,5 +1,5 @@
 # Ubuntu 24.04 minimal dependencies for Documentation Arcane.
-# Version with Doxygen 1.9.8.
+# Version with Doxygen 1.13.2.
 
 FROM ghcr.io/arcaneframework/ubuntu-2404:minimal_latest
 
@@ -9,8 +9,20 @@ ARG TZ=Europe/Paris
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
-RUN apt-get update \
-    && apt-get install -y texlive-full graphviz python3-sphinx python3-breathe python3-exhale doxygen \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /var/cache/* \
-    && rm -rf /var/log/*
+# Copie des scripts de construction d'image.
+COPY build_scripts/ /root/build_scripts/
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation des packages avec apt.
+RUN /root/build_scripts/doc_apt.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# Installation de Doxygen.
+RUN /root/build_scripts/doxygen.sh
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
