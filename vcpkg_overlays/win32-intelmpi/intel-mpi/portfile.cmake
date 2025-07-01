@@ -1,6 +1,6 @@
 # The last digit in the version is not used in the path
-# For example, use '2021.14' for version '2021.14.1'
-set(INTELMPI_VERSION "2021.14")
+# For example, use '2021.16' for version '2021.16.0'
+set(INTELMPI_VERSION "2021.16")
 set(SOURCE_PATH "${CURRENT_BUILDTREES_DIR}/src/intel-mpi-${INTELMPI_VERSION}")
 
 file(TO_NATIVE_PATH "C:/Program Files (x86)/Intel/oneAPI" SDK_SOURCE_DIR)
