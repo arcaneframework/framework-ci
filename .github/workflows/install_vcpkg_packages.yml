@@ -26,31 +26,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: 'windows-2019'
-            full_name: 'windows-2019-msmpi'
-            triplet: x64-windows
-            nugetexe: nuget.exe
-            vcpkg_overlay: none
-            mono: ''
-          - os: 'windows-2019'
-            full_name: 'windows-2019-intelmpi'
-            triplet: x64-windows
-            nugetexe: nuget.exe
-            vcpkg_overlay: win32-intelmpi
-            mono: ''
           - os: 'windows-2022'
             full_name: 'windows-2022-intelmpi'
             triplet: x64-windows
             nugetexe: nuget.exe
             vcpkg_overlay: win32-intelmpi
             mono: ''
-          - os: 'ubuntu-20.04'
-            full_name: 'ubuntu-20.04'
-            triplet: 'x64-linux-dynamic'
-            nugetexe: /usr/local/bin/nuget.exe
-            vcpkg_overlay: none
-            # To run `nuget.exe` on non-Windows platforms, we must use `mono`.
-            mono: 'mono'
           - os: 'ubuntu-22.04'
             full_name: 'ubuntu-22.04'
             triplet: 'x64-linux-dynamic'
