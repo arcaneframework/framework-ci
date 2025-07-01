@@ -2,10 +2,9 @@
 cmake_minimum_required(VERSION 3.18.0)
 
 # Ce script met en place l'environnement pour l'intégration continue pour 'github actions',
-# Normalement, on a déjà une version récente de CMake installée (à priori la 3.20.4 en juin 2021)
 # On effectue les commandes suivantes:
 # - sous windows, téléchargement et installation de 'Microsoft MPI'
-# - téléchargement des versions de 'ninja'.
+# - téléchargement des versions de 'ninja', 'cmake' et 'ccache'
 # - sous linux, téléchargement de 'nuget'
 # - enregistrement des autorisations pour accéder à 'GitHub packages' via nuget.
 
@@ -18,6 +17,7 @@ if (NOT NUGET_PASSWORD)
   message(FATAL_ERROR "NUGET_PASSWORD is not defined")
 endif()
 set(FRAMEWORKCI_CMAKE_WANTED_VERSION "3.21.3")
+set(FRAMEWORKCI_CCACHE_WANTED_VERSION "4.11.3")
 
 # Télécharge une version spécifique de 'cmake' et 'ninja'.
 # Cela est nécessaire pour rendre
@@ -34,7 +34,10 @@ if (WIN32)
   endif()
   # Installe une version récente de ninja via chocolatey
   message(STATUS "Downloading 'ninja'")
-  file(DOWNLOAD "https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-win.zip" "ninja-win.zip")
+  file(DOWNLOAD
+    "https://github.com/ninja-build/ninja/releases/download/v1.13.0/ninja-win.zip" "ninja-win.zip"
+    EXPECTED_HASH SHA256=beb3c1bfcd01d352cb46586a4677b0a49a93b7bb668cfa5d0695283e1d8efb61
+  )
   message(STATUS "Installating 'ninja' in '${LOCAL_BIN_DIR_BIN}'")
   file(ARCHIVE_EXTRACT INPUT "ninja-win.zip" DESTINATION ${LOCAL_BIN_DIR_BIN})
 
@@ -50,20 +53,29 @@ if (WIN32)
 
   # Récupère et extrait 'ccache'
   message(STATUS "Get 'ccache'")
-  file(DOWNLOAD "https://github.com/cristianadam/ccache/releases/download/v4.4.1/Windows.tar.xz" "ccache.tar.xz")
-  file(ARCHIVE_EXTRACT INPUT "ccache.tar.xz" DESTINATION ${LOCAL_BIN_DIR_BIN})
+  file(DOWNLOAD
+    "https://github.com/ccache/ccache/releases/download/v${FRAMEWORKCI_CCACHE_WANTED_VERSION}/ccache-${FRAMEWORKCI_CCACHE_WANTED_VERSION}-windows-x86_64.zip" "ccache.zip"
+  )
+  file(ARCHIVE_EXTRACT INPUT "ccache.zip" DESTINATION ${LOCAL_BIN_DIR})
+  file(COPY "${LOCAL_BIN_DIR}/ccache-${FRAMEWORKCI_CCACHE_WANTED_VERSION}-windows-x86_64/ccache.exe" DESTINATION "${LOCAL_BIN_DIR_BIN}")
 endif()
 
 if (UNIX)
   # Récupère la dernière version de Nuget car elle n'est pas installée par défaut
   # sur les conteneurs ubuntu
+  file(DOWNLOAD
+    "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" "${LOCAL_BIN_DIR_BIN}/nuget.exe"
+  )
 
-  file(DOWNLOAD "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" "${LOCAL_BIN_DIR_BIN}/nuget.exe")
   # Récupère une version récente de ninja
-  file(DOWNLOAD "https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-linux.zip" "ninja-linux.zip")
+  file(DOWNLOAD
+    "https://github.com/ninja-build/ninja/releases/download/v1.13.0/ninja-linux.zip" "ninja-linux.zip"
+    EXPECTED_HASH SHA256=46aa8ad0a431e9b6e39f6ca0abc47bf8b13be094e3ac7d0f6d39e94bbdc746f9
+  )
   # Extrait l'archive
   file(ARCHIVE_EXTRACT INPUT "ninja-linux.zip" DESTINATION ${LOCAL_BIN_DIR_BIN})
 
+  # Récupère CMake
   message(STATUS "Downloading 'cmake'")
   file(DOWNLOAD "https://github.com/Kitware/CMake/releases/download/v${FRAMEWORKCI_CMAKE_WANTED_VERSION}/cmake-${FRAMEWORKCI_CMAKE_WANTED_VERSION}-Linux-x86_64.tar.gz" "cmake.tar.gz")
   message(STATUS "Extracting 'cmake'")
@@ -74,8 +86,11 @@ if (UNIX)
 
   # Récupère et extrait 'ccache'
   message(STATUS "Get 'ccache'")
-  file(DOWNLOAD "https://github.com/cristianadam/ccache/releases/download/v4.4.1/Linux.tar.xz" "ccache.tar.xz")
-  file(ARCHIVE_EXTRACT INPUT "ccache.tar.xz" DESTINATION ${LOCAL_BIN_DIR_BIN})
+  file(DOWNLOAD
+    "https://github.com/ccache/ccache/releases/download/v${FRAMEWORKCI_CCACHE_WANTED_VERSION}/ccache-${FRAMEWORKCI_CCACHE_WANTED_VERSION}-linux-x86_64.tar.xz" "ccache.tar.xz"
+  )
+  file(ARCHIVE_EXTRACT INPUT "ccache.tar.xz" DESTINATION ${LOCAL_BIN_DIR})
+  file(COPY "${LOCAL_BIN_DIR}/ccache-${FRAMEWORKCI_CCACHE_WANTED_VERSION}-linux-x86_64/ccache" DESTINATION "${LOCAL_BIN_DIR_BIN}")
 endif()
 
 set(FRAMEWORK_CI_ROOT "${CMAKE_CURRENT_LIST_DIR}/..")
