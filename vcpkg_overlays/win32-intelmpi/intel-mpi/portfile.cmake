@@ -1,6 +1,6 @@
 # The last digit in the version is not used in the path
-# For example, use '2021.14' for version '2021.14.1'
-set(INTELMPI_VERSION "2021.14")
+# For example, use '2021.16' for version '2021.16.0'
+set(INTELMPI_VERSION "2021.16")
 set(SOURCE_PATH "${CURRENT_BUILDTREES_DIR}/src/intel-mpi-${INTELMPI_VERSION}")
 
 file(TO_NATIVE_PATH "C:/Program Files (x86)/Intel/oneAPI" SDK_SOURCE_DIR)
@@ -106,6 +106,6 @@ endif()
 file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/mpi-wrapper.cmake" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
 
 # Handle copyright
-# C:\Program Files (x86)\Intel\oneAPI\licensing\2025.0\licensing\2025.0
-file(COPY "${SDK_SOURCE_DIR}/licensing/2025.0/licensing/2025.0/license.htm" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
+# C:\Program Files (x86)\Intel\oneAPI\licensing\2025.2\licensing\2025.2
+file(COPY "${SDK_SOURCE_DIR}/licensing/2025.2/licensing/2025.2/license.htm" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
 file(WRITE "${CURRENT_PACKAGES_DIR}/share/${PORT}/copyright" "See the accompanying 'licence.htm'")
