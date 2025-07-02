@@ -16,7 +16,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/CommonFunctions.cmake)
 if (NOT NUGET_PASSWORD)
   message(FATAL_ERROR "NUGET_PASSWORD is not defined")
 endif()
-set(FRAMEWORKCI_CMAKE_WANTED_VERSION "3.21.3")
+set(FRAMEWORKCI_CMAKE_WANTED_VERSION "3.26.6")
 set(FRAMEWORKCI_CCACHE_WANTED_VERSION "4.11.3")
 
 # Télécharge une version spécifique de 'cmake' et 'ninja'.
