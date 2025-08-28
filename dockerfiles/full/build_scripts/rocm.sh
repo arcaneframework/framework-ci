@@ -19,7 +19,7 @@ else
 fi
 
 UBUNTU_NAME="noble"
-ROCM_VERSION="6.3.1"
+ROCM_VERSION="6.4.3"
 
 mkdir --parents --mode=0755 /etc/apt/keyrings
 wget https://repo.radeon.com/rocm/rocm.gpg.key -O - | gpg --dearmor | tee /etc/apt/keyrings/rocm.gpg > /dev/null

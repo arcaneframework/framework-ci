@@ -8,11 +8,11 @@
 #---------------------------------------------------------------------------
 
 echo "---------------------------------------------------------------------------"
-echo "Configure CUDA-12.6"
+echo "Configure CUDA-13.0"
 echo "---------------------------------------------------------------------------"
 
-. /root/scripts/use_gcc-13.sh
-. /root/scripts/use_clang-18-wtc-gcc-13.sh
+. /root/scripts/use_gcc-14.sh
+. /root/scripts/use_clang-19.sh
 
 . /root/scripts/configure_cuda_driver.sh
 
