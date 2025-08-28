@@ -21,7 +21,8 @@ apt-get -y install \
   libboost-context-dev \
   libomp-19-dev \
   llvm-19-dev \
-  libclang-19-dev
+  libclang-19-dev \
+  lld-19
 
 cmake \
   -S .. \
@@ -29,6 +30,9 @@ cmake \
   -GNinja \
   -DCMAKE_BUILD_TYPE=Release \
   -DWITH_OPENCL_BACKEND=OFF
+
+# -DACPP_EXPERIMENTAL_LLVM=ON \
+# -DLLVM_DIR=/usr/lib/llvm-21/cmake
 
 cmake --build . --target install
 
