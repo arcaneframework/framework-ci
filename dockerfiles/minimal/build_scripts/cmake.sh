@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# Script permettant d'installer CMake v3.31.
+# Script permettant d'installer CMake v4.1.
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
@@ -10,7 +10,7 @@ set -e
 cd /tmp
 ARCH=`uname -m`
 
-wget -O install.sh https://github.com/Kitware/CMake/releases/download/v3.31.4/cmake-3.31.4-linux-${ARCH}.sh
+wget -O install.sh https://github.com/Kitware/CMake/releases/download/v4.1.0/cmake-4.1.0-linux-${ARCH}.sh
 chmod u+x install.sh
 
 ./install.sh --skip-license --prefix=/usr/local
