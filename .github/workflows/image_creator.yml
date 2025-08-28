@@ -4,17 +4,27 @@ on:
   workflow_dispatch:
     inputs:
       minimal_version:
-        description: 'Build Minimal Image'
+        description: 'Build Minimal images and tag them as Latest'
         required: true
         type: boolean
       full_version:
-        description: 'Build Full Image'
+        description: 'Build Full images and tag them as Latest'
         required: true
         type: boolean
       doc_version:
         description: 'Build Doc Image'
         required: true
         type: boolean
+      minimal_stable_run_id:
+        description: 'Tag Minimal images as Stable run_id='
+        required: false
+        default: 0
+        type: number
+      full_stable_run_id:
+        description: 'Tag Full images as Stable run_id='
+        required: false
+        default: 0
+        type: number
 
 env:
   REGISTRY: 'ghcr.io'
@@ -47,7 +57,7 @@ jobs:
 
       - name: Checkout repository
         if: ${{ inputs.minimal_version }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up QEMU
         if: ${{ inputs.minimal_version }}
@@ -74,8 +84,6 @@ jobs:
           labels: |
             org.opencontainers.image.title=ArcaneFramework
             org.opencontainers.image.description=Minimal image to Build/Install/Run Arcane Framework
-            org.opencontainers.image.vendor=CEA
-            org.opencontainers.image.licenses=Apache2
 
       - name: Build and push by digest
         if: ${{ inputs.minimal_version }}
@@ -85,6 +93,7 @@ jobs:
           platforms: ${{ matrix.platform }}
           context: ${{ env.DOCKERFILE_PATH }}/minimal
           labels: ${{ steps.meta.outputs.labels }}
+          provenance: false
           outputs: |
             type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
 
@@ -99,13 +108,16 @@ jobs:
         if: ${{ inputs.minimal_version }}
         uses: actions/upload-artifact@v4
         with:
-          name: digests-minimal-${{ env.IMAGE_OS_NAME }}-${{ github.run_number }}-${{ env.PLATFORM_PAIR }}
+          name: digests-minimal-${{ env.IMAGE_OS_NAME }}-${{ github.run_id }}-${{ env.PLATFORM_PAIR }}
           path: /tmp/digests/*
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 7
 
-  merge-minimal:
-    name: Merge Ubuntu 24.04 Minimal Image
+      - name: Output Run ID
+        run:  echo 'Run ID is ${{ github.run_id }}'
+
+  minimal-latest:
+    name: Add latest tags to Ubuntu 24.04 Minimal Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -121,10 +133,10 @@ jobs:
 
       - name: Download minimal digests
         if: ${{ inputs.minimal_version }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: /tmp/digests
-          pattern: digests-minimal-${{ env.IMAGE_OS_NAME }}-${{ github.run_number }}-*
+          pattern: digests-minimal-${{ env.IMAGE_OS_NAME }}-${{ github.run_id }}-*
           merge-multiple: true
 
       - name: Log in to the Container registry
@@ -147,17 +159,8 @@ jobs:
           images: ${{ env.REGISTRY_IMAGE }}
           tags: |
             type=raw, minimal_latest
-            type=raw, minimal_{{date 'YYYYMMDD'}}
             type=raw, gcc_minimal_latest
             type=raw, clang_minimal_latest
-            type=raw, gcc-14_minimal_{{date 'YYYYMMDD'}}
-            type=raw, gcc-14_minimal_latest
-            type=raw, gcc-13_minimal_{{date 'YYYYMMDD'}}
-            type=raw, gcc-13_minimal_latest
-            type=raw, clang-18_minimal_latest
-            type=raw, clang-18_minimal_{{date 'YYYYMMDD'}}
-            type=raw, clang-19_minimal_latest
-            type=raw, clang-19_minimal_{{date 'YYYYMMDD'}}
 
       - name: Create manifest list and push
         if: ${{ inputs.minimal_version }}
@@ -176,7 +179,7 @@ jobs:
     name: Ubuntu 24.04 Full Image
     if: ${{ inputs.full_version }}
     needs:
-      - merge-minimal
+      - minimal-latest
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -196,7 +199,7 @@ jobs:
           echo "REGISTRY_IMAGE=${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_OS_NAME }}" >> $GITHUB_ENV
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -219,8 +222,6 @@ jobs:
           labels: |
             org.opencontainers.image.title=ArcaneFramework
             org.opencontainers.image.description=Full image to Build/Install/Run Arcane Framework
-            org.opencontainers.image.vendor=CEA
-            org.opencontainers.image.licenses=Apache2
 
       - name: Build and push by digest
         id: build
@@ -229,6 +230,7 @@ jobs:
           platforms: ${{ matrix.platform }}
           context: ${{ env.DOCKERFILE_PATH }}/full
           labels: ${{ steps.meta.outputs.labels }}
+          provenance: false
           outputs: |
             type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
 
@@ -241,13 +243,16 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-full-${{ env.IMAGE_OS_NAME }}-${{ github.run_number }}-${{ env.PLATFORM_PAIR }}
+          name: digests-full-${{ env.IMAGE_OS_NAME }}-${{ github.run_id }}-${{ env.PLATFORM_PAIR }}
           path: /tmp/digests/*
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 7
 
-  merge-full:
-    name: Merge Ubuntu 24.04 Full Image
+      - name: Output Run ID
+        run:  echo 'Run ID is ${{ github.run_id }}'
+
+  full-latest:
+    name: Add latest tags to Ubuntu 24.04 Full Image
     if: ${{ inputs.full_version }}
     runs-on: ubuntu-latest
     permissions:
@@ -258,15 +263,14 @@ jobs:
 
     steps:
       - name: Prepare
-        if: ${{ inputs.minimal_version }}
         run: |
           echo "REGISTRY_IMAGE=${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_OS_NAME }}" >> $GITHUB_ENV
 
       - name: Download digests
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: /tmp/digests
-          pattern: digests-full-${{ env.IMAGE_OS_NAME }}-${{ github.run_number }}-*
+          pattern: digests-full-${{ env.IMAGE_OS_NAME }}-${{ github.run_id }}-*
           merge-multiple: true
 
       - name: Log in to the Container registry
@@ -286,23 +290,10 @@ jobs:
           images: ${{ env.REGISTRY_IMAGE }}
           tags: |
             type=raw, full_latest
-            type=raw, full_{{date 'YYYYMMDD'}}
             type=raw, gcc_full_latest
             type=raw, clang_full_latest
             type=raw, cuda_full_latest
             type=raw, rocm_full_latest
-            type=raw, gcc-14_full_latest
-            type=raw, gcc-14_full_{{date 'YYYYMMDD'}}
-            type=raw, gcc-13_full_latest
-            type=raw, gcc-13_full_{{date 'YYYYMMDD'}}
-            type=raw, clang-18_full_latest
-            type=raw, clang-18_full_{{date 'YYYYMMDD'}}
-            type=raw, clang-19_full_latest
-            type=raw, clang-19_full_{{date 'YYYYMMDD'}}
-            type=raw, cuda-126_full_latest
-            type=raw, cuda-126_full_{{date 'YYYYMMDD'}}
-            type=raw, rocm-631_full_latest
-            type=raw, rocm-631_full_{{date 'YYYYMMDD'}}
 
       - name: Create manifest list and push
         working-directory: /tmp/digests
@@ -319,7 +310,7 @@ jobs:
     name: Ubuntu 24.04 Doc Image
     if: ${{ inputs.doc_version }}
     needs:
-      - merge-minimal
+      - minimal-latest
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -330,7 +321,7 @@ jobs:
         run: rm -rf /opt/hostedtoolcache
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -347,8 +338,6 @@ jobs:
           labels: |
             org.opencontainers.image.title=ArcaneFramework
             org.opencontainers.image.description=Doc image to Build/Install/Run Arcane Framework
-            org.opencontainers.image.vendor=CEA
-            org.opencontainers.image.licenses=Apache2
           tags: |
             type=raw, doc_latest
             type=raw, doc_{{date 'YYYYMMDD'}}
@@ -360,3 +349,146 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+
+  minimal-stable:
+    name: Add stable tags to Ubuntu 24.04 Minimal Image
+    if: ${{ inputs.minimal_stable_run_id != 0 }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Prepare
+        run: |
+          echo "REGISTRY_IMAGE=${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_OS_NAME }}" >> $GITHUB_ENV
+
+      - name: Download minimal digests
+        uses: actions/download-artifact@v5
+        with:
+          path: /tmp/digests
+          pattern: digests-minimal-${{ env.IMAGE_OS_NAME }}-${{ inputs.minimal_stable_run_id }}-*
+          merge-multiple: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.minimal_stable_run_id }}
+
+      - name: Fail if no artifact downloaded
+        run: |
+          if [ ! -d "/tmp/digests" ] || [ -z "$(ls -A /tmp/digests)" ]; then
+            echo "::error::No artifact found"
+            exit 1
+          fi
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata (tags) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY_IMAGE }}
+          tags: |
+            type=raw, minimal_stable
+            type=raw, minimal_{{date 'YYYYMMDD'}}
+            type=raw, gcc_minimal_stable
+            type=raw, clang_minimal_stable
+            type=raw, gcc-14_minimal_stable
+            type=raw, gcc-14_minimal_{{date 'YYYYMMDD'}}
+            type=raw, gcc-13_minimal_stable
+            type=raw, gcc-13_minimal_{{date 'YYYYMMDD'}}
+            type=raw, clang-21_minimal_stable
+            type=raw, clang-21_minimal_{{date 'YYYYMMDD'}}
+            type=raw, clang-19_minimal_stable
+            type=raw, clang-19_minimal_{{date 'YYYYMMDD'}}
+
+      - name: Create manifest list and push
+        working-directory: /tmp/digests
+        run: |
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
+
+      - name: Inspect image
+        run: |
+          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
+
+  full-stable:
+    name: Add stable tags to Ubuntu 24.04 Full Image
+    if: ${{ inputs.full_stable_run_id != 0 }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Prepare
+        run: |
+          echo "REGISTRY_IMAGE=${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_OS_NAME }}" >> $GITHUB_ENV
+
+      - name: Download full digests
+        uses: actions/download-artifact@v5
+        with:
+          path: /tmp/digests
+          pattern: digests-full-${{ env.IMAGE_OS_NAME }}-${{ inputs.full_stable_run_id }}-*
+          merge-multiple: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.full_stable_run_id }}
+
+      - name: Fail if no artifact downloaded
+        run: |
+          if [ ! -d "/tmp/digests" ] || [ -z "$(ls -A /tmp/digests)" ]; then
+            echo "::error::No artifact found"
+            exit 1
+          fi
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata (tags) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY_IMAGE }}
+          tags: |
+            type=raw, full_stable
+            type=raw, full_{{date 'YYYYMMDD'}}
+            type=raw, gcc_full_stable
+            type=raw, clang_full_stable
+            type=raw, cuda_full_stable
+            type=raw, rocm_full_stable
+            type=raw, gcc-14_full_stable
+            type=raw, gcc-14_full_{{date 'YYYYMMDD'}}
+            type=raw, gcc-13_full_stable
+            type=raw, gcc-13_full_{{date 'YYYYMMDD'}}
+            type=raw, clang-21_full_stable
+            type=raw, clang-21_full_{{date 'YYYYMMDD'}}
+            type=raw, clang-19_full_stable
+            type=raw, clang-19_full_{{date 'YYYYMMDD'}}
+            type=raw, cuda-130_full_stable
+            type=raw, cuda-130_full_{{date 'YYYYMMDD'}}
+            type=raw, rocm-643_full_stable
+            type=raw, rocm-643_full_{{date 'YYYYMMDD'}}
+
+      - name: Create manifest list and push
+        working-directory: /tmp/digests
+        run: |
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
+
+      - name: Inspect image
+        run: |
+          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
