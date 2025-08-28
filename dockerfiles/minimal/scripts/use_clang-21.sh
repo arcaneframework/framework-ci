@@ -1,15 +1,17 @@
 #!/bin/sh
 
-# Script permettant de configurer CLang 19 de manière à pouvoir compiler les
-# parties CUDA avec Clang.
+# Script permettant de définir clang-21 comme étant le clang par défaut
+# à utiliser.
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
 echo "---------------------------------------------------------------------------"
-echo "Configure Clang and CUDA to compile .cu with clang++-19"
+echo "Define CLang-21 alternative"
 echo "---------------------------------------------------------------------------"
 
-. /root/scripts/configure_cuda_driver.sh
+update-alternatives --set clang /usr/bin/clang-21
+update-alternatives --set clang++ /usr/bin/clang++-21
 
-update-alternatives --set clang++-cuda /usr/lib/llvm-19/bin/clang++
+clang -v
+clang++ -v

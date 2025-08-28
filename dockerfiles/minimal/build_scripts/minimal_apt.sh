@@ -19,7 +19,7 @@ apt-get install -y --no-install-recommends \
   gcc-14 g++-14 \
   gcc-13 g++-13 \
   gcc g++ \
-  clang-18 \
+  clang-19 \
   make \
   ccache \
   ninja-build \
@@ -54,8 +54,8 @@ update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-14 100
 
 update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 100
 
-update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 90
-update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 90
+update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 90
+update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 90
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------

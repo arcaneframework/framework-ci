@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# Script permettant de compiler et d'installer Clang 19 et d'installer les
+# Script permettant de compiler et d'installer Clang 21 et d'installer les
 # alternatives.
 
 #---------------------------------------------------------------------------
@@ -15,10 +15,10 @@ apt-get install -y software-properties-common gnupg
 
 wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
-./llvm.sh 19
+./llvm.sh 21
 
-update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 100
-update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 100
+update-alternatives --install /usr/bin/clang clang /usr/bin/clang-21 100
+update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-21 100
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
