@@ -28,7 +28,12 @@ echo "deb [arch=${ARCH_A} signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.rad
 echo 'Package: *\nPin: release o=repo.radeon.com\nPin-Priority: 600' | tee /etc/apt/preferences.d/rocm-pin-600
 
 apt-get update
-apt-get install -y rocm-hip-runtime-dev rocprim-dev roctracer-dev rocm-core
+apt-get install -y \
+  rocm-hip-runtime-dev \
+  rocprim-dev \
+  roctracer-dev \
+  rocm-core \
+  libclang-rt-19-dev
 
 hipcc --version
 
