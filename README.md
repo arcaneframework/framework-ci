@@ -80,11 +80,3 @@ source /root/scripts/use_rocm.sh
 # To use ROCM 6.4.3:
 source /root/scripts/use_rocm-643.sh
 ```
-```bash
-# To use default Clang to compile CUDA part:
-source /root/scripts/use_clang_cuda.sh
-```
-```bash
-# To use Clang 21 to compile CUDA part:
-source /root/scripts/use_clang-21_cuda.sh
-```
