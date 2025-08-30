@@ -20,7 +20,7 @@ apt-get install -y mesa-common-dev mesa-utils
 
 # Initialisation
 cd /tmp
-git clone -b v9.4.0 --recursive https://gitlab.kitware.com/vtk/vtk.git vtk
+git clone -b v9.5.0 --recursive https://gitlab.kitware.com/vtk/vtk.git vtk
 mkdir build
 
 # Configure

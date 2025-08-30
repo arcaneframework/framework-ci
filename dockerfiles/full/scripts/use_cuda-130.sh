@@ -1,17 +1,19 @@
 #!/bin/sh
 
-# Script permettant de définir clang-18 comme étant le clang par défaut
-# à utiliser.
+# Script permettant de définir les compilateurs hosts par défaut pour
+# CUDA. Permet aussi de configurer l'environnement pour pouvoir utiliser
+# CUDA convenablement.
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
 echo "---------------------------------------------------------------------------"
-echo "Define CLang-18 alternative"
+echo "Configure CUDA-13.0"
 echo "---------------------------------------------------------------------------"
 
-update-alternatives --set clang /usr/bin/clang-18
-update-alternatives --set clang++ /usr/bin/clang++-18
+. /root/scripts/use_gcc-14.sh
+. /root/scripts/use_clang-19.sh
 
-clang -v
-clang++ -v
+. /root/scripts/configure_cuda_driver.sh
+
+nvcc --version

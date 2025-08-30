@@ -37,12 +37,6 @@ ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
-# Création de clang-19_cuda.
-RUN /root/build_scripts/clang-19_cuda.sh
-
-#---------------------------------------------------------------------------
-#---------------------------------------------------------------------------
-
 # Installation de ROCM.
 RUN /root/build_scripts/rocm.sh
 
@@ -57,9 +51,3 @@ RUN /root/build_scripts/adaptivecpp.sh
 
 # Installation de VTK.
 RUN /root/build_scripts/vtk.sh
-
-#---------------------------------------------------------------------------
-#---------------------------------------------------------------------------
-
-# Création du launcher de clang++-18 avec toolchain g++-13.
-RUN /root/build_scripts/patch_clang-18.sh

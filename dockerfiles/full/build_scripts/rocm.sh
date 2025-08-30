@@ -19,7 +19,7 @@ else
 fi
 
 UBUNTU_NAME="noble"
-ROCM_VERSION="6.3.1"
+ROCM_VERSION="6.4.3"
 
 mkdir --parents --mode=0755 /etc/apt/keyrings
 wget https://repo.radeon.com/rocm/rocm.gpg.key -O - | gpg --dearmor | tee /etc/apt/keyrings/rocm.gpg > /dev/null
@@ -28,7 +28,12 @@ echo "deb [arch=${ARCH_A} signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.rad
 echo 'Package: *\nPin: release o=repo.radeon.com\nPin-Priority: 600' | tee /etc/apt/preferences.d/rocm-pin-600
 
 apt-get update
-apt-get install -y rocm-hip-runtime-dev rocprim-dev roctracer-dev rocm-core
+apt-get install -y \
+  rocm-hip-runtime-dev \
+  rocprim-dev \
+  roctracer-dev \
+  rocm-core \
+  libclang-rt-19-dev
 
 hipcc --version
 

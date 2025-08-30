@@ -31,6 +31,9 @@ update-alternatives --set mpirun ${MPICH_INSTALL_DIR}/bin/mpirun
 update-alternatives --set mpi ${MPICH_INSTALL_DIR}/bin/mpicc
 update-alternatives --set mpi-${ARCH}-linux-gnu ${MPICH_INSTALL_DIR}/include
 
+# Patch pour la compilation avec CMake 4.0+.
+sed -i '/cmake_minimum_required/c\cmake_minimum_required(VERSION 3.20)' CMakeLists.txt
+
 # Build/install parmetis with MPICH (.a/.so)
 make config prefix=${PARMETIS_MPICH_INSTALL_DIR}
 make install -j 4
