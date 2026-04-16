@@ -1,6 +1,6 @@
-# Ubuntu 24.04 minimal dependencies for Arcane.
+# Ubuntu 26.04 minimal dependencies for Arcane.
 
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
@@ -20,18 +20,6 @@ COPY scripts/ /root/scripts/
 
 # Installation des packages principaux avec apt.
 RUN /root/build_scripts/minimal_apt.sh
-
-#---------------------------------------------------------------------------
-#---------------------------------------------------------------------------
-
-# Installation de CMake.
-RUN /root/build_scripts/cmake.sh
-
-#---------------------------------------------------------------------------
-#---------------------------------------------------------------------------
-
-# Installation de CLang 21.
-RUN /root/build_scripts/clang.sh
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------

@@ -1,17 +1,19 @@
 #!/bin/sh
 
-# Script permettant de définir clang-19 comme étant le clang par défaut
+# Script permettant de définir gcc-15 comme étant le gcc par défaut
 # à utiliser.
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
 echo "---------------------------------------------------------------------------"
-echo "Define CLang-19 alternative"
+echo "Define GCC-15 alternative"
 echo "---------------------------------------------------------------------------"
 
-update-alternatives --set clang /usr/bin/clang-19
-update-alternatives --set clang++ /usr/bin/clang++-19
+update-alternatives --set g++ /usr/bin/g++-15
+update-alternatives --set gcc /usr/bin/gcc-15
+update-alternatives --set gcov /usr/bin/gcov-15
 
-clang -v
-clang++ -v
+g++ -v
+gcc -v
+gcov -v

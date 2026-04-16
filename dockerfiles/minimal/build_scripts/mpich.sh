@@ -13,9 +13,9 @@ ARCH=`uname -m`
 MPICH_INSTALL_DIR=/usr/local/mpich
 
 # Download MPICH src
-wget https://www.mpich.org/static/downloads/4.1.3/mpich-4.1.3.tar.gz
-tar -xf mpich-4.1.3.tar.gz
-cd mpich-4.1.3
+wget https://www.mpich.org/static/downloads/5.0.1/mpich-5.0.1.tar.gz
+tar -xf mpich-5.0.1.tar.gz
+cd mpich-5.0.1
 
 ./configure --prefix=${MPICH_INSTALL_DIR} --disable-fast CFLAGS=-O3 FFLAGS=-O3 CXXFLAGS=-O3 FCFLAGS=-O3 --with-device=ch3:sock --disable-maintainer-mode --disable-silent-rules --enable-shared=yes
 make install -j 4

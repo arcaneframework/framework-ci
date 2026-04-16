@@ -18,8 +18,8 @@ else
   exit 1
 fi
 
-UBUNTU_NAME="noble"
-ROCM_VERSION="6.4.3"
+UBUNTU_NAME="resolute"
+ROCM_VERSION="7.2.1"
 
 mkdir --parents --mode=0755 /etc/apt/keyrings
 wget https://repo.radeon.com/rocm/rocm.gpg.key -O - | gpg --dearmor | tee /etc/apt/keyrings/rocm.gpg > /dev/null
@@ -33,7 +33,7 @@ apt-get install -y \
   rocprim-dev \
   roctracer-dev \
   rocm-core \
-  libclang-rt-19-dev
+  libclang-rt-20-dev
 
 hipcc --version
 

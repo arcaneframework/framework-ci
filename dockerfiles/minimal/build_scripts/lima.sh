@@ -13,7 +13,7 @@ cd /tmp
 apt-get update
 apt-get install -y lsb-release
 
-git clone -b 7.12.0 https://github.com/LIHPC-Computational-Geometry/lima lima
+git clone -b 7.12.2 https://github.com/LIHPC-Computational-Geometry/lima lima
 
 # Patch pour la compilation en ARM64.
 sed -i '33,38d' /tmp/lima/src/Lima/CMakeLists.txt

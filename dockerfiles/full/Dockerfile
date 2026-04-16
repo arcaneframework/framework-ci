@@ -1,6 +1,6 @@
-# Ubuntu 24.04 full dependencies for Arcane.
+# Ubuntu 26.04 full dependencies for Arcane.
 
-FROM ghcr.io/arcaneframework/ubuntu-2404:minimal_latest
+FROM ghcr.io/arcaneframework/ubuntu-2604:minimal_latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris

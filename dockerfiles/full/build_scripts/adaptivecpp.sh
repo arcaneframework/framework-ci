@@ -19,10 +19,10 @@ apt-get update
 apt-get -y install \
   libboost-fiber-dev \
   libboost-context-dev \
-  libomp-19-dev \
-  llvm-19-dev \
-  libclang-19-dev \
-  lld-19
+  libomp-20-dev \
+  llvm-20-dev \
+  libclang-20-dev \
+  lld-20
 
 cmake \
   -S .. \

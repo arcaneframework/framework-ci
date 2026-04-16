@@ -1,19 +1,17 @@
 #!/bin/sh
 
-# Script permettant de définir gcc-14 comme étant le gcc par défaut
+# Script permettant de définir clang-22 comme étant le clang par défaut
 # à utiliser.
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
 echo "---------------------------------------------------------------------------"
-echo "Define GCC-14 alternative"
+echo "Define CLang-22 alternative"
 echo "---------------------------------------------------------------------------"
 
-update-alternatives --set g++ /usr/bin/g++-14
-update-alternatives --set gcc /usr/bin/gcc-14
-update-alternatives --set gcov /usr/bin/gcov-14
+update-alternatives --set clang /usr/bin/clang-22
+update-alternatives --set clang++ /usr/bin/clang++-22
 
-g++ -v
-gcc -v
-gcov -v
+clang -v
+clang++ -v

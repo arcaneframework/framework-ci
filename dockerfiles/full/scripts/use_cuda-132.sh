@@ -1,17 +1,19 @@
 #!/bin/sh
 
-# Script permettant de définir clang-21 comme étant le clang par défaut
-# à utiliser.
+# Script permettant de définir les compilateurs hosts par défaut pour
+# CUDA. Permet aussi de configurer l'environnement pour pouvoir utiliser
+# CUDA convenablement.
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
 echo "---------------------------------------------------------------------------"
-echo "Define CLang-21 alternative"
+echo "Configure CUDA-13.2"
 echo "---------------------------------------------------------------------------"
 
-update-alternatives --set clang /usr/bin/clang-21
-update-alternatives --set clang++ /usr/bin/clang++-21
+. /root/scripts/use_gcc-15.sh
+. /root/scripts/use_clang-20.sh
 
-clang -v
-clang++ -v
+. /root/scripts/configure_cuda_driver.sh
+
+nvcc --version

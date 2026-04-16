@@ -16,11 +16,12 @@ apt-get install -y --no-install-recommends \
   curl \
   rsync \
   build-essential \
-  gcc-14 g++-14 \
-  gcc-13 g++-13 \
+  gcc-15 g++-15 \
   gcc g++ \
-  clang-19 \
+  clang-22 \
+  clang-20 \
   make \
+  cmake \
   ccache \
   ninja-build \
   mold \
@@ -41,21 +42,17 @@ apt-get install -y --no-install-recommends \
   libtbb-dev \
   libunwind-dev \
   ca-certificates \
-  dotnet8 \
+  dotnet10 \
   jq
 
-update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 90
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 90
-update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-13 90
-
-update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
-update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-14 100
+update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-15 100
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100
+update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-15 100
 
 update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 100
 
-update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 90
-update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 90
+update-alternatives --install /usr/bin/clang clang /usr/bin/clang-22 100
+update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-22 100
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------

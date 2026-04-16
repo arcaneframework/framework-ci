@@ -1,14 +1,13 @@
 # README
-## ubuntu-2404
+## ubuntu-2604
 
 This branch contains the workflow and dockerfiles to create
-images with Ubuntu 24.04 and:
-- GCC 14
-- GCC 13
-- CLang 21
-- CLang 19
-- CUDA 13.0 (full only)
-- ROCM 6.4.3 (full/AMD64 only)
+images with Ubuntu 26.04 and:
+- GCC 15
+- CLang 22
+- CLang 20
+- CUDA 13.2 (full only)
+- ROCM 7.2.1 (full/AMD64 only)
 
 Two available architectures:
 - AMD64
@@ -30,28 +29,24 @@ Three available versions:
 source /root/scripts/default_alternatives.sh
 ```
 ```bash
-# To use default gcc/g++ (GCC 14):
+# To use default gcc/g++ (GCC 15):
 source /root/scripts/use_gcc.sh
 ```
 ```bash
-# To use gcc/g++ 13:
-source /root/scripts/use_gcc-13.sh
+# To use gcc/g++ 15:
+source /root/scripts/use_gcc-15.sh
 ```
 ```bash
-# To use gcc/g++ 14:
-source /root/scripts/use_gcc-14.sh
-```
-```bash
-# To use default clang/clang++ (Clang 21):
+# To use default clang/clang++ (Clang 22):
 source /root/scripts/use_clang.sh
 ```
 ```bash
-# To use clang/clang++ 19:
-source /root/scripts/use_clang-19.sh
+# To use clang/clang++ 20:
+source /root/scripts/use_clang-22.sh
 ```
 ```bash
-# To use clang/clang++ 21:
-source /root/scripts/use_clang-21.sh
+# To use clang/clang++ 20:
+source /root/scripts/use_clang-20.sh
 ```
 ```bash
 # To use OpenMPI:
@@ -69,14 +64,14 @@ source /root/scripts/use_mpich.sh
 source /root/scripts/use_cuda.sh
 ```
 ```bash
-# To use CUDA 13.0:
-source /root/scripts/use_cuda-130.sh
+# To use CUDA 13.2:
+source /root/scripts/use_cuda-132.sh
 ```
 ```bash
 # To use default ROCM:
 source /root/scripts/use_rocm.sh
 ```
 ```bash
-# To use ROCM 6.4.3:
-source /root/scripts/use_rocm-643.sh
+# To use ROCM 7.2.1:
+source /root/scripts/use_rocm-721.sh
 ```

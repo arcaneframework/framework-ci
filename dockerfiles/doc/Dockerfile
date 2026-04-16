@@ -1,7 +1,7 @@
-# Ubuntu 24.04 minimal dependencies for Documentation Arcane.
-# Version with Doxygen 1.13.2.
+# Ubuntu 26.04 minimal dependencies for Documentation Arcane.
+# Version with Doxygen 1.16.1.
 
-FROM ghcr.io/arcaneframework/ubuntu-2404:minimal_latest
+FROM ghcr.io/arcaneframework/ubuntu-2604:minimal_latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=Europe/Paris
