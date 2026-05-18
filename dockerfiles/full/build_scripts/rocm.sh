@@ -18,13 +18,14 @@ else
   exit 1
 fi
 
-UBUNTU_NAME="resolute"
-ROCM_VERSION="7.2.1"
+# On prend les dépôts de U24.
+UBUNTU_NAME="noble"
+ROCM_VERSION="7.2.3"
 
 mkdir --parents --mode=0755 /etc/apt/keyrings
 wget https://repo.radeon.com/rocm/rocm.gpg.key -O - | gpg --dearmor | tee /etc/apt/keyrings/rocm.gpg > /dev/null
-echo "deb [arch=${ARCH_A} signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amdgpu/${ROCM_VERSION}/ubuntu ${UBUNTU_NAME} main" | tee /etc/apt/sources.list.d/amdgpu.list
-echo "deb [arch=${ARCH_A} signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/rocm/apt/${ROCM_VERSION} ${UBUNTU_NAME} main" | tee --append /etc/apt/sources.list.d/rocm.list
+echo "deb [arch=${ARCH_A} signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/rocm/apt/${ROCM_VERSION} ${UBUNTU_NAME} main" | tee /etc/apt/sources.list.d/rocm.list
+echo "deb [arch=${ARCH_A} signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/graphics/${ROCM_VERSION}/ubuntu ${UBUNTU_NAME} main" | tee --append /etc/apt/sources.list.d/rocm.list
 echo 'Package: *\nPin: release o=repo.radeon.com\nPin-Priority: 600' | tee /etc/apt/preferences.d/rocm-pin-600
 
 apt-get update
@@ -34,6 +35,14 @@ apt-get install -y \
   roctracer-dev \
   rocm-core \
   libclang-rt-20-dev
+
+# apt-get update
+# apt-get install -y \
+#   librocprim-dev \
+#   libroctx-dev \
+#   librocm-core-dev \
+#   librccl-dev \
+#   hipcc-rocm
 
 hipcc --version
 
@@ -45,4 +54,3 @@ cd /
 rm -rf /var/lib/apt/lists/*
 rm -rf /var/cache/*
 rm -rf /var/log/*
-rm -rf /tmp/*

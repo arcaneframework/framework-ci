@@ -6,8 +6,8 @@ images with Ubuntu 26.04 and:
 - GCC 15
 - CLang 22
 - CLang 20
-- CUDA 13.2 (full only)
-- ROCM 7.2.1 (full/AMD64 only)
+- CUDA 13.1 (full only)
+- ROCM 7.2.3 (full/AMD64 only)
 
 Two available architectures:
 - AMD64
@@ -41,7 +41,7 @@ source /root/scripts/use_gcc-15.sh
 source /root/scripts/use_clang.sh
 ```
 ```bash
-# To use clang/clang++ 20:
+# To use clang/clang++ 22:
 source /root/scripts/use_clang-22.sh
 ```
 ```bash
@@ -64,14 +64,14 @@ source /root/scripts/use_mpich.sh
 source /root/scripts/use_cuda.sh
 ```
 ```bash
-# To use CUDA 13.2:
-source /root/scripts/use_cuda-132.sh
+# To use CUDA 13.1:
+source /root/scripts/use_cuda-131.sh
 ```
 ```bash
 # To use default ROCM:
 source /root/scripts/use_rocm.sh
 ```
 ```bash
-# To use ROCM 7.2.1:
-source /root/scripts/use_rocm-721.sh
+# To use ROCM 7.2.3:
+source /root/scripts/use_rocm-723.sh
 ```

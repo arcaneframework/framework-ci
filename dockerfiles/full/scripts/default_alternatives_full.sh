@@ -9,5 +9,5 @@ echo "--------------------------------------------------------------------------
 echo "Define default alternatives (full image)"
 echo "---------------------------------------------------------------------------"
 
-. /root/scripts/use_cuda-132.sh
-. /root/scripts/use_rocm-721.sh
+. /root/scripts/use_cuda-131.sh
+. /root/scripts/use_rocm-723.sh

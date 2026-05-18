@@ -54,6 +54,9 @@ update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 100
 update-alternatives --install /usr/bin/clang clang /usr/bin/clang-22 100
 update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-22 100
 
+update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 90
+update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 90
+
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
