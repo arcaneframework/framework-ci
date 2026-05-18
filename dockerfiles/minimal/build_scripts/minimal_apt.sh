@@ -43,7 +43,8 @@ apt-get install -y --no-install-recommends \
   libunwind-dev \
   ca-certificates \
   dotnet10 \
-  jq
+  jq \
+  libmed-dev
 
 update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-15 100
 update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100
