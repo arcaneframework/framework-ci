@@ -41,10 +41,10 @@ apt-get install -y --no-install-recommends \
   libmetis-dev \
   libtbb-dev \
   libunwind-dev \
+  libdw-dev \
   ca-certificates \
   dotnet10 \
-  jq \
-  libmed-dev
+  jq
 
 update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-15 100
 update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100

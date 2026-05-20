@@ -7,7 +7,9 @@ set -e
 #---------------------------------------------------------------------------
 
 # Initialisation
-cd /tmp
+TDIR=/tmp/lima
+mkdir -p ${TDIR}
+cd ${TDIR}
 
 # Lima utilise lsb_release pour trouver le nom de la distribution.
 apt-get update
@@ -16,15 +18,15 @@ apt-get install -y lsb-release
 git clone -b 7.12.2 https://github.com/LIHPC-Computational-Geometry/lima lima
 
 # Patch pour la compilation en ARM64.
-sed -i '33,38d' /tmp/lima/src/Lima/CMakeLists.txt
+sed -i '33,38d' ${TDIR}/lima/src/Lima/CMakeLists.txt
 
-mkdir build
+mkdir -p ${TDIR}/build
 cmake \
-      -S /tmp/lima \
-      -B /tmp/build \
+      -S ${TDIR}/lima \
+      -B ${TDIR}/build \
       -GNinja \
       -DCMAKE_Fortran_FLAGS="-fdefault-integer-8 -fdefault-real-8 -fdefault-double-8" \
-      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_BUILD_TYPE=RelWithDebInfo \
       -DCMAKE_VERBOSE_MAKEFILE=ON \
       -DBUILD_SHARED_LIBS=ON \
       -DBUILD_XLMLIMA=ON \
@@ -37,8 +39,7 @@ cmake \
       -DFORMAT_MLI=OFF \
       -DSUMESH=OFF
 
-cd /tmp/build
-ninja install
+ninja -C ${TDIR}/build install
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
