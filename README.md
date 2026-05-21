@@ -7,7 +7,7 @@ images with Ubuntu 26.04 and:
 - CLang 22
 - CLang 20
 - CUDA 13.1 (full only)
-- ROCM 7.2.3 (full/AMD64 only)
+- ROCM 7.1.0 (full only)
 
 Two available architectures:
 - AMD64
@@ -72,6 +72,6 @@ source /root/scripts/use_cuda-131.sh
 source /root/scripts/use_rocm.sh
 ```
 ```bash
-# To use ROCM 7.2.3:
-source /root/scripts/use_rocm-723.sh
+# To use ROCM 7.1.0:
+source /root/scripts/use_rocm-710.sh
 ```
