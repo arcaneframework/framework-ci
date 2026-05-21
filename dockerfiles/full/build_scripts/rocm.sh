@@ -12,7 +12,8 @@ apt-get install -y \
   libroctx-dev \
   librocm-core-dev \
   librccl-dev \
-  hipcc-rocm
+  hipcc-rocm \
+  libclang-rt-22-dev
 
 hipcc --version
 

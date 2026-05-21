@@ -29,7 +29,9 @@ cmake \
   -B . \
   -GNinja \
   -DCMAKE_BUILD_TYPE=Release \
-  -DWITH_OPENCL_BACKEND=OFF
+  -DWITH_OPENCL_BACKEND=OFF \
+  -DROCM_PATH=/usr/lib/rocm \
+  -DROCM_DEVICE_LIBS_PATH=/usr/lib/rocm/llvm/lib/clang/20/amdgcn/bitcode
 
 # -DACPP_EXPERIMENTAL_LLVM=ON \
 # -DLLVM_DIR=/usr/lib/llvm-21/cmake
