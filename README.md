@@ -7,7 +7,7 @@ images with Ubuntu 26.04 and:
 - CLang 22
 - CLang 20
 - CUDA 13.1 (full only)
-- ROCM 7.1.0 (full only)
+- ROCM 7.1.0 (full/AMD64 only)
 
 Two available architectures:
 - AMD64
