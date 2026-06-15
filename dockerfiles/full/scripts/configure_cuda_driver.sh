@@ -10,8 +10,12 @@ echo "--------------------------------------------------------------------------
 echo "Configure CUDA driver"
 echo "---------------------------------------------------------------------------"
 
+ARCH=`uname -m`
+
 if [ -e /usr/lib/libcuda.so.1 ]; then
-  echo "Nvidia driver found."
+  echo "Nvidia driver found (1)."
+elif [ -e /usr/lib/${ARCH}-linux-gnu/libcuda.so.1 ]; then
+  echo "Nvidia driver found (2)."
 else
   echo "Nvidia driver not found. Use stub libcuda.so lib."
   if [ -e /usr/local/cuda/lib64/libcuda.so.1 ]; then
