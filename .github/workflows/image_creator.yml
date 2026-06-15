@@ -474,10 +474,10 @@ jobs:
             type=raw, clang-22_full_{{date 'YYYYMMDD'}}
             type=raw, clang-20_full_stable
             type=raw, clang-20_full_{{date 'YYYYMMDD'}}
-            type=raw, cuda-132_full_stable
-            type=raw, cuda-132_full_{{date 'YYYYMMDD'}}
-            type=raw, rocm-721_full_stable
-            type=raw, rocm-721_full_{{date 'YYYYMMDD'}}
+            type=raw, cuda-131_full_stable
+            type=raw, cuda-131_full_{{date 'YYYYMMDD'}}
+            type=raw, rocm-710_full_stable
+            type=raw, rocm-710_full_{{date 'YYYYMMDD'}}
 
       - name: Create manifest list and push
         working-directory: /tmp/digests

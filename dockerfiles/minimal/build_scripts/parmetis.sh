@@ -24,9 +24,6 @@ tar -zxf parmetis-4.0.3.tar.gz
 cd parmetis-4.0.3
 
 # Select MPICH alternative
-# update-alternatives --set mpirun /usr/bin/mpirun.mpich
-# update-alternatives --set mpi /usr/bin/mpicc.mpich
-# update-alternatives --set mpi-${ARCH}-linux-gnu /usr/include/${ARCH}-linux-gnu/mpich
 update-alternatives --set mpirun ${MPICH_INSTALL_DIR}/bin/mpirun
 update-alternatives --set mpi ${MPICH_INSTALL_DIR}/bin/mpicc
 update-alternatives --set mpi-${ARCH}-linux-gnu ${MPICH_INSTALL_DIR}/include
