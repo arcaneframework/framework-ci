@@ -7,10 +7,8 @@ set -e
 #---------------------------------------------------------------------------
 
 # Installation de PythonNet et de NumPy.
-# pip install --break-system-packages \
-#   pythonnet \
-#   numpy
 pip install --break-system-packages \
+  pythonnet \
   numpy
 
 # Cleanup
