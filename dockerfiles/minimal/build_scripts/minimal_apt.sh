@@ -87,6 +87,7 @@ fi
 
 # https://github.com/open-mpi/ompi/issues/12517
 echo "export OMPI_MCA_osc=sm" >> /etc/bash.bashrc
+echo "export OMPI_MCA_osc=sm" > /etc/profile.d/patch_mpi.sh
 
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
