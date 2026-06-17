@@ -28,6 +28,9 @@ apt-get install -y --no-install-recommends \
   clang-22 \
   clang-20 \
   \
+  gfortran-15 \
+  gfortran \
+  \
   make \
   cmake \
   ccache \
@@ -38,7 +41,6 @@ apt-get install -y --no-install-recommends \
   python3-dev \
   python3-pip \
   git \
-  gfortran \
   libc6-dev \
   libglib2.0-dev \
   libboost-program-options-dev \
@@ -75,8 +77,15 @@ update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 90
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
-# https://github.com/open-mpi/ompi/issues/13886
 ARCH=`uname -m`
+
+# Patch pour Alien
+ln -s /usr/lib/gcc/${ARCH}-linux-gnu/15/libgfortran.so /usr/lib/${ARCH}-linux-gnu/libgfortran.so
+
+#---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+
+# https://github.com/open-mpi/ompi/issues/13886
 if [ ! -f /usr/lib/${ARCH}-linux-gnu/prrte3/share/prte/help-prun.txt ]; then
   # fix a packaging issue: https://bugs.launchpad.net/ubuntu/+source/openmpi/+bug/2155666
   mkdir -p /usr/lib/${ARCH}-linux-gnu/prrte3/share/prte
