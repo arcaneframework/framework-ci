@@ -43,6 +43,10 @@ sed -i 's/__func__(float rsqrtf(float a));/__func__(float rsqrtf(float a) noexce
 sed -i '629s/rsqrt(double x);/rsqrt(double x) noexcept(true);/' /usr/local/cuda-13.1/targets/${ARCH_A}-linux/include/crt/math_functions.h
 sed -i '653s/);/) noexcept(true);/' /usr/local/cuda-13.1/targets/${ARCH_A}-linux/include/crt/math_functions.h
 
+# Patch pour CUDA 13.1 et Clang 20
+sed -i 's/__func__(double rsqrt(const double a))/__func__(double rsqrt(const double a) noexcept(true))/' /usr/local/cuda-13.1/targets/${ARCH_A}-linux/include/crt/math_functions.hpp
+sed -i 's/__func__(float rsqrtf(const float a))/__func__(float rsqrtf(const float a) noexcept(true))/' /usr/local/cuda-13.1/targets/${ARCH_A}-linux/include/crt/math_functions.hpp
+
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 
