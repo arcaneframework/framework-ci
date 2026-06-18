@@ -92,6 +92,9 @@ if [ ! -f /usr/lib/${ARCH}-linux-gnu/prrte3/share/prte/help-prun.txt ]; then
   cp /usr/share/doc/libprrte-dev/help-schizo-ompi.txt /usr/lib/${ARCH}-linux-gnu/prrte3/share/prte/
   cp /usr/share/doc/libprrte-dev/help-prun.txt.gz /usr/lib/${ARCH}-linux-gnu/prrte3/share/prte/
   gzip -d /usr/lib/${ARCH}-linux-gnu/prrte3/share/prte/help-prun.txt.gz ;
+
+  cp /usr/share/doc/libprrte-dev/help-prte-rmaps-base.txt.gz /usr/lib/${ARCH}-linux-gnu/prrte3/share/prte/
+  gzip -d /usr/lib/${ARCH}-linux-gnu/prrte3/share/prte/help-prte-rmaps-base.txt.gz ;
 fi
 
 # https://github.com/open-mpi/ompi/issues/12517
